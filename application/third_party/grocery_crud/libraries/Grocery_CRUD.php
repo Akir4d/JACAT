@@ -732,9 +732,16 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 			foreach($add_fields as $add_field)
 			{
 				$field_name = $add_field->field_name;
-				if(!isset($this->validation_rules[$field_name]) && in_array( $field_name, $required_fields) )
-				{
-					$this->set_rules( $field_name, $field_types[$field_name]->display_as, 'required');
+
+                // Workaround as Codeigniter set_rules has a bug with array and doesn't work with required fields.
+                // We are basically doing the check here!
+                if (array_key_exists($field_name, $this->relation_n_n) && in_array($field_name, $required_fields)) {
+                    if (!array_key_exists($field_name, $_POST)) {
+                        // This will always throw an error!
+                        $this->set_rules($field_name, $field_types[$field_name]->display_as, 'required');
+                    }
+                } else if(!isset($this->validation_rules[$field_name]) && in_array( $field_name, $required_fields) ) {
+					$this->set_rules($field_name, $field_types[$field_name]->display_as, 'required');
 				}
 			}
 		}
@@ -825,10 +832,19 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 			foreach($edit_fields as $edit_field)
 			{
 				$field_name = $edit_field->field_name;
-				if(!isset($this->validation_rules[$field_name]) && in_array( $field_name, $required_fields) )
-				{
-					$this->set_rules( $field_name, $field_types[$field_name]->display_as, 'required');
+
+                // Workaround as Codeigniter set_rules has a bug with array and doesn't work with required fields.
+                // We are basically doing the check here!
+				if (array_key_exists($field_name, $this->relation_n_n) && in_array($field_name, $required_fields)) {
+                    if (!array_key_exists($field_name, $_POST)) {
+                        // This will always throw an error!
+                        $this->set_rules($field_name, $field_types[$field_name]->display_as, 'required');
+                    }
+                } else if(!isset($this->validation_rules[$field_name]) && in_array( $field_name, $required_fields) ) {
+					$this->set_rules($field_name, $field_types[$field_name]->display_as, 'required');
 				}
+
+
 			}
 		}
 
@@ -2832,17 +2848,18 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 				case 'invisible':
 					unset($this->add_fields[$field_num]);
 					unset($fields[$field_num]);
-					continue;
-				break;
+				    break;
 				case 'hidden':
 					$this->add_hidden_fields[] = $field_input;
 					unset($this->add_fields[$field_num]);
 					unset($fields[$field_num]);
-					continue;
-				break;
+				    break;
+                default:
+                    $input_fields[$field->field_name] = $field_input;
+                    break;
 			}
 
-			$input_fields[$field->field_name] = $field_input;
+
 		}
 
 		return $input_fields;
@@ -2875,17 +2892,18 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 				case 'invisible':
 					unset($this->edit_fields[$field_num]);
 					unset($fields[$field_num]);
-					continue;
-				break;
+				    break;
 				case 'hidden':
 					$this->edit_hidden_fields[] = $field_input;
 					unset($this->edit_fields[$field_num]);
 					unset($fields[$field_num]);
-					continue;
-				break;
+				    break;
+                default:
+                    $input_fields[$field->field_name] = $field_input;
+                    break;
 			}
 
-			$input_fields[$field->field_name] = $field_input;
+
 		}
 
 		return $input_fields;
@@ -2933,17 +2951,18 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 			    case 'invisible':
 			    	unset($this->read_fields[$field_num]);
 			    	unset($fields[$field_num]);
-			    	continue;
 			    	break;
 			    case 'hidden':
 			    	$this->read_hidden_fields[] = $field_input;
 			    	unset($this->read_fields[$field_num]);
 			    	unset($fields[$field_num]);
-			    	continue;
 			    	break;
+                default:
+                    $input_fields[$field->field_name] = $field_input;
+                    break;
+
 			}
 
-			$input_fields[$field->field_name] = $field_input;
 		}
 
 		return $input_fields;
@@ -3240,12 +3259,12 @@ class grocery_CRUD_States extends grocery_CRUD_Layout
                         if (is_array($data['search_field'])) {
                             $search_array = array();
                             foreach ($data['search_field'] as $search_key => $search_field_name) {
-                                $search_field_name = preg_replace('/[^a-zA-Z0-9_]/', '' , $search_field_name);
+                                $search_field_name = preg_replace("/[=\"'?\\\\]/", '' , $search_field_name);
                                 $search_array[$search_field_name] = isset($data['search_text'][$search_key]) ? $data['search_text'][$search_key] : '';
                             }
                             $state_info->search	= $search_array;
                         } else {
-                            $field_name = preg_replace('/[^a-zA-Z0-9_]/', '' , $data['search_field']);
+                            $field_name = preg_replace("/[=\"'?\\\\]/", '' , $data['search_field']);
                             $state_info->search	= (object)array(
                                 'field' => $field_name,
                                 'text' => $data['search_text'] );
