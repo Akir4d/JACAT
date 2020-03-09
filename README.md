@@ -1,6 +1,6 @@
 ## CodeIgniter 3 Bootstrap
 
-**Latest Build: 2019-01-21**
+**Latest Build: 2020-03-09**
 
 **Note: This project is still in progress, but welcome for any issues encountered**
 
@@ -12,10 +12,10 @@ This repository is developed upon the following tools:
 * [codeigniter-base-model](https://github.com/jamierumbelow/codeigniter-base-model) - more advanced CRUD functions for models by [jamierumbelow](https://github.com/jamierumbelow)
 * [codeigniter-restserver](https://github.com/chriskacerguis/codeigniter-restserver) - base setup for API module
 * [Ion Auth](http://benedmunds.com/ion_auth/) - authentication library for CodeIgniter by [Ben Edmunds](http://benedmunds.com/)
-* [Bootstrap](http://getbootstrap.com/) (v3.3.7) - popular frontend framework
+* [Bootstrap](http://getbootstrap.com/) (v3.4.1) - popular frontend framework
 * [Grocery CRUD](http://www.grocerycrud.com/) (v1.6.2) - feature-rich library to build CRUD tables
 * [Image CRUD](http://www.grocerycrud.com/image-crud) (v0.6) - CRUD library for image management
-* [AdminLTE](https://github.com/almasaeed2010/AdminLTE) (v2.3.11) - bootstrap theme for Admin Panel
+* [AdminLTE](https://github.com/almasaeed2010/AdminLTE) (v2.4.18) - bootstrap theme for Admin Panel
 
 
 ### Features
@@ -64,7 +64,7 @@ Below configuration are preferred; other environments are not well-tested, but s
 4. You should be able to access Frontend Website, Admin Panel and API Site (with Swagger Doc) respectively
 5. Visit the Demo Controllers (exist in both Frontend / Admin Panel / API) for sample usage
 
-**Note** For more advanced workflow (includes repo upgrade), please have a look on my suggestion in [this issue](https://github.com/waifung0207/ci_bootstrap_3/issues/42). After release the v1.0 version, I will try to keep the upgrade procedure more developer friendly. 
+**Note** For more advanced workflow (includes repo upgrade), please have a look on my suggestion in [this issue](https://github.com/Akir4d/ci_bootstrap_3/issues/42). After release the v1.0 version, I will try to keep the upgrade procedure more developer friendly. 
 
 
 ### Admin Users (and default login accounts)
