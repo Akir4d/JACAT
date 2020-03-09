@@ -27,7 +27,7 @@ module.exports = {
 			fonts: [
 				dir_bower + '/bootstrap/dist/fonts/**',
 				dir_bower + '/font-awesome/fonts/**',
-				dir_bower + '/ionicons/fonts/**'
+				dir_bower + '/Ionicons/fonts/**'
 			],
 			// Files (JS / CSS / etc.) directly copy to destination folder
 			files: [
@@ -50,14 +50,20 @@ module.exports = {
 			],
 			// Admin Panel - AdminLTE theme
 			adminlte: [
+				dir_bower + '/bootstrap/dist/css/bootstrap.min.css',
+				dir_bower + '/admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css',
+				dir_bower + '/admin-lte/plugins/timepicker/bootstrap-timepicker.min.css',
+				dir_bower + '/admin-lte/plugins/pace/pace.min.css',
+				dir_bower + '/admin-lte/plugins/seiyria-bootstrap-slider/css/bootstrap-slider.min.css',
 				dir_bower + '/admin-lte/bootstrap/css/bootstrap.min.css',
 				dir_bower + '/admin-lte/dist/css/AdminLTE.min.css',
-				dir_bower + '/admin-lte/dist/css/skins/_all-skins.min.css',
+				dir_bower + '/admin-lte/dist/css/skins/_all-skins.min.css'
+
 			],
 			// Admin Panel - 3rd party libraries
 			admin_lib: [
 				dir_bower + '/font-awesome/css/font-awesome.min.css',
-				dir_bower + '/ionicons/css/ionicons.min.css',
+				dir_bower + '/Ionicons/css/ionicons.min.css',
 				dir_bower + '/spectrum/spectrum.css'
 			]
 		},
@@ -87,7 +93,7 @@ module.exports = {
 
 				// Bootstrap examples (http://getbootstrap.com/getting-started/#examples)
 				// Comment this to remove preset styles
-				dir_src + '/css/bootstrap-examples/sticky-footer-navbar.css',
+				//dir_src + '/css/bootstrap-examples/sticky-footer-navbar.css',
 
 				// Custom CSS file
 				dir_src + '/css/frontend.css'
@@ -130,16 +136,22 @@ module.exports = {
 			// Admin Panel - AdminLTE theme
 			adminlte: [
 				// use jQuery 1.x for compatibility with Grocery CRUD
-				dir_bower + '/jquery-legacy/dist/jquery.min.js',
-				dir_bower + '/jquery-migrate/jquery-migrate.min.js',
-				dir_bower + '/admin-lte/bootstrap/js/bootstrap.min.js',
-				dir_bower + '/admin-lte/plugins/fastclick/fastclick.js',
-				dir_bower + '/admin-lte/plugins/slimScroll/jquery.slimscroll.min.js',
-				dir_bower + '/admin-lte/dist/js/app.min.js',
+				dir_bower + '/jquery/dist/jquery.min.js',
+				dir_bower + '/bootstrap/dist/js/bootstrap.min.js',
+				dir_bower + '/admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js',
+				dir_bower + '/admin-lte/plugins/jQueryUI/jquery-ui.min.js',
+				dir_bower + '/admin-lte/plugins/iCheck/icheck.min.js',
+				dir_bower + '/admin-lte/plugins/timepicker/bootstrap-timepicker.min.js',
+				dir_bower + '/admin-lte/plugins/pace/pace.min.js',
+				dir_bower + '/admin-lte/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js',
+				dir_bower + '/admin-lte/plugins/seiyria-bootstrap-slider/bootstrap-slider.min.js',
+				dir_bower + '/admin-lte/dist/js/adminlte.min.js',
 				// include other plugins below when necessary
 			],
 			// Admin Panel - 3rd party libraries
 			admin_lib: [
+				dir_bower + '/fastclick/lib/fastclick.js',
+				dir_bower + '/slimScroll/jquery.slimscroll.min.js',
 				dir_bower + '/Sortable/Sortable.min.js',
 				dir_bower + '/spectrum/spectrum.js',
 			],

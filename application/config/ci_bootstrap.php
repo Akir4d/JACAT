@@ -12,6 +12,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | 	/application/config/ci_bootstrap_example.php
 */
 
+$cibs3_ver = "?ver=0.1.0";
+
 $config['ci_bootstrap'] = array(
 
 	// Site name
@@ -35,16 +37,16 @@ $config['ci_bootstrap'] = array(
 		'head'	=> array(
 		),
 		'foot'	=> array(
-			'assets/dist/frontend/lib.min.js',
-			'assets/dist/frontend/app.min.js'
+			'assets/dist/frontend/lib.min.js' . $cibs3_ver,
+			'assets/dist/frontend/app.min.js' . $cibs3_ver
 		),
 	),
 
 	// Default stylesheets to embed at page head
 	'stylesheets' => array(
 		'screen' => array(
-			'assets/dist/frontend/lib.min.css',
-			'assets/dist/frontend/app.min.css'
+			'assets/dist/frontend/lib.min.css' . $cibs3_ver,
+			'assets/dist/frontend/app.min.css' . $cibs3_ver
 		)
 	),
 

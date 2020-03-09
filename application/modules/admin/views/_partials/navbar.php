@@ -1,7 +1,12 @@
 <header class="main-header">
-	<a href="" class="logo"><b><?php echo $site_name; ?></b></a>
+	<a href="" class="logo">
+        <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini"><b><?php echo substr($site_name,0,2); ?></b></span>
+        <!-- logo for regular state and mobile devices -->
+        <span class="logo-lg"><b><?php echo $site_name; ?></b></span>
+   	 </a>
 	<nav class="navbar navbar-static-top" role="navigation">
-		<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+		<a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
 			<span class="sr-only">Toggle navigation</span>
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>

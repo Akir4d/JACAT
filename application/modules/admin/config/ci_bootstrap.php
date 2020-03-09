@@ -12,6 +12,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | 	/application/config/ci_bootstrap_example.php
 */
 
+$cib3_ver ="?ver=0.1.0";
+
 $config['ci_bootstrap'] = array(
 
 	// Site name
@@ -33,9 +35,9 @@ $config['ci_bootstrap'] = array(
 	// Default scripts to embed at page head or end
 	'scripts' => array(
 		'head'	=> array(
-			'assets/dist/admin/adminlte.min.js',
-			'assets/dist/admin/lib.min.js',
-			'assets/dist/admin/app.min.js'
+			'assets/dist/admin/adminlte.min.js' . $cib3_ver,
+			'assets/dist/admin/lib.min.js' . $cib3_ver,
+			'assets/dist/admin/app.min.js' . $cib3_ver
 		),
 		'foot'	=> array(
 		),
@@ -44,14 +46,14 @@ $config['ci_bootstrap'] = array(
 	// Default stylesheets to embed at page head
 	'stylesheets' => array(
 		'screen' => array(
-			'assets/dist/admin/adminlte.min.css',
-			'assets/dist/admin/lib.min.css',
-			'assets/dist/admin/app.min.css'
+			'assets/dist/admin/adminlte.min.css' . $cib3_ver,
+			'assets/dist/admin/lib.min.css' . $cib3_ver,
+			'assets/dist/admin/app.min.css' . $cib3_ver
 		)
 	),
 
 	// Default CSS class for <body> tag
-	'body_class' => '',
+	'body_class' => 'sidebar-mini',
 	
 	// Multilingual settings
 	'languages' => array(
@@ -79,7 +81,7 @@ $config['ci_bootstrap'] = array(
 			'url'		=> 'panel',
 			'icon'		=> 'fa fa-cog',
 			'children'  => array(
-				'Admin Users'			=> 'panel/admin_user',
+				'Admin Users'			=> 'panel/admin_user:fa fa-cogs',
 				'Create Admin User'		=> 'panel/admin_user_create',
 				'Admin User Groups'		=> 'panel/admin_user_group',
 			)
@@ -120,10 +122,10 @@ $config['ci_bootstrap'] = array(
 	// AdminLTE settings
 	'adminlte' => array(
 		'body_class' => array(
-			'webmaster'	=> 'skin-red',
-			'admin'		=> 'skin-purple',
-			'manager'	=> 'skin-black',
-			'staff'		=> 'skin-blue',
+			'webmaster'	=> 'skin-red sidebar-mini',
+			'admin'		=> 'skin-purple sidebar-mini',
+			'manager'	=> 'skin-black sidebar-mini',
+			'staff'		=> 'skin-blue sidebar-mini',
 		)
 	),
 

@@ -1,9 +1,10 @@
 {
   "name": "ci_bootstrap_3",
-  "version": "0.1.0",
-  "homepage": "https://github.com/waifung0207/ci_bootstrap_3",
+  "version": "0.2.0",
+  "homepage": "https://github.com/Akir4d/ci_bootstrap_3",
   "authors": [
-    "Michael Chan <waifung.hk>"
+    "Michael Chan <waifung.hk>",
+    "Paolo Rampino <liadserv at gmail.com>"
   ],
   "license": "MIT",
   "ignore": [
@@ -14,12 +15,9 @@
     "tests"
   ],
   "devDependencies": {
-    "admin-lte": "2.3.11",
-    "bootstrap": "3.3.7",
+    "admin-lte": "2.4.18",
+    "bootstrap": "3.4.1",
     "font-awesome": "4.7.0",
-    "ionicons": "2.0.1",
-    "jquery-legacy": "jquery#1.12.4",
-    "jquery-migrate": "1.4.0",
     "Sortable": "1.4.2",
     "spectrum": "1.8.0"
   }

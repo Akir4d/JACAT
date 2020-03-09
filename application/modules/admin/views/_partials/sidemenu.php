@@ -1,4 +1,4 @@
-<ul class="sidebar-menu">
+<ul class="sidebar-menu" data-widget="tree">
 
 	<li class="header">MAIN NAVIGATION</li>
 
@@ -10,7 +10,7 @@
 			<?php $active = ($current_uri==$parent_params['url'] || $ctrler==$parent); ?>
 			<li class='<?php if ($active) echo 'active'; ?>'>
 				<a href='<?php echo $parent_params['url']; ?>'>
-					<i class='<?php echo $parent_params['icon']; ?>'></i> <?php echo $parent_params['name']; ?>
+					<i class='<?php echo $parent_params['icon']; ?>'></i><span> <?php echo $parent_params['name']; ?></span>
 				</a>
 			</li>
 
@@ -22,11 +22,16 @@
 					<i class='<?php echo $parent_params['icon']; ?>'></i> <span><?php echo $parent_params['name']; ?></span> <span class="pull-right-container"><i class='fa fa-angle-left pull-right'></i></span>
 				</a>
 				<ul class='treeview-menu'>
-					<?php foreach ($parent_params['children'] as $name => $url): ?>
+					<?php foreach ($parent_params['children'] as $name => $urlin): ?>
+						<?php 	
+							$ur = explode(':', $urlin); $classcir='fa fa-circle-o';
+							if (array_key_exists(1, $ur)) $classcir=$ur[1];
+							$url = $ur[0];
+						?>
 						<?php if ( empty($page_auth[$url]) || $this->ion_auth->in_group($page_auth[$url]) ): ?>
 						<?php $child_active = ($current_uri==$url); ?>
 						<li <?php if ($child_active) echo 'class="active"'; ?>>
-							<a href='<?php echo $url; ?>'><i class='fa fa-circle-o'></i> <?php echo $name; ?></a>
+							<a href='<?php echo $url; ?>'><i class='<?php echo $classcir; ?>'></i><span> <?php echo $name; ?></span></a>
 						</li>
 						<?php endif; ?>
 					<?php endforeach; ?>
@@ -44,7 +49,7 @@
 			<?php if ($this->ion_auth->in_group($link['auth']) ): ?>
 			<li>
 				<a href="<?php echo starts_with($link['url'], 'http') ? $link['url'] : base_url($link['url']); ?>" target='<?php echo $link['target']; ?>'>
-					<i class="fa fa-circle-o <?php echo $link['color']; ?>"></i> <?php echo $link['name']; ?>
+					<i class="fa fa-circle-o <?php echo $link['color']; ?>"></i><span> <?php echo $link['name']; ?><span>
 				</a>
 			</li>
 			<?php endif; ?>
