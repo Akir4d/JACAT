@@ -29,7 +29,7 @@
 	$config['grocery_crud_paging_options'] = array('10','25','50','100');
 
 	//Default theme for grocery CRUD
-	$config['grocery_crud_default_theme'] = 'flexigrid';
+	$config['grocery_crud_default_theme'] = 'datatables-bootstrap3';
 
 	//The environment is important so we can have specific configurations for specific environments
 	$config['grocery_crud_environment'] = 'production';
@@ -37,7 +37,7 @@
 	/**
 	 * Added by CI Bootstrap 3
 	 */
-	$config['grocery_crud_unset_jquery'] = TRUE;
+	$config['grocery_crud_unset_jquery'] = FALSE;
 	$config['grocery_crud_unset_jquery_ui'] = FALSE;
 	$config['grocery_crud_unset_print'] = FALSE;
 	$config['grocery_crud_unset_export'] = FALSE;
@@ -61,3 +61,8 @@
 		'author_id'				=> 'Author',
 		'category_id'			=> 'Category',
 	);
+	$config['lang_string'] = array(
+		'active'				=> 'A',
+		'inactive'				=> 'I'
+	);
+

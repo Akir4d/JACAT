@@ -10,7 +10,6 @@ class Admin_Controller extends MY_Controller {
 	// Grocery CRUD or Image CRUD
 	protected $mCrud;
 	protected $mCrudUnsetFields;
-
 	// Constructor
 	public function __construct()
 	{
@@ -44,7 +43,8 @@ class Admin_Controller extends MY_Controller {
 		$this->load->library('Grocery_CRUD');
 		$crud = new grocery_CRUD();
 		$crud->set_table($table);
-
+		$crud->set_lang_string('form_active', '<center><b class="btn btn-success" onclick="javascript:ciBsOnHandler(this)">OK</b></center>')
+			->set_lang_string('form_inactive', '<center><b class="btn btn-danger" onclick="javascript:ciBsOffHandler(this)">NO</b></center>');
 		// auto-generate subject
 		if ( empty($subject) )
 		{
@@ -119,7 +119,7 @@ class Admin_Controller extends MY_Controller {
 		$crud->set_table($table);
 		$crud->set_url_field($url_field);
 		$crud->set_image_path($upload_path);
-
+		
 		// [Optional] field name of image order (e.g. "pos")
 		if ( !empty($order_field) )
 		{
@@ -148,6 +148,7 @@ class Admin_Controller extends MY_Controller {
 		}
 
 		// render CRUD
+		
 		$crud_data = $this->mCrud->render();
 
 		// append scripts
