@@ -165,7 +165,7 @@ Admin Panel - Home:
 
 ![](screenshots/admin_home.png "Admin Panel Home")
 
-More screenshots can be viewed from the [screenshots folder](https://github.com/waifung0207/ci_bootstrap_3/blob/master/screenshots/) under this repository.
+More screenshots can be viewed from the [screenshots folder](https://github.com/Akir4d/ci_bootstrap_3/blob/master/screenshots/) under this repository.
 
 
 ### TODO
