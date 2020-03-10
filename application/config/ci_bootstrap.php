@@ -62,6 +62,10 @@ $config['ci_bootstrap'] = array(
 				'label'	=> 'English',
 				'value'	=> 'english'
 			),
+			'it' => array(
+				'label'	=> 'Italiano',
+				'value'	=> 'italian'
+			),
 			'zh' => array(
 				'label'	=> '繁體中文',
 				'value'	=> 'traditional-chinese'
