@@ -9,7 +9,7 @@
 * Author: Daniel Davis
 *         @ourmaninjapan
 *
-* Location: http://github.com/benedmunds/ion_auth/
+* Location: https://github.com/benedmunds/CodeIgniter-Ion-Auth
 *
 * Created:  03.09.2013
 *
@@ -134,6 +134,7 @@ $lang['forgot_password_validation_email_label']  = 'Email Address';
 $lang['forgot_password_username_identity_label'] = 'Username';
 $lang['forgot_password_email_identity_label']    = 'Email';
 $lang['forgot_password_email_not_found']         = 'No record of that email address.';
+$lang['forgot_password_identity_not_found']         = 'No record of that username address.';
 
 // Reset Password
 $lang['reset_password_heading']                               = 'Change Password';
@@ -153,7 +154,4 @@ $lang['email_forgot_password_heading']    = 'Reset Password for %s';
 $lang['email_forgot_password_subheading'] = 'Please click this link to %s.';
 $lang['email_forgot_password_link']       = 'Reset Your Password';
 
-// New Password Email
-$lang['email_new_password_heading']    = 'New Password for %s';
-$lang['email_new_password_subheading'] = 'Your password has been reset to: %s';
 
