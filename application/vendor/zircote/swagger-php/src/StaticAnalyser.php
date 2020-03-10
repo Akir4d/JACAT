@@ -29,6 +29,16 @@ class StaticAnalyser
      */
     public function fromFile($filename)
     {
+        if (function_exists('opcache_get_status') && function_exists('opcache_get_configuration')) {
+            if (empty($GLOBALS['swagger_opcache_warning'])) {
+                $GLOBALS['swagger_opcache_warning'] = true;
+                $status = opcache_get_status();
+                $config = opcache_get_configuration();
+                if (is_array($status) && $status['opcache_enabled'] && $config['directives']['opcache.save_comments'] == false) {
+                    Logger::warning("php.ini \"opcache.save_comments = 0\" interferes with extracting annotations.\n[LINK] http://php.net/manual/en/opcache.configuration.php#ini.opcache.save-comments");
+                }
+            }
+        }
         $tokens = token_get_all(file_get_contents($filename));
         return $this->fromTokens($tokens, new Context(['filename' => $filename]));
     }
@@ -59,7 +69,7 @@ class StaticAnalyser
         $analysis = new Analysis();
         reset($tokens);
         $token = '';
-        $imports = ['swg' => 'Swagger\Annotations']; // Use @SWG\* for swagger annotations (unless overwritten by a use statement)
+        $imports = Analyser::$defaultImports; // Use @SWG\* for swagger annotations (unless overwritten by a use statement)
 
         $parseContext->uses = [];
         $definitionContext = $parseContext; // Use the parseContext until a definitionContext  (class or trait) is created.
@@ -90,6 +100,12 @@ class StaticAnalyser
                     continue;
                 }
                 $token = $this->nextToken($tokens, $parseContext);
+
+                if (is_string($token) && ($token === '(' || $token === '{')) {
+                    // php7 anonymous classes (i.e. new class() { public function foo() {} };)
+                    continue;
+                }
+
                 $definitionContext = new Context(['class' => $token[1], 'line' => $token[2]], $parseContext);
                 if ($classDefinition) {
                     $analysis->addClassDefinition($classDefinition);
@@ -213,10 +229,14 @@ class StaticAnalyser
                     }
 
                     $parseContext->uses[$alias] = $target;
-                    foreach (Analyser::$whitelist as $namespace) {
-                        if (strcasecmp(substr($target, 0, strlen($namespace)), $namespace) === 0) {
-                            $imports[strtolower($alias)] = $target;
-                            break;
+                    if (Analyser::$whitelist === false) {
+                        $imports[strtolower($alias)] = $target;
+                    } else {
+                        foreach (Analyser::$whitelist as $namespace) {
+                            if (strcasecmp(substr($target, 0, strlen($namespace)), $namespace) === 0) {
+                                $imports[strtolower($alias)] = $target;
+                                break;
+                            }
                         }
                     }
                 }
@@ -253,20 +273,25 @@ class StaticAnalyser
      */
     private function nextToken(&$tokens, $context)
     {
-        $token = next($tokens);
-        if ($token[0] === T_WHITESPACE) {
-            return $this->nextToken($tokens, $context);
-        }
-        if ($token[0] === T_COMMENT) {
-            $pos = strpos($token[1], '@SWG\\');
-            if ($pos) {
-                $line = $context->line ? $context->line + $token[2] : $token[2];
-                $commentContext = new Context(['line' => $line], $context);
-                Logger::notice('Annotations are only parsed inside `/**` DocBlocks, skipping ' . $commentContext);
+        while (true) {
+            $token = next($tokens);
+            if (false === $token) {
+                return false;
             }
-            return $this->nextToken($tokens, $context);
+            if ($token[0] === T_WHITESPACE) {
+                continue;
+            }
+            if ($token[0] === T_COMMENT) {
+                $pos = strpos($token[1], '@SWG\\');
+                if ($pos) {
+                    $line = $context->line ? $context->line + $token[2] : $token[2];
+                    $commentContext = new Context(['line' => $line], $context);
+                    Logger::notice('Annotations are only parsed inside `/**` DocBlocks, skipping ' . $commentContext);
+                }
+                continue;
+            }
+            return $token;
         }
-        return $token;
     }
 
     private function parseNamespace(&$tokens, &$token, $parseContext)

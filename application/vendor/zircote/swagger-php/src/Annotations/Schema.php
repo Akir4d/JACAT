@@ -1,12 +1,12 @@
 <?php
 
-use Swagger\Annotations\AbstractAnnotation;
-
 /**
  * @license Apache 2.0
  */
 
 namespace Swagger\Annotations;
+
+use Swagger\Logger;
 
 /**
  * @Annotation
@@ -62,7 +62,7 @@ class Schema extends AbstractAnnotation
     public $properties;
 
     /**
-     * The type of the parameter. Since the parameter is not located at the request body, it is limited to simple types (that is, not an object). The value MUST be one of "string", "number", "integer", "boolean", "array" or "file". If type is "file", the consumes MUST be either "multipart/form-data" or " application/x-www-form-urlencoded" and the parameter MUST be in "formData".
+     * The type of the schema/property. The value MUST be one of "string", "number", "integer", "boolean", "array" or "object".
      * @var string
      */
     public $type;
@@ -236,4 +236,13 @@ class Schema extends AbstractAnnotation
         'Swagger\Annotations\Response',
         'Swagger\Annotations\Parameter',
     ];
+
+    public function validate($parents = [], $skip = [], $ref = '')
+    {
+        if ($this->type === 'array' && $this->items === null) {
+            Logger::notice('@SWG\Items() is required when ' . $this->identity() . ' has type "array" in ' . $this->_context);
+            return false;
+        }
+        return parent::validate($parents, $skip, $ref);
+    }
 }

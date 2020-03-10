@@ -1,7 +1,7 @@
 {
     "name": "zircote/swagger-php",
     "type": "library",
-    "license": "Apache2",
+    "license": "Apache-2.0",
     "bin": ["bin/swagger"],
     "description": "Swagger-PHP - Generate interactive documentation for your RESTful API using phpdoc annotations",
     "keywords": ["json", "rest", "api", "service discovery"],
@@ -22,9 +22,9 @@
         "bin-dir": "bin"
     },
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=5.6",
         "doctrine/annotations": "*",
-        "symfony/finder": "*"
+        "symfony/finder": ">=2.2"
     },
     "autoload": {
         "psr-4": {
@@ -33,12 +33,16 @@
         "files": ["src/functions.php"]
     },
     "require-dev": {
-        "zendframework/zend-form": "*",
-        "squizlabs/php_codesniffer": "2.*"
+        "zendframework/zend-form": "<2.8",
+        "squizlabs/php_codesniffer": ">=2.7",
+        "phpunit/phpunit": ">=4.8.35 <=5.6"
     },
     "autoload-dev": {
         "psr-4": {
             "SwaggerTests\\": "tests/"
         }
+    },
+    "scripts": {
+        "test": "phpunit && phpcs -p --extensions=php --standard=PSR2 --error-severity=1 --warning-severity=0 ./src ./tests"
     }
 }

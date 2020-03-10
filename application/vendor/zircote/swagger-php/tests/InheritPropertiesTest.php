@@ -15,13 +15,12 @@ use Swagger\StaticAnalyser;
 
 class InheritPropertiesTest extends SwaggerTestCase
 {
-
     public function testInheritProperties()
     {
         $analyser = new StaticAnalyser();
         $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/Child.php');
-        $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/GrandParent.php'));
-        $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/Parent.php'));
+        $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/GrandAncestor.php'));
+        $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/Ancestor.php'));
         $analysis->process([
             new MergeIntoSwagger(),
             new AugmentDefinitions(),
@@ -49,7 +48,7 @@ class InheritPropertiesTest extends SwaggerTestCase
         // this class has docblocks
         $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/ChildWithDocBlocks.php');
         // this one doesn't
-        $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/ParentWithoutDocBlocks.php'));
+        $analysis->addAnalysis($analyser->fromFile(__DIR__ . '/Fixtures/AncestorWithoutDocBlocks.php'));
 
         $analysis->process([
             new MergeIntoSwagger(),

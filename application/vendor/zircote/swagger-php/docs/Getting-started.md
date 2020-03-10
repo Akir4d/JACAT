@@ -1,6 +1,6 @@
 # Getting started
 
-The goal of swagger-php is the generate a swagger.json using phpdoc annotations.
+The goal of swagger-php is to generate a swagger.json using phpdoc annotations.
 
 To output:
 
@@ -25,9 +25,9 @@ Write:
  */
 ```
 
-Note that Doctrine annotation supports arrays, but uses the `{` and `}` instead of `[` and `]`.
+Note that Doctrine annotation supports arrays, but uses `{` and `}` instead of `[` and `]`.
 
-And although doctrine also supports objects, but also uses `{` and `}` and requires the properties to be surrounded with `"`.
+And although doctrine also supports objects, but also uses `{` and `}` and requires the property names to be surrounded with `"`.
 
 **DON'T** write:
 
@@ -55,8 +55,9 @@ But use the annotation with the same name as the property, such as `@SWG\Info` f
  */
 ```
 
-This adds validation, so when you misspell a property or forget a required property it will trigger a php warning.  
+This adds validation, so when you misspell a property or forget a required property it will trigger a php warning.
 For example if you'd write `titel="My first ...` swagger-php whould generate a notice with "Unexpected field "titel" for @SWG\Info(), expecting "title", ..."
+
 
 ## Using variables in annotations
 
@@ -83,12 +84,12 @@ $ swagger --bootstrap constants.php
 You shouldn't place all annotations inside one big @SWG\Swagger() annotation block, but scatter them throughout your codebase.
 swagger-php will scan your project and merge all annotations into one @SWG\Swagger annotation.
 
-The big benefit swagger-php provides is that the documentation lives close the the code implementing the api.
+The big benefit swagger-php provides is that the documentation lives close to the code implementing the api.
 
 ### Arrays and Objects
 
-Placing multiple annotation of the same type will result in an array or object.
-For objects, the convension for properties, is to use the same field name as the annotation: `response` in a `@SWG\Response`, `property` in a `@SWG\Property`, etc.
+Placing multiple annotations of the same type will result in an array of objects.
+For objects, the convention for properties, is to use the same field name as the annotation: `response` in a `@SWG\Response`, `property` in a `@SWG\Property`, etc.
 
 ```php
 /**
@@ -121,7 +122,7 @@ Generates:
             "description": "A list with products"
           },
           "default": {
-            "description": "unexpected error"
+            "description": "an \"unexpected\" error"
           }
         }
       }
@@ -133,7 +134,7 @@ Generates:
 
 ### Swagger-PHP detects values based on context
 
-swagger-php looks at context of the comment which reduces duplication.
+swagger-php looks at the context of the comment which reduces duplication.
 
 ```php
 /**
@@ -179,13 +180,115 @@ As if you'd written:
      * @SWG\Property(
      *   property="name",
      *   type="string",
-     *   descriptions="The product name" 
+     *   description="The product name"
      * )
      */
     public $name;
 ```
 
-## More information
+## Don't Repeat Yourself
+
+It's common that multiple requests have some overlap in either the request or the response.
+The spec solves most of this by using `$ref`s
+
+```php
+    /**
+     * @SWG\Definition(
+     *   definition="product_id",
+     *   type="integer",
+     *   format="int64",
+     *   description="The unique identifier of a product in our catalog"
+     * )
+     */
+```
+
+Results in:
+
+```json
+{
+    "swagger": "2.0",
+    "paths": {},
+    "definitions": {
+        "product_id": {
+            "description": "The unique identifier of a product in our catalog",
+            "type": "integer",
+            "format": "int64"
+        }
+    }
+}
+```
+
+Which doesn't do anything by itself but now you can reference this piece by its path in the json `#/definitions/product_id`
+
+```php
+    /**
+     * @SWG\Property(ref="#/definitions/product_id")
+     */
+    public $id;
+```
+
+For more tips on refs, browse through the [using-refs example](https://github.com/zircote/swagger-php/tree/master/Examples/using-refs).
+
+Alternatively, you can extend the definition altering specific fields using the `$` in-place of the `#`
+```php
+    /**
+     * @SWG\Property(
+     *   ref="$/definitions/product_id",
+     *   format="int32"
+     * )
+     */
+    public $id;
+``` 
+
+For extensions tips and examples, browse through [using-dynamic-refs example](https://github.com/zircote/swagger-php/tree/master/Examples/dynamic-reference).
+
+## Vendor extensions
+
+The specification allows for [custom properties](http://swagger.io/specification/#vendorExtensions) as long as they start with "x-" therefor all swagger-php annotations have an `x` property which will unfold into "x-" properties.
+
+```php
+/**
+ * @SWG\Info(
+ *   title="Example",
+ *   version=1,
+ *   x={
+ *     "some-name": "a-value",
+ *     "another": 2,
+ *     "complex-type": {
+ *       "supported":{
+ *         {"version": "1.0", "level": "baseapi"},
+ *         {"version": "2.1", "level": "fullapi"},
+ *       }
+ *     }
+ *   }
+ * )
+ */
+```
+
+Results in:
+
+```json
+"info": {
+  "title": "Example",
+  "version": 1,
+  "x-some-name": "a-value",
+  "x-another": 2,
+  "x-complex-type": {
+    "supported": [{
+      "version": "1.0",
+      "level": "baseapi"
+    }, {
+      "version": "2.1",
+      "level": "fullapi"
+    }]
+  }
+},
+```
+
+The [Amazon API Gateway](http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-swagger-extensions.html) for example, makes use of these.
+
+
+## More information about Swagger
 
 To see which output maps to which annotation checkout [swagger-explained](http://bfanger.github.io/swagger-explained/)
-Which also contain snippets of the [swagger specification](http://github.com/swagger-api/swagger-spec)
+Which also contain snippets of the [swagger specification](http://swagger.io/specification/)

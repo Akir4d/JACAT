@@ -1,5 +1,139 @@
 [
     {
+        "name": "doctrine/annotations",
+        "version": "v1.8.0",
+        "version_normalized": "1.8.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/doctrine/annotations.git",
+            "reference": "904dca4eb10715b92569fbcd79e201d5c349b6bc"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/doctrine/annotations/zipball/904dca4eb10715b92569fbcd79e201d5c349b6bc",
+            "reference": "904dca4eb10715b92569fbcd79e201d5c349b6bc",
+            "shasum": ""
+        },
+        "require": {
+            "doctrine/lexer": "1.*",
+            "php": "^7.1"
+        },
+        "require-dev": {
+            "doctrine/cache": "1.*",
+            "phpunit/phpunit": "^7.5"
+        },
+        "time": "2019-10-01T18:55:10+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.7.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Doctrine\\Common\\Annotations\\": "lib/Doctrine/Common/Annotations"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Guilherme Blanco",
+                "email": "guilhermeblanco@gmail.com"
+            },
+            {
+                "name": "Roman Borschel",
+                "email": "roman@code-factory.org"
+            },
+            {
+                "name": "Benjamin Eberlei",
+                "email": "kontakt@beberlei.de"
+            },
+            {
+                "name": "Jonathan Wage",
+                "email": "jonwage@gmail.com"
+            },
+            {
+                "name": "Johannes Schmitt",
+                "email": "schmittjoh@gmail.com"
+            }
+        ],
+        "description": "Docblock Annotations Parser",
+        "homepage": "http://www.doctrine-project.org",
+        "keywords": [
+            "annotations",
+            "docblock",
+            "parser"
+        ]
+    },
+    {
+        "name": "doctrine/lexer",
+        "version": "1.2.0",
+        "version_normalized": "1.2.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/doctrine/lexer.git",
+            "reference": "5242d66dbeb21a30dd8a3e66bf7a73b66e05e1f6"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/doctrine/lexer/zipball/5242d66dbeb21a30dd8a3e66bf7a73b66e05e1f6",
+            "reference": "5242d66dbeb21a30dd8a3e66bf7a73b66e05e1f6",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^7.2"
+        },
+        "require-dev": {
+            "doctrine/coding-standard": "^6.0",
+            "phpstan/phpstan": "^0.11.8",
+            "phpunit/phpunit": "^8.2"
+        },
+        "time": "2019-10-30T14:39:59+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.2.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Doctrine\\Common\\Lexer\\": "lib/Doctrine/Common/Lexer"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Guilherme Blanco",
+                "email": "guilhermeblanco@gmail.com"
+            },
+            {
+                "name": "Roman Borschel",
+                "email": "roman@code-factory.org"
+            },
+            {
+                "name": "Johannes Schmitt",
+                "email": "schmittjoh@gmail.com"
+            }
+        ],
+        "description": "PHP Doctrine Lexer parser library that can be used in Top-Down, Recursive Descent Parsers.",
+        "homepage": "https://www.doctrine-project.org/projects/lexer.html",
+        "keywords": [
+            "annotations",
+            "docblock",
+            "lexer",
+            "parser",
+            "php"
+        ]
+    },
+    {
         "name": "firebase/php-jwt",
         "version": "v3.0.0",
         "version_normalized": "3.0.0.0",
@@ -17,7 +151,7 @@
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2015-07-22 18:31:08",
+        "time": "2015-07-22T18:31:08+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -45,187 +179,80 @@
         "homepage": "https://github.com/firebase/php-jwt"
     },
     {
-        "name": "react/promise",
-        "version": "v2.2.1",
-        "version_normalized": "2.2.1.0",
+        "name": "google/recaptcha",
+        "version": "1.2.3",
+        "version_normalized": "1.2.3.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/reactphp/promise.git",
-            "reference": "3b6fca09c7d56321057fa8867c8dbe1abf648627"
+            "url": "https://github.com/google/recaptcha.git",
+            "reference": "98c4a6573b27e8b0990ea8789c74ea378795134c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/reactphp/promise/zipball/3b6fca09c7d56321057fa8867c8dbe1abf648627",
-            "reference": "3b6fca09c7d56321057fa8867c8dbe1abf648627",
+            "url": "https://api.github.com/repos/google/recaptcha/zipball/98c4a6573b27e8b0990ea8789c74ea378795134c",
+            "reference": "98c4a6573b27e8b0990ea8789c74ea378795134c",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.4.0"
-        },
-        "time": "2015-07-03 13:48:55",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.0-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "React\\Promise\\": "src/"
-            },
-            "files": [
-                "src/functions_include.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Jan Sorgalla",
-                "email": "jsorgalla@gmail.com"
-            }
-        ],
-        "description": "A lightweight implementation of CommonJS Promises/A for PHP"
-    },
-    {
-        "name": "guzzlehttp/streams",
-        "version": "3.0.0",
-        "version_normalized": "3.0.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/guzzle/streams.git",
-            "reference": "47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/guzzle/streams/zipball/47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5",
-            "reference": "47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.4.0"
+            "php": ">=5.5"
         },
         "require-dev": {
-            "phpunit/phpunit": "~4.0"
+            "friendsofphp/php-cs-fixer": "^2.2.20|^2.15",
+            "php-coveralls/php-coveralls": "^2.1",
+            "phpunit/phpunit": "^4.8.36|^5.7.27|^6.59|^7.5.11"
         },
-        "time": "2014-10-12 19:18:40",
+        "time": "2019-08-16T15:48:25+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "3.0-dev"
+                "dev-master": "1.2.x-dev"
             }
         },
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
-                "GuzzleHttp\\Stream\\": "src/"
+                "ReCaptcha\\": "src/ReCaptcha"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "MIT"
+            "BSD-3-Clause"
         ],
-        "authors": [
-            {
-                "name": "Michael Dowling",
-                "email": "mtdowling@gmail.com",
-                "homepage": "https://github.com/mtdowling"
-            }
-        ],
-        "description": "Provides a simple abstraction over streams of data",
-        "homepage": "http://guzzlephp.org/",
+        "description": "Client library for reCAPTCHA, a free service that protects websites from spam and abuse.",
+        "homepage": "https://www.google.com/recaptcha/",
         "keywords": [
-            "Guzzle",
-            "stream"
+            "Abuse",
+            "captcha",
+            "recaptcha",
+            "spam"
         ]
     },
     {
-        "name": "guzzlehttp/ringphp",
-        "version": "1.1.0",
-        "version_normalized": "1.1.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/guzzle/RingPHP.git",
-            "reference": "dbbb91d7f6c191e5e405e900e3102ac7f261bc0b"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/guzzle/RingPHP/zipball/dbbb91d7f6c191e5e405e900e3102ac7f261bc0b",
-            "reference": "dbbb91d7f6c191e5e405e900e3102ac7f261bc0b",
-            "shasum": ""
-        },
-        "require": {
-            "guzzlehttp/streams": "~3.0",
-            "php": ">=5.4.0",
-            "react/promise": "~2.0"
-        },
-        "require-dev": {
-            "ext-curl": "*",
-            "phpunit/phpunit": "~4.0"
-        },
-        "suggest": {
-            "ext-curl": "Guzzle will use specific adapters if cURL is present"
-        },
-        "time": "2015-05-20 03:37:09",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.1-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "GuzzleHttp\\Ring\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Michael Dowling",
-                "email": "mtdowling@gmail.com",
-                "homepage": "https://github.com/mtdowling"
-            }
-        ],
-        "description": "Provides a simple API and specification that abstracts away the details of HTTP into a single PHP function."
-    },
-    {
         "name": "guzzlehttp/guzzle",
-        "version": "5.3.0",
-        "version_normalized": "5.3.0.0",
+        "version": "5.3.4",
+        "version_normalized": "5.3.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/guzzle/guzzle.git",
-            "reference": "f3c8c22471cb55475105c14769644a49c3262b93"
+            "reference": "b87eda7a7162f95574032da17e9323c9899cb6b2"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/guzzle/guzzle/zipball/f3c8c22471cb55475105c14769644a49c3262b93",
-            "reference": "f3c8c22471cb55475105c14769644a49c3262b93",
+            "url": "https://api.github.com/repos/guzzle/guzzle/zipball/b87eda7a7162f95574032da17e9323c9899cb6b2",
+            "reference": "b87eda7a7162f95574032da17e9323c9899cb6b2",
             "shasum": ""
         },
         "require": {
             "guzzlehttp/ringphp": "^1.1",
-            "php": ">=5.4.0"
+            "php": ">=5.4.0",
+            "react/promise": "^2.2"
         },
         "require-dev": {
             "ext-curl": "*",
-            "phpunit/phpunit": "^4.0",
-            "psr/log": "^1.0"
+            "phpunit/phpunit": "^4.0"
         },
-        "time": "2015-05-20 03:47:55",
+        "time": "2019-10-30T09:32:00+00:00",
         "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "5.0-dev"
-            }
-        },
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
@@ -256,34 +283,43 @@
         ]
     },
     {
-        "name": "mailgun/mailgun-php",
-        "version": "v1.8",
-        "version_normalized": "1.8.0.0",
+        "name": "guzzlehttp/ringphp",
+        "version": "1.1.1",
+        "version_normalized": "1.1.1.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/mailgun/mailgun-php.git",
-            "reference": "225e8005950027df22fc5f5b1ada58f4ad116d60"
+            "url": "https://github.com/guzzle/RingPHP.git",
+            "reference": "5e2a174052995663dd68e6b5ad838afd47dd615b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/mailgun/mailgun-php/zipball/225e8005950027df22fc5f5b1ada58f4ad116d60",
-            "reference": "225e8005950027df22fc5f5b1ada58f4ad116d60",
+            "url": "https://api.github.com/repos/guzzle/RingPHP/zipball/5e2a174052995663dd68e6b5ad838afd47dd615b",
+            "reference": "5e2a174052995663dd68e6b5ad838afd47dd615b",
             "shasum": ""
         },
         "require": {
-            "guzzlehttp/guzzle": "~5.0"
+            "guzzlehttp/streams": "~3.0",
+            "php": ">=5.4.0",
+            "react/promise": "~2.0"
         },
         "require-dev": {
-            "php": ">=5.4.0",
-            "phpunit/phpunit": "~4.6"
+            "ext-curl": "*",
+            "phpunit/phpunit": "~4.0"
         },
-        "time": "2015-05-06 17:52:51",
+        "suggest": {
+            "ext-curl": "Guzzle will use specific adapters if cURL is present"
+        },
+        "time": "2018-07-31T13:22:33+00:00",
         "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.1-dev"
+            }
+        },
         "installation-source": "dist",
         "autoload": {
-            "psr-0": {
-                "Mailgun\\Tests": "tests/",
-                "Mailgun": "src/"
+            "psr-4": {
+                "GuzzleHttp\\Ring\\": "src/"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -292,58 +328,66 @@
         ],
         "authors": [
             {
-                "name": "Travis Swientek",
-                "email": "travis@mailgunhq.com"
+                "name": "Michael Dowling",
+                "email": "mtdowling@gmail.com",
+                "homepage": "https://github.com/mtdowling"
             }
         ],
-        "description": "The Mailgun SDK provides methods for all API functions."
+        "description": "Provides a simple API and specification that abstracts away the details of HTTP into a single PHP function.",
+        "abandoned": true
     },
     {
-        "name": "google/recaptcha",
-        "version": "1.1.2",
-        "version_normalized": "1.1.2.0",
+        "name": "guzzlehttp/streams",
+        "version": "3.0.0",
+        "version_normalized": "3.0.0.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/google/recaptcha.git",
-            "reference": "2b7e00566afca82a38a1d3adb8e42c118006296e"
+            "url": "https://github.com/guzzle/streams.git",
+            "reference": "47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/google/recaptcha/zipball/2b7e00566afca82a38a1d3adb8e42c118006296e",
-            "reference": "2b7e00566afca82a38a1d3adb8e42c118006296e",
+            "url": "https://api.github.com/repos/guzzle/streams/zipball/47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5",
+            "reference": "47aaa48e27dae43d39fc1cea0ccf0d84ac1a2ba5",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.3.2"
+            "php": ">=5.4.0"
         },
         "require-dev": {
-            "phpunit/phpunit": "4.5.*"
+            "phpunit/phpunit": "~4.0"
         },
-        "time": "2015-09-02 17:23:59",
+        "time": "2014-10-12T19:18:40+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.1.x-dev"
+                "dev-master": "3.0-dev"
             }
         },
         "installation-source": "dist",
         "autoload": {
             "psr-4": {
-                "ReCaptcha\\": "src/ReCaptcha"
+                "GuzzleHttp\\Stream\\": "src/"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "BSD-3-Clause"
+            "MIT"
         ],
-        "description": "Client library for reCAPTCHA, a free service that protect websites from spam and abuse.",
-        "homepage": "http://www.google.com/recaptcha/",
+        "authors": [
+            {
+                "name": "Michael Dowling",
+                "email": "mtdowling@gmail.com",
+                "homepage": "https://github.com/mtdowling"
+            }
+        ],
+        "description": "Provides a simple abstraction over streams of data",
+        "homepage": "http://guzzlephp.org/",
         "keywords": [
-            "Abuse",
-            "captcha",
-            "recaptcha",
-            "spam"
-        ]
+            "Guzzle",
+            "stream"
+        ],
+        "abandoned": true
     },
     {
         "name": "league/csv",
@@ -368,7 +412,7 @@
             "fabpot/php-cs-fixer": "^1.9",
             "phpunit/phpunit": "^4.0"
         },
-        "time": "2015-11-02 07:36:25",
+        "time": "2015-11-02T07:36:25+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -405,28 +449,119 @@
         ]
     },
     {
-        "name": "symfony/finder",
-        "version": "v3.0.2",
-        "version_normalized": "3.0.2.0",
+        "name": "mailgun/mailgun-php",
+        "version": "v1.8",
+        "version_normalized": "1.8.0.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/symfony/finder.git",
-            "reference": "623bda0abd9aa29e529c8e9c08b3b84171914723"
+            "url": "https://github.com/mailgun/mailgun-php.git",
+            "reference": "225e8005950027df22fc5f5b1ada58f4ad116d60"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/finder/zipball/623bda0abd9aa29e529c8e9c08b3b84171914723",
-            "reference": "623bda0abd9aa29e529c8e9c08b3b84171914723",
+            "url": "https://api.github.com/repos/mailgun/mailgun-php/zipball/225e8005950027df22fc5f5b1ada58f4ad116d60",
+            "reference": "225e8005950027df22fc5f5b1ada58f4ad116d60",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.5.9"
+            "guzzlehttp/guzzle": "~5.0"
         },
-        "time": "2016-01-27 05:14:46",
+        "require-dev": {
+            "php": ">=5.4.0",
+            "phpunit/phpunit": "~4.6"
+        },
+        "time": "2015-05-06T17:52:51+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Mailgun\\Tests": "tests/",
+                "Mailgun": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Travis Swientek",
+                "email": "travis@mailgunhq.com"
+            }
+        ],
+        "description": "The Mailgun SDK provides methods for all API functions."
+    },
+    {
+        "name": "react/promise",
+        "version": "v2.7.1",
+        "version_normalized": "2.7.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/reactphp/promise.git",
+            "reference": "31ffa96f8d2ed0341a57848cbb84d88b89dd664d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/reactphp/promise/zipball/31ffa96f8d2ed0341a57848cbb84d88b89dd664d",
+            "reference": "31ffa96f8d2ed0341a57848cbb84d88b89dd664d",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.4.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.8"
+        },
+        "time": "2019-01-07T21:25:54+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "React\\Promise\\": "src/"
+            },
+            "files": [
+                "src/functions_include.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Jan Sorgalla",
+                "email": "jsorgalla@gmail.com"
+            }
+        ],
+        "description": "A lightweight implementation of CommonJS Promises/A for PHP",
+        "keywords": [
+            "promise",
+            "promises"
+        ]
+    },
+    {
+        "name": "symfony/finder",
+        "version": "v5.0.5",
+        "version_normalized": "5.0.5.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/finder.git",
+            "reference": "6251f201187ca9d66f6b099d3de65d279e971138"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/finder/zipball/6251f201187ca9d66f6b099d3de65d279e971138",
+            "reference": "6251f201187ca9d66f6b099d3de65d279e971138",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^7.2.5"
+        },
+        "time": "2020-02-14T07:43:07+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "3.0-dev"
+                "dev-master": "5.0-dev"
             }
         },
         "installation-source": "dist",
@@ -456,156 +591,31 @@
         "homepage": "https://symfony.com"
     },
     {
-        "name": "doctrine/lexer",
-        "version": "v1.0.1",
-        "version_normalized": "1.0.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/doctrine/lexer.git",
-            "reference": "83893c552fd2045dd78aef794c31e694c37c0b8c"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/doctrine/lexer/zipball/83893c552fd2045dd78aef794c31e694c37c0b8c",
-            "reference": "83893c552fd2045dd78aef794c31e694c37c0b8c",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.2"
-        },
-        "time": "2014-09-09 13:34:57",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Doctrine\\Common\\Lexer\\": "lib/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Roman Borschel",
-                "email": "roman@code-factory.org"
-            },
-            {
-                "name": "Guilherme Blanco",
-                "email": "guilhermeblanco@gmail.com"
-            },
-            {
-                "name": "Johannes Schmitt",
-                "email": "schmittjoh@gmail.com"
-            }
-        ],
-        "description": "Base library for a lexer that can be used in Top-Down, Recursive Descent Parsers.",
-        "homepage": "http://www.doctrine-project.org",
-        "keywords": [
-            "lexer",
-            "parser"
-        ]
-    },
-    {
-        "name": "doctrine/annotations",
-        "version": "v1.2.7",
-        "version_normalized": "1.2.7.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/doctrine/annotations.git",
-            "reference": "f25c8aab83e0c3e976fd7d19875f198ccf2f7535"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/doctrine/annotations/zipball/f25c8aab83e0c3e976fd7d19875f198ccf2f7535",
-            "reference": "f25c8aab83e0c3e976fd7d19875f198ccf2f7535",
-            "shasum": ""
-        },
-        "require": {
-            "doctrine/lexer": "1.*",
-            "php": ">=5.3.2"
-        },
-        "require-dev": {
-            "doctrine/cache": "1.*",
-            "phpunit/phpunit": "4.*"
-        },
-        "time": "2015-08-31 12:32:49",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.3.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Doctrine\\Common\\Annotations\\": "lib/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Roman Borschel",
-                "email": "roman@code-factory.org"
-            },
-            {
-                "name": "Benjamin Eberlei",
-                "email": "kontakt@beberlei.de"
-            },
-            {
-                "name": "Guilherme Blanco",
-                "email": "guilhermeblanco@gmail.com"
-            },
-            {
-                "name": "Jonathan Wage",
-                "email": "jonwage@gmail.com"
-            },
-            {
-                "name": "Johannes Schmitt",
-                "email": "schmittjoh@gmail.com"
-            }
-        ],
-        "description": "Docblock Annotations Parser",
-        "homepage": "http://www.doctrine-project.org",
-        "keywords": [
-            "annotations",
-            "docblock",
-            "parser"
-        ]
-    },
-    {
         "name": "zircote/swagger-php",
-        "version": "2.0.6",
-        "version_normalized": "2.0.6.0",
+        "version": "2.0.15",
+        "version_normalized": "2.0.15.0",
         "source": {
             "type": "git",
             "url": "https://github.com/zircote/swagger-php.git",
-            "reference": "0dfc289d53bad4a2bd193adc8d4bd058029ab417"
+            "reference": "5fd9439cfb76713925e23f206e9db4bf35784683"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/zircote/swagger-php/zipball/0dfc289d53bad4a2bd193adc8d4bd058029ab417",
-            "reference": "0dfc289d53bad4a2bd193adc8d4bd058029ab417",
+            "url": "https://api.github.com/repos/zircote/swagger-php/zipball/5fd9439cfb76713925e23f206e9db4bf35784683",
+            "reference": "5fd9439cfb76713925e23f206e9db4bf35784683",
             "shasum": ""
         },
         "require": {
             "doctrine/annotations": "*",
-            "php": ">=5.4.0",
-            "symfony/finder": "*"
+            "php": ">=5.6",
+            "symfony/finder": ">=2.2"
         },
         "require-dev": {
-            "squizlabs/php_codesniffer": "2.*",
-            "zendframework/zend-form": "*"
+            "phpunit/phpunit": ">=4.8.35 <=5.6",
+            "squizlabs/php_codesniffer": ">=2.7",
+            "zendframework/zend-form": "<2.8"
         },
-        "time": "2016-02-13 15:39:11",
+        "time": "2020-01-25T14:15:57+00:00",
         "bin": [
             "bin/swagger"
         ],
@@ -621,7 +631,7 @@
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
-            "Apache2"
+            "Apache-2.0"
         ],
         "authors": [
             {

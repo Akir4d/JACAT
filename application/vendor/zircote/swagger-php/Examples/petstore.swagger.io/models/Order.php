@@ -3,7 +3,7 @@
 namespace PetstoreIO;
 
 /**
- * @SWG\Definition(@SWG\Xml(name="Order"))
+ * @SWG\Definition(type="object", @SWG\Xml(name="Order"))
  */
 class Order
 {
@@ -21,7 +21,7 @@ class Order
     public $petId;
 
     /**
-     * @SWG\Property
+     * @SWG\Property(default=false)
      * @var bool
      */
     public $complete;
@@ -41,7 +41,7 @@ class Order
     /**
      * Order Status
      * @var string
-     * @SWG\Property(enum={"placed","approved","delivered"})
+     * @SWG\Property(enum={"placed", "approved", "delivered"})
      */
     public $status;
 }

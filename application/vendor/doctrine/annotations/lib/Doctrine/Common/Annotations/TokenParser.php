@@ -99,9 +99,11 @@ class TokenParser
      */
     public function parseUseStatement()
     {
+
+        $groupRoot = '';
         $class = '';
         $alias = '';
-        $statements = array();
+        $statements = [];
         $explicitAlias = false;
         while (($token = $this->next())) {
             $isNameToken = $token[0] === T_STRING || $token[0] === T_NS_SEPARATOR;
@@ -114,13 +116,18 @@ class TokenParser
                 $explicitAlias = true;
                 $alias = '';
             } else if ($token === ',') {
-                $statements[strtolower($alias)] = $class;
+                $statements[strtolower($alias)] = $groupRoot . $class;
                 $class = '';
                 $alias = '';
                 $explicitAlias = false;
             } else if ($token === ';') {
-                $statements[strtolower($alias)] = $class;
+                $statements[strtolower($alias)] = $groupRoot . $class;
                 break;
+            } else if ($token === '{' ) {
+                $groupRoot = $class;
+                $class = '';
+            } else if ($token === '}' ) {
+                continue;
             } else {
                 break;
             }
@@ -138,7 +145,7 @@ class TokenParser
      */
     public function parseUseStatements($namespaceName)
     {
-        $statements = array();
+        $statements = [];
         while (($token = $this->next())) {
             if ($token[0] === T_USE) {
                 $statements = array_merge($statements, $this->parseUseStatement());
@@ -151,7 +158,7 @@ class TokenParser
             // Get fresh array for new namespace. This is to prevent the parser to collect the use statements
             // for a previous namespace with the same name. This is the case if a namespace is defined twice
             // or if a namespace with the same name is commented out.
-            $statements = array();
+            $statements = [];
         }
 
         return $statements;

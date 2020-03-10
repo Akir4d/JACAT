@@ -8,6 +8,7 @@ namespace Swagger\Processors;
 
 use Swagger\Annotations\Definition;
 use Swagger\Annotations\Items;
+use Swagger\Annotations\Property;
 use Swagger\Context;
 use Swagger\Analysis;
 
@@ -30,20 +31,26 @@ class AugmentProperties
         'date' => ['string', 'date'],
         'datetime' => ['string', 'date-time'],
         '\datetime' => ['string', 'date-time'],
+        'datetimeimmutable' => ['string', 'date-time'],
+        '\datetimeimmutable' => ['string', 'date-time'],
+        'datetimeinterface' => ['string', 'date-time'],
+        '\datetimeinterface' => ['string', 'date-time'],
         'number' => 'number',
-        'object' => 'object'
+        'object' => 'object',
     ];
 
     public function __invoke(Analysis $analysis)
     {
         $refs = [];
+        /** @var Definition $definition */
         foreach ($analysis->swagger->definitions as $definition) {
             if ($definition->definition) {
                 $refs[strtolower($definition->_context->fullyQualifiedName($definition->_context->class))] = '#/definitions/' . $definition->definition;
             }
         }
         
-        $allProperties = $analysis->getAnnotationsOfType('\Swagger\Annotations\Property');
+        $allProperties = $analysis->getAnnotationsOfType(Property::class);
+        /** @var Property $property */
         foreach ($allProperties as $property) {
             $context = $property->_context;
             // Use the property names for @SWG\Property()
@@ -56,7 +63,7 @@ class AugmentProperties
                     $property->description = trim($varMatches['description']);
                 }
                 if ($property->type === null) {
-                    preg_match('/^([^\[]+)(.*$)/', trim($varMatches['type']), $typeMatches);
+                    preg_match('/^([^\[]+)(.*$)/', $this->stripNull(trim($varMatches['type'])), $typeMatches);
                     $type = $typeMatches[1];
 
                     if (array_key_exists(strtolower($type), static::$types)) {
@@ -69,7 +76,8 @@ class AugmentProperties
                         }
                         $property->type = $type;
                     } elseif ($property->ref === null && $typeMatches[2] === '') {
-                        $property->ref = @$refs[strtolower($context->fullyQualifiedName($type))];
+                        $tmpKey = strtolower($context->fullyQualifiedName($type));
+                        $property->ref = array_key_exists($tmpKey, $refs) ? $refs[$tmpKey] : null;
                     }
                     if ($typeMatches[2] === '[]') {
                         if ($property->items === null) {
@@ -78,7 +86,8 @@ class AugmentProperties
                                 '_context' => new Context(['generated' => true], $context)
                             ]);
                             if ($property->items->type === null) {
-                                $property->items->ref = @$refs[strtolower($context->fullyQualifiedName($type))];
+                                $tmpKey = strtolower($context->fullyQualifiedName($type));
+                                $property->items->ref = array_key_exists($tmpKey, $refs) ? $refs[$tmpKey] : null;
                             }
                         }
                         $property->type = 'array';
@@ -86,8 +95,28 @@ class AugmentProperties
                 }
             }
             if ($property->description === null) {
-                $property->description = $context->extractDescription();
+                $property->description = $context->phpdocContent();
             }
         }
+    }
+
+    /**
+     * @param string $typeDescription
+     *
+     * @return string
+     */
+    protected function stripNull($typeDescription)
+    {
+        if (strpos($typeDescription, '|') === false) {
+            return $typeDescription;
+        }
+        $types = [];
+        foreach (explode('|', $typeDescription) as $type) {
+            if (strtolower($type) === 'null') {
+                continue;
+            }
+            $types[] = $type;
+        }
+        return implode('|', $types);
     }
 }

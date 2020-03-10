@@ -13,9 +13,9 @@ if (defined('Swagger\UNDEFINED') === false) {
     /**
      * Special value to differentiate between null and undefined.
      */
-    define('SWAGGER\UNDEFINED', '{SWAGGER-PHP-UNDEFINED-46EC-07AB32D2-D50C}');
-    define('SWAGGER\ANNOTATIONS\UNDEFINED', UNDEFINED);
-    define('SWAGGER\PROCESSORS\UNDEFINED', UNDEFINED);
+    define('Swagger\UNDEFINED', '{SWAGGER-PHP-UNDEFINED-46EC-07AB32D2-D50C}');
+    define('Swagger\Annotations\UNDEFINED', UNDEFINED);
+    define('Swagger\Processors\UNDEFINED', UNDEFINED);
 
     /**
      * Scan the filesystem for swagger annotations and build swagger-documentation.
@@ -30,10 +30,10 @@ if (defined('Swagger\UNDEFINED') === false) {
      */
     function scan($directory, $options = array())
     {
-        $analyser = @$options['analyser'] ?: new StaticAnalyser();
-        $analysis = @$options['analysis'] ?: new Analysis();
-        $processors = @$options['processors'] ?: Analysis::processors();
-        $exclude = @$options['exclude'] ?: null;
+        $analyser = array_key_exists('analyser', $options) ? $options['analyser'] : new StaticAnalyser();
+        $analysis = array_key_exists('analysis', $options) ? $options['analysis'] : new Analysis();
+        $processors = array_key_exists('processors', $options) ? $options['processors'] : Analysis::processors();
+        $exclude = array_key_exists('exclude', $options) ? $options['exclude'] : null;
 
         // Crawl directory and parse all files
         $finder = Util::finder($directory, $exclude);

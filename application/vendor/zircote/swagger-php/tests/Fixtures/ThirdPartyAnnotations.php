@@ -6,6 +6,7 @@ namespace SwaggerFixtures;
  * Based on the examplefrom http://framework.zend.com/manual/current/en/modules/zend.form.quick-start.html
  */
 use Zend\Form\Annotation;
+use Zend\Validator\StringLength;
 
 /**
  * @Annotation\Name("user")
@@ -32,7 +33,7 @@ class ThirdPartyAnnotations
      * @Annotation\Options({"label":"Your email address:"})
      */
     public $email;
-    
+
     /**
      * @SWG\Get(path="api/3rd-party", @SWG\Response(response="200", description="a response"))
      */

@@ -40,11 +40,12 @@ Add annotations to your php files.
  * )
  */
 ```
-See the Examples directory for more.
+See the [Getting started guide](docs/Getting-started.md) and [Examples directory](Examples/) for more examples.
+
 
 ### Usage from php
 
-Generate always-up-to-date the swagger documentation dynamicly.
+Generate always-up-to-date documentation.
 
 ```php
 <?php
@@ -75,11 +76,21 @@ $swagger = $serializer->deserialize($jsonString, 'Swagger\Annotations\Swagger');
 echo $swagger;
 ```
 
+### Usage from [docker](https://docker.com)
+
+Generate the swagger documentation to a static json file.
+
+```
+docker run -v "$PWD":/app -it tico/swagger-php --help
+```
+
 ## More on Swagger
 
   * http://swagger.io/
   * https://github.com/swagger-api/swagger-spec/
   * http://bfanger.github.io/swagger-explained/
+  * [Related projects](docs/Related-projects.md)
+  * https://www.marcoraddatz.com/en/2015/07/21/integrate-swagger-into-laravel/
 
 ## Contributing
 
@@ -91,10 +102,22 @@ The documentation website resides within the `gh-pages` branch.
 Make sure pull requests pass [PHPUnit](https://phpunit.de/)
 and [PHP_CodeSniffer](https://github.com/cakephp/cakephp-codesniffer) (PSR-2) tests.
 
+Running tests can be done with this command in the root of the project:
+
+```bash
+./bin/phpunit
+```
+
 To run the phpcs tests on your local machine execute:
 
 ```bash
-./vendor/squizlabs/php_codesniffer/scripts/phpcs -p --extensions=php --standard=PSR2 --error-severity=1 --warning-severity=0 ./src ./tests
+./bin/phpcs -p --extensions=php --standard=PSR2 --error-severity=1 --warning-severity=0 ./src ./tests
+```
+
+To run both unittests and linting execute:
+
+```bash
+composer test
 ```
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/zircote/swagger-php/trend.png)](https://bitdeli.com/free "Bitdeli Badge")

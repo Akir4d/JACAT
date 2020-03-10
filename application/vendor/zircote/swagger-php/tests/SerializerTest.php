@@ -31,6 +31,9 @@ class SerializerTest extends SwaggerTestCase
         $resp->response = '200';
         $resp->x = [];
         $resp->x['repository'] = 'def';
+        $schema = new Annotations\Schema([]);
+        $schema->ref = '#/definitions/Pet';
+        $resp->schema = $schema;
         $path->post->responses = [$resp];
 
         $expected = new Annotations\Swagger([]);
@@ -38,6 +41,12 @@ class SerializerTest extends SwaggerTestCase
         $expected->paths = [
             $path,
         ];
+
+        $definition = new Annotations\Definition([]);
+        $definition->definition = 'Pet';
+        $definition->required = ['name', 'photoUrls'];
+
+        $expected->definitions = [$definition];
 
         return $expected;
     }
@@ -74,10 +83,21 @@ class SerializerTest extends SwaggerTestCase
         ],
         "responses": {
           "200": {
-            "x-repository": "def"
+            "x-repository": "def",
+            "schema": {
+                "\$ref": "#/definitions/Pet"
+            }
           }
         }
       }
+    }
+  },
+  "definitions": {
+    "Pet": {
+      "required": [
+        "name",
+        "photoUrls"
+      ]
     }
   }
 }
@@ -90,5 +110,13 @@ JSON;
             $annotation->__toString(),
             $this->getExpected()->__toString()
         );
+    }
+
+    public function testPetstoreExample()
+    {
+        $serializer = new Serializer();
+        $swagger = $serializer->deserializeFile(__DIR__.'/ExamplesOutput/petstore.swagger.io.json');
+        $this->assertInstanceOf('Swagger\Annotations\Swagger', $swagger);
+        $this->assertSwaggerEqualsFile(__DIR__ . '/ExamplesOutput/petstore.swagger.io.json', $swagger);
     }
 }

@@ -3,7 +3,7 @@
 namespace PetstoreIO;
 
 /**
- * @SWG\Definition(@SWG\Xml(name="User"))
+ * @SWG\Definition(type="object", @SWG\Xml(name="User"))
  */
 class User
 {
@@ -21,7 +21,7 @@ class User
     public $username;
 
     /**
-     * @SWG\Property
+     * @SWG\Property()
      * @var string
      */
     public $firstName;

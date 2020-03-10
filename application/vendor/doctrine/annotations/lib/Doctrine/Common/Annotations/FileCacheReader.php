@@ -49,12 +49,12 @@ class FileCacheReader implements Reader
     /**
      * @var array
      */
-    private $loadedAnnotations = array();
+    private $loadedAnnotations = [];
 
     /**
      * @var array
      */
-    private $classNameHashes = array();
+    private $classNameHashes = [];
 
     /**
      * @var int
@@ -112,7 +112,7 @@ class FileCacheReader implements Reader
         }
 
         if ($this->debug
-            && (false !== $filename = $class->getFilename())
+            && (false !== $filename = $class->getFileName())
             && filemtime($path) < filemtime($filename)) {
             @unlink($path);
 
@@ -214,6 +214,8 @@ class FileCacheReader implements Reader
             throw new \RuntimeException(sprintf('Unable to create tempfile in directory: %s', $this->dir));
         }
 
+        @chmod($tempfile, 0666 & (~$this->umask));
+
         $written = file_put_contents($tempfile, '<?php return unserialize('.var_export(serialize($data), true).');');
 
         if (false === $written) {
@@ -283,6 +285,6 @@ class FileCacheReader implements Reader
      */
     public function clearLoadedAnnotations()
     {
-        $this->loadedAnnotations = array();
+        $this->loadedAnnotations = [];
     }
 }

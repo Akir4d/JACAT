@@ -1,10 +1,11 @@
-React/Promise
-=============
+Promise
+=======
 
 A lightweight implementation of
 [CommonJS Promises/A](http://wiki.commonjs.org/wiki/Promises/A) for PHP.
 
 [![Build Status](https://travis-ci.org/reactphp/promise.svg?branch=master)](http://travis-ci.org/reactphp/promise)
+[![Coverage Status](https://coveralls.io/repos/github/reactphp/promise/badge.svg?branch=master)](https://coveralls.io/github/reactphp/promise?branch=master)
 
 Table of Contents
 -----------------
@@ -12,7 +13,7 @@ Table of Contents
 1. [Introduction](#introduction)
 2. [Concepts](#concepts)
    * [Deferred](#deferred)
-   * [Promise](#promise)
+   * [Promise](#promise-1)
 3. [API](#api)
    * [Deferred](#deferred-1)
      * [Deferred::promise()](#deferredpromise)
@@ -28,7 +29,7 @@ Table of Contents
         * [ExtendedPromiseInterface::progress()](#extendedpromiseinterfaceprogress)
    * [CancellablePromiseInterface](#cancellablepromiseinterface)
         * [CancellablePromiseInterface::cancel()](#cancellablepromiseinterfacecancel)
-   * [Promise](#promise-1)
+   * [Promise](#promise-2)
    * [FulfilledPromise](#fulfilledpromise)
    * [RejectedPromise](#rejectedpromise)
    * [LazyPromise](#lazypromise)
@@ -50,13 +51,14 @@ Table of Contents
      * [Mixed resolution and rejection forwarding](#mixed-resolution-and-rejection-forwarding)
      * [Progress event forwarding](#progress-event-forwarding)
    * [done() vs. then()](#done-vs-then)
-5. [Credits](#credits)
-6. [License](#license)
+5. [Install](#install)
+6. [Credits](#credits)
+7. [License](#license)
 
 Introduction
 ------------
 
-React/Promise is a library implementing
+Promise is a library implementing
 [CommonJS Promises/A](http://wiki.commonjs.org/wiki/Promises/A) for PHP.
 
 It also provides several other useful promise-related concepts, such as joining
@@ -102,10 +104,10 @@ The `promise` method returns the promise of the deferred.
 
 The `resolve` and `reject` methods control the state of the deferred.
 
-The `notify` method is for progress notification.
+The deprecated `notify` method is for progress notification.
 
 The constructor of the `Deferred` accepts an optional `$canceller` argument.
-See [Promise](#promise-1) for more information.
+See [Promise](#promise-2) for more information.
 
 #### Deferred::promise()
 
@@ -145,6 +147,8 @@ of this promise regardless whether it fulfills or rejects.
 
 #### Deferred::notify()
 
+> Deprecated in v2.6.0: Progress support is deprecated and should not be used anymore.
+
 ```php
 $deferred->notify(mixed $update = null);
 ```
@@ -168,7 +172,7 @@ Neither its state nor its result (or error) can be modified.
 
 #### Implementations
 
-* [Promise](#promise-1)
+* [Promise](#promise-2)
 * [FulfilledPromise](#fulfilledpromise)
 * [RejectedPromise](#rejectedpromise)
 * [LazyPromise](#lazypromise)
@@ -189,7 +193,7 @@ with a promise (all parameters are optional):
     the result as the first argument.
   * `$onRejected` will be invoked once the promise is rejected and passed the
     reason as the first argument.
-  * `$onProgress` will be invoked whenever the producer of the promise
+  * `$onProgress` (deprecated) will be invoked whenever the producer of the promise
     triggers progress notifications and passed a single argument (whatever it
     wants) to indicate progress.
 
@@ -204,7 +208,7 @@ the same call to `then()`:
      never both.
   2. `$onFulfilled` and `$onRejected` will never be called more
      than once.
-  3. `$onProgress` may be called multiple times.
+  3. `$onProgress` (deprecated) may be called multiple times.
 
 #### See also
 
@@ -320,6 +324,8 @@ return doSomething()
 
 #### ExtendedPromiseInterface::progress()
 
+> Deprecated in v2.6.0: Progress support is deprecated and should not be used anymore.
+
 ```php
 $promise->progress(callable $onProgress);
 ```
@@ -363,19 +369,21 @@ Creates a promise whose state is controlled by the functions passed to
 ```php
 $resolver = function (callable $resolve, callable $reject, callable $notify) {
     // Do some work, possibly asynchronously, and then
-    // resolve or reject. You can notify of progress events
+    // resolve or reject. You can notify of progress events (deprecated)
     // along the way if you want/need.
 
     $resolve($awesomeResult);
+    // or throw new Exception('Promise rejected');
     // or $resolve($anotherPromise);
     // or $reject($nastyError);
     // or $notify($progressNotification);
 };
 
-$canceller = function (callable $resolve, callable $reject, callable $progress) {
+$canceller = function () {
     // Cancel/abort any running operations like network connections, streams etc.
 
-    $reject(new \Exception('Promise cancelled'));
+    // Reject promise by throwing an exception
+    throw new Exception('Promise cancelled');
 };
 
 $promise = new React\Promise\Promise($resolver, $canceller);
@@ -389,8 +397,9 @@ function which both will be called with 3 arguments:
     When called with a non-promise value, fulfills promise with that value.
     When called with another promise, e.g. `$resolve($otherPromise)`, promise's
     fate will be equivalent to that of `$otherPromise`.
-  * `$reject($reason)` - Function that rejects the promise.
-  * `$notify($update)` - Function that issues progress events for the promise.
+  * `$reject($reason)` - Function that rejects the promise. It is recommended to
+    just throw an exception instead of using `$reject()`.
+  * `$notify($update)` - Deprecated function that issues progress events for the promise.
 
 If the resolver or canceller throw an exception, the promise will be rejected
 with that thrown exception as the rejection reason.
@@ -434,7 +443,7 @@ $factory = function () {
     return $deferred->promise();
 };
 
-$promise = React\Promise\LazyPromise($factory);
+$promise = new React\Promise\LazyPromise($factory);
 
 // $factory will only be executed once we call then()
 $promise->then(function ($value) {
@@ -445,6 +454,11 @@ $promise->then(function ($value) {
 
 Useful functions for creating, joining, mapping and reducing collections of
 promises.
+
+All functions working on promise collections (like `all()`, `race()`, `some()`
+etc.) support cancellation. This means, if you call `cancel()` on the returned
+promise, all promises in the collection are cancelled. If the collection itself
+is a promise which resolves to an array, this promise is also cancelled.
 
 #### resolve()
 
@@ -457,7 +471,10 @@ Creates a promise for the supplied `$promiseOrValue`.
 If `$promiseOrValue` is a value, it will be the resolution value of the
 returned promise.
 
-If `$promiseOrValue` is a promise, it will simply be returned.
+If `$promiseOrValue` is a thenable (any object that provides a `then()` method),
+a trusted promise that follows the state of the thenable is returned.
+
+If `$promiseOrValue` is a promise, it will be returned as is.
 
 Note: The promise returned is always a promise implementing
 [ExtendedPromiseInterface](#extendedpromiseinterface). If you pass in a custom
@@ -515,6 +532,9 @@ will be the resolution value of the triggering item.
 The returned promise will only reject if *all* items in `$promisesOrValues` are
 rejected. The rejection value will be an array of all rejection reasons.
 
+The returned promise will also reject with a `React\Promise\Exception\LengthException`
+if `$promisesOrValues` contains 0 items.
+
 #### some()
 
 ```php
@@ -530,6 +550,9 @@ The returned promise will reject if it becomes impossible for `$howMany` items
 to resolve (that is, when `(count($promisesOrValues) - $howMany) + 1` items
 reject). The rejection value will be an array of
 `(count($promisesOrValues) - $howMany) + 1` rejection reasons.
+
+The returned promise will also reject with a `React\Promise\Exception\LengthException`
+if `$promisesOrValues` contains less items than `$howMany`.
 
 #### map()
 
@@ -660,16 +683,18 @@ $deferred->promise()
     ->then(function ($x) {
         throw new \Exception($x + 1);
     })
-    ->then(null, function (\Exception $x) {
+    ->otherwise(function (\Exception $x) {
         // Propagate the rejection
         throw $x;
     })
-    ->then(null, function (\Exception $x) {
+    ->otherwise(function (\Exception $x) {
         // Can also propagate by returning another rejection
-        return React\Promise\reject((integer) $x->getMessage() + 1);
+        return React\Promise\reject(
+            new \Exception($x->getMessage() + 1)
+        );
     })
-    ->then(null, function ($x) {
-        echo 'Reject ' . $x; // 3
+    ->otherwise(function ($x) {
+        echo 'Reject ' . $x->getMessage(); // 3
     });
 
 $deferred->resolve(1);  // Prints "Reject 3"
@@ -688,12 +713,12 @@ $deferred->promise()
         return $x + 1;
     })
     ->then(function ($x) {
-        throw \Exception($x + 1);
+        throw new \Exception($x + 1);
     })
-    ->then(null, function (\Exception $x) {
+    ->otherwise(function (\Exception $x) {
         // Handle the rejection, and don't propagate.
         // This is like catch without a rethrow
-        return (integer) $x->getMessage() + 1;
+        return $x->getMessage() + 1;
     })
     ->then(function ($x) {
         echo 'Mixed ' . $x; // 4
@@ -703,6 +728,8 @@ $deferred->resolve(1);  // Prints "Mixed 4"
 ```
 
 #### Progress event forwarding
+
+> Deprecated in v2.6.0: Progress support is deprecated and should not be used anymore.
 
 In the same way as resolution and rejection handlers, your progress handler
 **MUST** return a progress event to be propagated to the next link in the chain.
@@ -807,10 +834,30 @@ wrapped in an exception of the type `React\Promise\UnhandledRejectionException`.
 
 You can get the original rejection reason by calling `$exception->getReason()`.
 
+Install
+-------
+
+The recommended way to install this library is [through Composer](https://getcomposer.org).
+[New to Composer?](https://getcomposer.org/doc/00-intro.md)
+
+This project follows [SemVer](https://semver.org/).
+This will install the latest supported version:
+
+```bash
+$ composer require react/promise:^2.7
+```
+
+See also the [CHANGELOG](CHANGELOG.md) for details about version upgrades.
+
+This project aims to run on any platform and thus does not require any PHP
+extensions and supports running on legacy PHP 5.4 through current PHP 7+ and HHVM.
+It's *highly recommended to use PHP 7+* for this project due to its vast
+performance improvements.
+
 Credits
 -------
 
-React/Promise is a port of [when.js](https://github.com/cujojs/when)
+Promise is a port of [when.js](https://github.com/cujojs/when)
 by [Brian Cavalier](https://github.com/briancavalier).
 
 Also, large parts of the documentation have been ported from the when.js
@@ -820,4 +867,4 @@ Also, large parts of the documentation have been ported from the when.js
 License
 -------
 
-React/Promise is released under the [MIT](https://github.com/reactphp/promise/blob/master/LICENSE) license.
+Released under the [MIT](LICENSE) license.

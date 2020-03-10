@@ -23,7 +23,7 @@ class StaticAnalyserTest extends SwaggerTestCase
     {
         $analyser = new StaticAnalyser();
         $analysis = $analyser->fromFile(__DIR__ . '/Fixtures/routes.php');
-        $this->assertCount(16, $analysis->annotations);
+        $this->assertCount(18, $analysis->annotations);
     }
     
     public function testTrait()
@@ -57,5 +57,15 @@ class StaticAnalyserTest extends SwaggerTestCase
         $this->assertSame('ThirdPartyAnnotations', $context->class);
         $this->assertSame('\SwaggerFixtures\ThirdPartyAnnotations', $context->fullyQualifiedName($context->class));
         $this->assertCount(2, $context->annotations);
+    }
+
+    public function testAnonymousClassProducesNoError()
+    {
+        try {
+            $analyser = new StaticAnalyser(__DIR__ . '/Fixtures/php7.php');
+            $this->assertTrue(true);
+        } catch (\Exception $e) {
+            $this->fail("Analyser produced an error: {$e->getMessage()}");
+        }
     }
 }

@@ -12,12 +12,17 @@ use Exception;
 
 // Load all whitelisted annotations
 AnnotationRegistry::registerLoader(function ($class) {
-    foreach (Analyser::$whitelist as $namespace) {
+    if (Analyser::$whitelist === false) {
+        $whitelist = ['Swagger\Annotations\\'];
+    } else {
+        $whitelist = Analyser::$whitelist;
+    }
+    foreach ($whitelist as $namespace) {
         if (strtolower(substr($class, 0, strlen($namespace))) === strtolower($namespace)) {
             $loaded = class_exists($class);
             if (!$loaded && $namespace === 'Swagger\Annotations\\') {
                 if (in_array(strtolower(substr($class, 20)), ['model', 'resource', 'api'])) { // Detected an 1.x annotation?
-                    throw new Exception('The annotation @SWG\\' . substr($class, 20) . '() is deprecated. Found in ' . Analyser::$context . "\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/2.x/docs/Migrating-to-v2.md");
+                    throw new Exception('The annotation @SWG\\' . substr($class, 20) . '() is deprecated. Found in ' . Analyser::$context . "\nFor more information read the migration guide: https://github.com/zircote/swagger-php/blob/master/docs/Migrating-to-v2.md");
                 }
             }
             return $loaded;
@@ -33,9 +38,15 @@ class Analyser
 {
     /**
      * List of namespaces that should be detected by the doctrine annotation parser.
-     * @var array
+     * Set to false to load all detected classes.
+     * @var array|false
      */
     public static $whitelist = ['Swagger\Annotations\\'];
+
+    /**
+     * Use @SWG\* for swagger annotations (unless overwritten by a use statement).
+     */
+    public static $defaultImports = ['swg' => 'Swagger\Annotations'];
 
     /**
      * Allows Annotation classes to know the context of the annotation that is being processed.
@@ -53,7 +64,7 @@ class Analyser
         if ($docParser === null) {
             $docParser = new DocParser();
             $docParser->setIgnoreNotImportedAnnotations(true);
-            $docParser->setImports(['swg' => 'Swagger\Annotations']); // Use @SWG\* for swagger annotations.
+            $docParser->setImports(static::$defaultImports);
         }
         $this->docParser = $docParser;
     }

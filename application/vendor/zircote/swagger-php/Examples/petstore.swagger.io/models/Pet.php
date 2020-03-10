@@ -3,7 +3,7 @@
 namespace PetstoreIO;
 
 /**
- * @SWG\Definition(required={"name", "photoUrls"}, @SWG\Xml(name="Pet"))
+ * @SWG\Definition(required={"name", "photoUrls"}, type="object", @SWG\Xml(name="Pet"))
  */
 class Pet
 {
@@ -28,13 +28,13 @@ class Pet
 
     /**
      * @var string[]
-     * @SWG\Property(@SWG\Xml(name="photoUrl",wrapped=true))
+     * @SWG\Property(@SWG\Xml(name="photoUrl", wrapped=true))
      */
     public $photoUrls;
-    
+
     /**
      * @var Tag[]
-     * @SWG\Property(@SWG\Xml(name="tag",wrapped=true))
+     * @SWG\Property(@SWG\Xml(name="tag", wrapped=true))
      */
     public $tags;
 

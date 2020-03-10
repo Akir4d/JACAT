@@ -8,6 +8,7 @@ namespace Swagger\Annotations;
 
 use Exception;
 use Swagger\Analysis;
+use Swagger\Logger;
 
 /**
  * @Annotation
@@ -106,7 +107,7 @@ class Swagger extends AbstractAnnotation
      * @var ExternalDocumentation
      */
     public $externalDocs;
-    
+
     /**
      * @var Analysis
      */
@@ -114,7 +115,7 @@ class Swagger extends AbstractAnnotation
 
     /** @inheritdoc */
     public static $_blacklist = ['_context', '_unmerged', '_analysis'];
-    
+
     /** @inheritdoc */
     public static $_required = ['swagger', 'info', 'paths'];
 
@@ -139,6 +140,15 @@ class Swagger extends AbstractAnnotation
         'produces' => '[string]',
     ];
 
+    /** @inheritdoc */
+    public function validate($parents = null, $skip = null, $ref = null)
+    {
+        if ($parents !== null || $skip !== null || $ref !== null) {
+            Logger::notice('Nested validation for '.$this->identity().' not allowed');
+            return false;
+        }
+        return parent::validate([], [], '#');
+    }
     /**
      * Save the swagger documentation to a file.
      * @param string $filename
@@ -149,5 +159,102 @@ class Swagger extends AbstractAnnotation
         if (file_put_contents($filename, $this) === false) {
             throw new Exception('Failed to saveAs("' . $filename . '")');
         }
+    }
+
+    /**
+     * Look up an annotation with a $ref url.
+     *
+     * @param string $ref The $ref value, for example: "#/definitions/Product"
+     * @throws Exception
+     */
+    public function ref($ref)
+    {
+        if (substr($ref, 0, 2) !== '#/') {
+            // @todo Add support for external (http) refs?
+            throw new Exception('Unsupported $ref "' . $ref . '", it should start with "#/"');
+        }
+        return $this->resolveRef($ref, '#/', $this, []);
+    }
+
+    /**
+     * Recursive helper for ref()
+     *
+     * @param string $prefix The resolved path of the ref.
+     * @param string $path A partial ref
+     * @param * $container the container to resolve the ref in.
+     * @param Array $mapping
+     */
+    private static function resolveRef($ref, $resolved, $container, $mapping)
+    {
+        if ($ref === $resolved) {
+            return $container;
+        }
+        $path = substr($ref, strlen($resolved));
+        $slash = strpos($path, '/');
+
+        $subpath = $slash === false ? $path : substr($path, 0, $slash);
+        $property = self::unescapeRef($subpath);
+        $unresolved = $slash === false ? $resolved . $subpath : $resolved . $subpath . '/';
+
+        if (is_object($container)) {
+            if (property_exists($container, $property) === false) {
+                throw new Exception('$ref "' . $unresolved . '" ');
+            }
+            if ($slash === false) {
+                return $container->$property;
+            }
+            $mapping = [];
+            if ($container instanceof AbstractAnnotation) {
+                foreach ($container::$_nested as $className => $nested) {
+                    if (is_string($nested) === false && count($nested) === 2 && $nested[0] === $property) {
+                        $mapping[$className] = $nested[1];
+                    }
+                }
+            }
+            return self::resolveRef($ref, $unresolved, $container->$property, $mapping);
+        } elseif (is_array($container)) {
+            if (array_key_exists($property, $container)) {
+                return self::resolveRef($ref, $unresolved, $container[$property], []);
+            }
+            foreach ($mapping as $className => $keyField) {
+                foreach ($container as $key => $item) {
+                    if (is_numeric($key) && is_object($item) && $item instanceof $className && $item->$keyField === $property) {
+                        return self::resolveRef($ref, $unresolved, $item, []);
+                    }
+                }
+            }
+        }
+        throw new Exception('$ref "' . $unresolved . '" not found');
+    }
+
+    /**
+     * Decode the $ref escape characters.
+     *
+     * https://swagger.io/docs/specification/using-ref/
+     * https://tools.ietf.org/html/rfc6901#page-3
+     */
+    private static function unescapeRef($encoded)
+    {
+        $decoded = '';
+        $length = strlen($encoded);
+        for ($i = 0; $i < $length; $i++) {
+            $char = $encoded[$i];
+            if ($char === '~' && $i !== $length - 1) {
+                $next = $encoded[$i + 1];
+                if ($next === '0') { // escaped `~`
+                    $decoded .= '~';
+                    $i++;
+                } elseif ($next === '1') { // escaped `/`
+                    $decoded .= '/';
+                    $i++;
+                } else {
+                    // this ~ had special meaning :-(
+                    $decoded .= $char;
+                }
+            } else {
+                $decoded .= $char;
+            }
+        }
+        return $decoded;
     }
 }
