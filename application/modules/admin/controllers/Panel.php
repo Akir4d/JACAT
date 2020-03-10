@@ -32,7 +32,7 @@ class Panel extends Admin_Controller {
 		// only webmaster can reset Admin User password
 		if ( $this->ion_auth->in_group(array('webmaster', 'admin')) )
 		{
-			$crud->add_action('Reset Password', '', $this->mModule.'/panel/admin_user_reset_password', 'fa fa-repeat');
+			$crud->add_action('', '', $this->mModule.'/panel/admin_user_reset_password', 'fa  fa-unlock-alt');
 		}
 		
 		// disable direct create / delete Admin User
