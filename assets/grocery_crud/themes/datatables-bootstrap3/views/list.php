@@ -9,7 +9,7 @@
 				<th>
 					
 					<a href="javascript:void(0)" class="clear-filtering btn btn-default">
-						<i class="fa  fa-reply"></i> <?php echo $this->l('list_clear_filtering');?>
+						<i class="fa  fa-reply"></i> <i class="fa  fa-eraser"></i>
 					</a>
 <button class="btn btn-default refresh-data  pull-right" role="button" data-url="<?php echo $ajax_list_url; ?>">
 						<i class="fa fa-refresh"></i>

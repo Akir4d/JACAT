@@ -168,7 +168,7 @@ function loadDataTable(this_datatables) {
                 "responsive": true,
 		"sPaginationType": "full_numbers",
 		"bStateSave": use_storage,
-		"scrollX": ($(window).width()>996)?false:true,
+		"scrollX": ($('section.content-header').width()>1200)?false:true,
         "fnStateSave": function (oSettings, oData) {
             localStorage.setItem( 'DataTables_' + unique_hash, JSON.stringify(oData) );
         },
@@ -272,11 +272,20 @@ function fnGetSelected( oTableLocal )
 
 var dtBsWidth = $(window).width();
 $(window).on('resize', function() {
-  if ($(this).width() != dtBsWidth) {
-    dtBsWidth = $(this).width();
-    $(".refresh-data").trigger( "click" );
-}
+	if ($(this).width() != dtBsWidth) {
+		dtBsWidth = $(this).width();
+		if (dtBsWidth > 768) {
+			$(".refresh-data").trigger( "click" );
+		}
+	}
 });
+
 $(document).ready(function(){
-$('.sidebar-toggle').click(function(){setTimeout(function() {$(".refresh-data").trigger( "click");},300)});
+	$('.sidebar-toggle').click(function(){
+		setTimeout(function() {
+			if (dtBsWidth > 768) {
+				$(".refresh-data").trigger( "click");
+			}																																																																																												
+		},300);
+	});
 });
