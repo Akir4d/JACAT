@@ -14,6 +14,7 @@ class User extends Admin_Controller {
 	{
 		$crud = $this->generate_crud('users');
 		$crud->columns('groups', 'username', 'email', 'first_name', 'last_name', 'active');
+                $crud->fields('username', 'first_name', 'last_name', 'company', 'phone', 'email', 'groups');
 		$this->unset_crud_fields('ip_address', 'last_login');
 
 		// only webmaster and admin can change member groups
@@ -30,6 +31,8 @@ class User extends Admin_Controller {
 
 		// disable direct create / delete Frontend User
 		$crud->unset_add();
+                $crud->unset_clone();
+                $crud->unset_read();
 		$crud->unset_delete();
 
 		$this->mPageTitle = 'Users';
