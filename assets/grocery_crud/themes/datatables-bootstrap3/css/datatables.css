@@ -308,48 +308,14 @@ table.dataTable thead tr th.actions
 }
 
 .dt-ci-input { 
-	width: 10px;
+	width: 100px;
 }
 
 .dt-ci-input:active { 
-	width: auto;
+	width: 200px;
 }
 
-@media only screen and (max-width: 768px)  {
-.chosen-container-multi .chosen-choices {
-    width: auto;
-}
-.datatables div.form-div input[type=text], .datatables div.form-div input[type=password]
-{
-	width: auto;	
-}
-.datatables div.form-div textarea
-{
-	width: auto;
+.black-text {
+  color: #333;
 }
 
-.dt-ci-input { 
-	width: 10px;
-}
-
-
-}
-
-@media only screen and (min-width: 996px)  {
-.chosen-container-multi .chosen-choices {
-    width: 900px;
-}
-.datatables div.form-div input[type=text], .datatables div.form-div input[type=password]
-{
-	width: 900px;	
-}
-.datatables div.form-div textarea
-{
-	width: 900px;
-}
-
-.dt-ci-input { 
-	width: auto;
-}
-
-}

@@ -1,8 +1,8 @@
 <?php
 
 	//$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/demo_table_jui.css');
-	$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/jquery-ui-1.10.3.custom.css');
-	//$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/datatables.css');
+	//$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/jquery-ui-1.10.3.custom.css');
+	$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/datatables.css?v=0.3');
 	$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/dataTables.bootstrap.min.css');
 	$this->set_css($this->default_theme_path.'/datatables-bootstrap3/extras/TableTools/media/css/TableTools.css');
 	$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/dataTables.bootstrap.min.css');
@@ -12,17 +12,17 @@
 	
 
     if ($dialog_forms) {
-        $this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.noty.js');
-        $this->set_js_lib($this->default_javascript_path.'/jquery_plugins/config/jquery.noty.config.js');
-        $this->set_js_lib($this->default_javascript_path.'/common/lazyload-min.js');
+        //$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.noty.js');
+        //$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/config/jquery.noty.config.js');
+        //$this->set_js_lib($this->default_javascript_path.'/common/lazyload-min.js');
     }
 
 	$this->set_js_lib($this->default_javascript_path.'/common/list.js');
-	$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/jquery-ui.min.js');
+	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/jquery-ui.min.js');
 	//$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/ui/'.grocery_CRUD::JQUERY_UI_JS);
-        $this->set_js_lib($this->default_theme_path.'/datatables-bootstrap3/js/jquery.dataTables.min.js');
-	$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/datatables-extras.js');
-	$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/datatables.js?v=0.2.06');
+        //$this->set_js_lib($this->default_theme_path.'/datatables-bootstrap3/js/jquery.dataTables.min.js');
+	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/datatables-extras.js');
+	$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/datatables.js?v=0.2.55');
 	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/extras/TableTools/media/js/ZeroClipboard.js');
 	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/extras/TableTools/media/js/TableTools.min.js');
 
@@ -34,6 +34,7 @@
 	$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/jszip.min.js');
 	$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/buttons.print.min.js');
 	$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/dataTables.select.min.js');
+	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/dataTables.responsive.min.js');
 	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/dataTables.searchPanes.min.js');
 	
 ?>
@@ -111,6 +112,7 @@
 	<div id='list-report-error' class='report-div error report-list'></div>
 	<div id='list-report-success' class='report-div success report-list' <?php if($success_message !== null){?>style="display:block"<?php }?>><?php
 	 if($success_message !== null){?>
+                <script> location.replace(location.href + '/../..');</script> 
 		<p><?php echo $success_message; ?></p>
 	<?php }
 	?></div>

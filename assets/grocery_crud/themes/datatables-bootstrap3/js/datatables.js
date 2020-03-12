@@ -2,7 +2,7 @@ var default_per_page = typeof default_per_page !== 'undefined' ? default_per_pag
 var oTable = null;
 var oTableArray = [];
 var oTableMapping = [];
-
+var examSS;
 function supports_html5_storage()
 {
 	try {
@@ -84,21 +84,7 @@ $(document).ready(function() {
 	});
 
 	$(".groceryCrudTable thead input").keyup( function () {
-
-		chosen_table = datatables_get_chosen_table($(this).closest('.groceryCrudTable'));
-
-		chosen_table.fnFilter( this.value, chosen_table.find("thead input").index(this) );
-
-		if(use_storage)
-		{
-			var search_values_array = [];
-
-			chosen_table.find("thead tr th").each(function(index,value){
-				search_values_array[index] = $(this).children(':first').val();
-			});
-
-			localStorage.setItem( 'datatables_search_'+ unique_hash ,'["' + search_values_array.join('","') + '"]');
-		}
+		oTable.fnFilter( this.value, parseInt($(this).attr('data-index')));
 	} );
 
 	var search_values = localStorage.getItem('datatables_search_'+ unique_hash);
@@ -135,7 +121,7 @@ $(document).ready(function() {
 
 	$('th.actions').unbind('click');
 	$('th.actions>div .DataTables_sort_icon').remove();
-
+	$('.groceryCrudTable').attr('style', 'width: ' + $('.grocerycrud-container > div').width() + 'px');
 } );
 
 function loadListenersForDatatables() {
@@ -163,12 +149,11 @@ function loadListenersForDatatables() {
 }
 
 function loadDataTable(this_datatables) {
-	return $(this_datatables).dataTable({
-		//"bJQueryUI": true,
-                "responsive": true,
+	return oTable = $(this_datatables).dataTable({
+                //"responsive": true,
 		"sPaginationType": "full_numbers",
 		"bStateSave": use_storage,
-		"scrollX": ($('section.content-header').width()>1200)?false:true,
+		//"scrollX": true,
         "fnStateSave": function (oSettings, oData) {
             localStorage.setItem( 'DataTables_' + unique_hash, JSON.stringify(oData) );
         },
@@ -178,8 +163,6 @@ function loadDataTable(this_datatables) {
 		"iDisplayLength": default_per_page,
 		"aaSorting": datatables_aaSorting,
 		"fnInitComplete" : function () {
-            $('.DTTT_button_text').attr('download', '');
-            $('.DTTT_button_text').attr('href', export_url);
 		},
 		"oLanguage":{
 		    "sProcessing":   list_loading,
@@ -212,7 +195,7 @@ function loadDataTable(this_datatables) {
                 });
             }
 			add_edit_button_listener();
-            $('.DTTT_button_text').attr('href', export_url);
+
 		},
 		"dom": '<"box-header"<"pull-left"rl><"pull-right"B>>t<"box-footer"ip>'
 	});
@@ -220,8 +203,8 @@ function loadDataTable(this_datatables) {
 
 function datatables_get_chosen_table(table_as_object)
 {
-	chosen_table_index = oTableMapping[table_as_object.attr('id')];
-	return oTableArray[chosen_table_index];
+	//chosen_table_index = oTableMapping[table_as_object.attr('id')];
+	return oTable;//Array[chosen_table_index];
 }
 
 function delete_row(delete_url , row_id)
@@ -274,18 +257,16 @@ var dtBsWidth = $(window).width();
 $(window).on('resize', function() {
 	if ($(this).width() != dtBsWidth) {
 		dtBsWidth = $(this).width();
-		if (dtBsWidth > 768) {
-			$(".refresh-data").trigger( "click" );
-		}
+		setTimeout(function() {
+			$('.groceryCrudTable').attr('style', 'width: ' + ($('.grocerycrud-container > div').width()-4) + 'px');
+		},300);
 	}
 });
 
 $(document).ready(function(){
 	$('.sidebar-toggle').click(function(){
 		setTimeout(function() {
-			if (dtBsWidth > 768) {
-				$(".refresh-data").trigger( "click");
-			}																																																																																												
+			$('.groceryCrudTable').attr('style', 'width: ' + ($('.grocerycrud-container > div').width()-4) + 'px');
 		},300);
 	});
 });
