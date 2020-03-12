@@ -1,17 +1,18 @@
-## CodeIgniter 3 Bootstrap
+## CodeIgniter 3 Bootstrap by Akirad Project
 
 **Latest Build: 2020-03-09**
 
 **Note: This project is still in progress, but welcome for any issues encountered**
 
-A starter template that supports multi-tenant (Frontend / Admin Panel / API) website in a single application.
+A starter template that supports multi-tenant (Frontend / Admin Panel / API) website in a single application. This is a fork of abandoned [CodeIgniter 3 Bootstrap](https://github.com/waifung0207/ci_bootstrap_3). 
+If you plan to upgrade form original you have to use [sql/upgrade_from_old_codeigniter_3_bootstrap.sql](sql/upgrade_from_old_codeigniter_3_bootstrap.sql) and also check the changes inside [application/modules/admin/config/ion_auth.php](application/modules/admin/config/ion_auth.php)
 
 This repository is developed upon the following tools: 
-* [CodeIgniter](http://www.codeigniter.com/) (v3.1.10) - PHP framework
+* [CodeIgniter](http://www.codeigniter.com/) (v3.1.11) - PHP framework
 * [CodeIgniter HMVC Extensions](https://bitbucket.org/wiredesignz/codeigniter-modular-extensions-hmvc) - modular structure by [wiredesignz](http://wiredesignz.co.nz/)
 * [codeigniter-base-model](https://github.com/jamierumbelow/codeigniter-base-model) - more advanced CRUD functions for models by [jamierumbelow](https://github.com/jamierumbelow)
 * [codeigniter-restserver](https://github.com/chriskacerguis/codeigniter-restserver) - base setup for API module
-* [Ion Auth](http://benedmunds.com/ion_auth/) - authentication library for CodeIgniter by [Ben Edmunds](http://benedmunds.com/)
+* [Ion Auth](http://benedmunds.com/ion_auth/) - (3.0) authentication library for CodeIgniter by [Ben Edmunds](http://benedmunds.com/)
 * [Bootstrap](http://getbootstrap.com/) (v3.4.1) - popular frontend framework
 * [Grocery CRUD](http://www.grocerycrud.com/) (v1.6.2) - feature-rich library to build CRUD tables
 * [Image CRUD](http://www.grocerycrud.com/image-crud) (v0.6) - CRUD library for image management
@@ -60,7 +61,7 @@ Below configuration are preferred; other environments are not well-tested, but s
 
 1. git clone this repo
 2. Create a database (e.g. named "ci_bootstrap_3"), then import /sql/latest.sql into MySQL server
-3. Make sure the database config (/application/config/database.php) is set correctly
+3. Inside /application/config/ copy "database.model.php" as "database.php" and make sure that database config is set correctly
 4. You should be able to access Frontend Website, Admin Panel and API Site (with Swagger Doc) respectively
 5. Visit the Demo Controllers (exist in both Frontend / Admin Panel / API) for sample usage
 

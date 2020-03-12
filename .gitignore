@@ -27,3 +27,6 @@ application/composer.lock
 ### SQL backup files ###
 sql/backup/*
 sql/backup/!index.html
+
+### Database Mast Be ignored by git
+application/config/database.php
