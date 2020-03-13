@@ -45,7 +45,7 @@ This repository contains setup for rapid development:
 
 ### Demo Project
 
-A demo repository can be found from: https://github.com/waifung0207/ci_bootstrap_3_demo
+* Coming Soon...
 
 
 ### Server Environment
@@ -65,7 +65,7 @@ Below configuration are preferred; other environments are not well-tested, but s
 4. You should be able to access Frontend Website, Admin Panel and API Site (with Swagger Doc) respectively
 5. Visit the Demo Controllers (exist in both Frontend / Admin Panel / API) for sample usage
 
-**Note** For more advanced workflow (includes repo upgrade), please have a look on my suggestion in [this issue](https://github.com/Akir4d/ci_bootstrap_3/issues/42). After release the v1.0 version, I will try to keep the upgrade procedure more developer friendly. 
+**Note** After release the v1.0 version, I will try to keep the upgrade procedure more developer friendly. 
 
 
 ### Admin Users (and default login accounts)
@@ -158,13 +158,18 @@ The gulpfile.js folder is prepared with following tasks available:
 
 ### Screenshots
 
+Admin Panel - Home:
+
+![](screenshots/admin_user.png "Admin Home Panel")
+
+![](screenshots/admin_home.png "Admin Panel Home")
+
+
+
 Frontend - Home: 
 
 ![](screenshots/frontend_home.png "Frontend Home")
 
-Admin Panel - Home: 
-
-![](screenshots/admin_home.png "Admin Panel Home")
 
 More screenshots can be viewed from the [screenshots folder](https://github.com/Akir4d/ci_bootstrap_3/blob/master/screenshots/) under this repository.
 
