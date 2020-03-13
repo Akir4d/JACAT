@@ -21,12 +21,14 @@
 	<div class="content-wrapper">
 		<section class="content-header">
 			<h1><?php echo $page_title; ?></h1>
+                        <?php echo $inject_after_page_title; ?>
 			<?php $this->load->view('_partials/breadcrumb'); ?>
 		</section>
 		<section class="content">
 			<?php $this->load->view($inner_view); ?>
 			<?php $this->load->view('_partials/back_btn'); ?>
 		</section>
+                <?php echo $inject_before_footer; ?>
 	</div>
 
 	<?php // Footer ?>

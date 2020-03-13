@@ -25,6 +25,8 @@ class MY_Controller extends MX_Controller {
 	// Values and objects to be overrided or accessible from child controllers
 	protected $mPageTitlePrefix = '';
 	protected $mPageTitle = '';
+        protected $mInjectAfterPageTitle = '';
+        protected $mInjectBeforeFooter = '';
 	protected $mBodyClass = '';
 	protected $mMenu = array();
 	protected $mBreadcrumb = array();
@@ -204,6 +206,10 @@ class MY_Controller extends MX_Controller {
 
 		$this->mViewData['site_name'] = $this->mSiteName;
 		$this->mViewData['page_title'] = $this->mPageTitlePrefix.$this->mPageTitle;
+                // Usefull to add your custom html
+                $this->mViewData['inject_after_page_title'] = $this->mInjectAfterPageTitle;
+                $this->mViewData['inject_before_footer'] = $this->mInjectBeforeFooter;
+                
 		$this->mViewData['current_uri'] = empty($this->mModule) ? uri_string(): str_replace($this->mModule.'/', '', uri_string());
 		$this->mViewData['meta_data'] = $this->mMetaData;
 		$this->mViewData['scripts'] = $this->mScripts;
