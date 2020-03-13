@@ -113,7 +113,7 @@
 
             <?php if (!$unset_clone) { ?>
                                          <li>       <a href="<?php echo $row->clone_url ?>">
-                                                    <i class="fa fa-copy"></i> <?php echo $clone_string;  ?>
+                                                    <i class="fa fa-copy"></i> <?php $this->l('list_clone');  ?>
                                                 </a></li> 
                                             <?php } ?>
 
