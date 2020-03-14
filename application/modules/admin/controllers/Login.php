@@ -35,6 +35,8 @@ class Login extends MY_Controller {
 				refresh();
 			}
 		}
+                $this->load->helper('language'); 
+                $this->lang->load(array('auth'));
 		
 		// display form when no POST data, or validation failed
 		$this->mViewData['form'] = $form;
