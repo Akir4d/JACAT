@@ -13,6 +13,7 @@
 					<?php echo $form->bs3_text('Username', 'username'); ?>
 					<?php echo $form->bs3_text('First Name', 'first_name'); ?>
 					<?php echo $form->bs3_text('Last Name', 'last_name'); ?>
+                                        <?php echo $form->bs3_email('Email', 'email'); ?>
 					<?php echo $form->bs3_password('Password', 'password'); ?>
 					<?php echo $form->bs3_password('Retype Password', 'retype_password'); ?>
 
