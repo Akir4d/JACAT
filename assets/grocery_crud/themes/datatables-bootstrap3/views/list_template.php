@@ -1,8 +1,11 @@
 <?php
-
+         //super-lazy workaround for "ajax_list issue with this theme"
+        if($success_message !== null){
+               echo  "<script> var loc = location.href + '/../..'; location.replace(loc.replace('/index', ''));</script>";
+	}
 	//$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/demo_table_jui.css');
 	//$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/jquery-ui-1.10.3.custom.css');
-	$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/datatables.css?v=0.3');
+	$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/datatables.css?v=0.4');
 	$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/dataTables.bootstrap.min.css');
 	$this->set_css($this->default_theme_path.'/datatables-bootstrap3/extras/TableTools/media/css/TableTools.css');
 	$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/dataTables.bootstrap.min.css');
@@ -112,7 +115,6 @@
 	<div id='list-report-error' class='report-div error report-list'></div>
 	<div id='list-report-success' class='report-div success report-list' <?php if($success_message !== null){?>style="display:block"<?php }?>><?php
 	 if($success_message !== null){?>
-                <script> location.replace(location.href + '/../..');</script> 
 		<p><?php echo $success_message; ?></p>
 	<?php }
 	?></div>
