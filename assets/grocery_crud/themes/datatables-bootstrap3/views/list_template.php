@@ -22,7 +22,7 @@
 	//$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/ui/'.grocery_CRUD::JQUERY_UI_JS);
         //$this->set_js_lib($this->default_theme_path.'/datatables-bootstrap3/js/jquery.dataTables.min.js');
 	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/datatables-extras.js');
-	$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/datatables.js?v=0.2.55');
+	$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/datatables.js?v=0.2.61');
 	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/extras/TableTools/media/js/ZeroClipboard.js');
 	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/extras/TableTools/media/js/TableTools.min.js');
 
