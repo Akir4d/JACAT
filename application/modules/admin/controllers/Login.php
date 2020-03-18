@@ -4,7 +4,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // NOTE: this controller inherits from MY_Controller instead of Admin_Controller,
 // since no authentication is required
 class Login extends MY_Controller {
-
+        public function __construct()
+	{
+		parent::__construct();
+                //preload additional languages files for example login
+		$this->lang->load(array('auth'));
+	}
 	/**
 	 * Login page and submission
 	 */
@@ -35,8 +40,8 @@ class Login extends MY_Controller {
 				refresh();
 			}
 		}
-                $this->load->helper('language'); 
-                $this->lang->load(array('auth'));
+                //$this->load->helper('language'); 
+                
 		
 		// display form when no POST data, or validation failed
 		$this->mViewData['form'] = $form;
