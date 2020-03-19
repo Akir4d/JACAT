@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | 	/application/config/ci_bootstrap_example.php
 */
 
-$cib3_ver ="?ver=0.1.0";
+$cib3_ver ="?ver=0.3.14";
 
 $config['ci_bootstrap'] = array(
 

@@ -2,13 +2,13 @@
 //$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/datatables.css');
 $this->set_js_lib($this->default_theme_path . '/flexigrid/js/jquery.form.js');
 $this->set_js_config($this->default_theme_path . '/datatables-bootstrap3/js/datatables-edit.js?v=0.2.0');
-$this->set_css($this->default_theme_path . '/datatables-bootstrap3/css/jquery-ui-1.10.3.custom.css');
-$this->set_css($this->default_theme_path . '/datatables-bootstrap3/js/jquery-ui.min.js');
+//$this->set_css($this->default_theme_path . '/datatables-bootstrap3/css/jquery-ui-1.10.3.custom.css');
+//$this->set_css($this->default_theme_path . '/datatables-bootstrap3/js/jquery-ui.min.js');
 $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/spectrum.min.js');
-$this->set_js_lib($this->default_javascript_path . '/jquery_plugins/jquery.noty.js');
-$this->set_js_lib($this->default_javascript_path . '/jquery_plugins/config/jquery.noty.config.js');
-$this->set_css($this->default_theme_path . '/datatables-bootstrap3/css/dataTables.bootstrap.min.css');
-$this->set_js_config($this->default_theme_path . '/datatables-bootstrap3/js/dataTables.bootstrap.min.js');
+//$this->set_js_lib($this->default_javascript_path . '/jquery_plugins/jquery.noty.js');
+//$this->set_js_lib($this->default_javascript_path . '/jquery_plugins/config/jquery.noty.config.js');
+//$this->set_css($this->default_theme_path . '/datatables-bootstrap3/css/dataTables.bootstrap.min.css');
+//$this->set_js_config($this->default_theme_path . '/datatables-bootstrap3/js/dataTables.bootstrap.min.js');
 ?>
 <div class='box box-primary datatables'>
     <div class="box-header with-border">
