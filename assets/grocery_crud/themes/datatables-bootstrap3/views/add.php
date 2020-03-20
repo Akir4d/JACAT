@@ -14,19 +14,25 @@ $this->set_js_lib($this->default_javascript_path . '/jquery_plugins/config/jquer
     <div class="box-header with-border">
         <?php echo $this->l('form_add'); ?> <?php echo $subject ?>
     </div>
-    <div class='form-content form-div'>
-        <?php echo form_open($insert_url, 'method="post" id="crudForm" enctype="multipart/form-data"'); ?>
+    <div class='form-container table-container form-content form-div'>
+        <?php echo form_open($insert_url, 'method="post" id="crudForm" enctype="multipart/form-data" class="form-horizontal"'); ?>
         <div class="box-body">
             <?php
             $counter = 0;
             foreach ($fields as $field) {
                 ?>
-                <div class='form-group' id="<?php echo $field->field_name; ?>_field_box">
-                    <label for="<?php echo $field->field_name; ?>">
-                        <?php echo $input_fields[$field->field_name]->display_as ?>
-                        <?php echo ($input_fields[$field->field_name]->required) ? "<span class='required'>*</span> " : "" ?> :</label>
-                    <?php echo $input_fields[$field->field_name]->input ?>
+                <div class="form-group">
+                    <label for="<?php echo $field->field_name; ?>" class="col-sm-2 control-label">
+                        <?php
+                        echo strip_tags($input_fields[$field->field_name]->display_as);
+                        echo ($input_fields[$field->field_name]->required) ? "<span class='required'>*</span> " : "";
+                        ?>
+                    </label>
+                    <div class='col-sm-10' id="<?php echo $field->field_name; ?>_field_box">
+    <?php echo $input_fields[$field->field_name]->input ?>
+                    </div>
                 </div>
+
             <?php } ?>
             <!-- Start of hidden inputs -->
             <?php
