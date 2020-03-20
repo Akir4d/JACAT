@@ -1,12 +1,53 @@
 .dt-ci-input { 
-	width: 100px;
+    width: 100px;
 }
 
 .dt-ci-input:active { 
-	width: 200px;
+    width: 200px;
 }
 
 .black-text {
-  color: #333;
+    color: #333;
 }
+
+tr div.dropdown a {
+    color: #666;
+}
+
+tr div.dropdown ul li a {
+    color: #666;
+}
+
+tr.bg-red div.dropdown a {
+    color: white;
+}
+
+tr.bg-red div.dropdown ul li a {
+    color: #666;
+}
+
+tr.bg-green div.dropdown a {
+    color: white;
+}
+
+tr.bg-green div.dropdown ul li a {
+    color: #666;
+}
+
+tr.bg-orange div.dropdown a {
+    color: white;
+}
+
+tr.bg-orange div.dropdown ul li a {
+    color: #666;
+}
+
+tr.bg-blue div.dropdown a {
+    color: white;
+}
+
+tr.bg-blue div.dropdown ul li a {
+    color: #666;
+}
+
 

@@ -1,4 +1,4 @@
-<table cellpadding="0" cellspacing="0" border="0" class="groceryCrudTable table table-striped table-bordered" id="<?php echo uniqid(); ?>">
+<table cellpadding="0" cellspacing="0" border="0" class="groceryCrudTable table table-responsive no-padding" id="<?php echo uniqid(); ?>">
     <thead>
         <tr>
 
@@ -30,16 +30,23 @@
             <?php if (!$unset_delete || !$unset_edit || !$unset_read || !empty($actions)) { ?>
                 <th class='actions'><?php echo $this->l('list_actions'); ?></th>
             <?php } ?>
-            <?php foreach ($columns as $column) { ?>
-                <th class="printable"><?php echo $column->display_as; ?></th>
-            <?php } ?>
+            <?php
+            foreach ($columns as $column) {
+                if ($column->field_name !== 'jobStatus') {
+                    echo '<th class="printable">';
+                } else {
+                    echo '<th>';
+                }
+                echo $column->display_as . '</th>';
+            }
+            ?>
 
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($list as $num_row => $row) { ?>
+            <?php foreach ($list as $num_row => $row) { ?>
             <tr id="row-<?php echo $num_row; ?>">
-                <?php if (!$unset_delete || !$unset_edit || !$unset_read || !empty($actions)) { ?>
+                        <?php if (!$unset_delete || !$unset_edit || !$unset_read || !empty($actions)) { ?>
                     <td class='actions'>
                         <div class="btn-group">
                             <?php
@@ -55,34 +62,34 @@
                                 }
                             }
                             ?>
-                            <?php if (!$unset_read) { ?>
+        <?php if (!$unset_read) { ?>
                                 <a href="<?php echo $row->read_url ?>" class="btn btn-default">
                                     <i class="fa fa-eye"></i>
                                 </a>
                             <?php } ?>
 
-                            <?php if (!$unset_clone) { ?>
+        <?php if (!$unset_clone) { ?>
                                 <a href="<?php echo $row->clone_url ?>" class="btn btn-default">
                                     <i class="fa fa-copy"></i>
                                 </a>
                             <?php } ?>
 
-                            <?php if (!$unset_edit) { ?>
+        <?php if (!$unset_edit) { ?>
                                 <a href="<?php echo $row->edit_url ?>" class="btn btn-default">
                                     <i class="fa fa-pencil"></i>
                                 </a>
                             <?php } ?>
 
-                            <?php if (!$unset_delete) { ?>
+        <?php if (!$unset_delete) { ?>
                                 <a onclick = "javascript: return delete_row('<?php echo $row->delete_url ?>', '<?php echo $num_row ?>')"
                                    href="javascript:void(0)" class="btn btn-default">
                                     <i class="fa fa-trash-o text-danger"></i>
                                 </a>
-                            <?php } ?>
+        <?php } ?>
                         </div>
                         <div class="dropdown hidden">
                             <a type="button" class="black-text dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <?php echo $row->{$column->field_name} ?></a>
+                            </a>
                             <ul class="dropdown-menu">
 
                                 <?php
@@ -99,51 +106,51 @@
                                     }
                                 }
                                 ?>
-                                <?php if (!$unset_read) { ?>
+        <?php if (!$unset_read) { ?>
                                     <li>      <a href="<?php echo $row->read_url ?>">
                                             <i class="fa fa-eye"></i> <?php echo $this->l('list_view'); ?>
                                         </a></li> 
                                 <?php } ?>
 
-                                <?php if (!$unset_clone) { ?>
+        <?php if (!$unset_clone) { ?>
                                     <li>       <a href="<?php echo $row->clone_url ?>">
                                             <i class="fa fa-copy"></i> <?php echo $this->l('list_clone'); ?>
                                         </a></li> 
                                 <?php } ?>
 
-                                <?php if (!$unset_edit) { ?>
+        <?php if (!$unset_edit) { ?>
                                     <li>      <a href="<?php echo $row->edit_url ?>">
                                             <i class="fa fa-pencil"></i> <?php echo $this->l('list_edit'); ?>
                                         </a></li> 
                                 <?php } ?>
 
-                                <?php if (!$unset_delete) { ?>
+        <?php if (!$unset_delete) { ?>
                                     <li> <a onclick = "javascript: return delete_row('<?php echo $row->delete_url ?>', '<?php echo $num_row ?>')"
                                             href="javascript:void(0)">
                                             <i class="fa fa-trash-o text-danger"></i>
                                             <span class="text-danger"><?php echo $this->l('list_delete') ?></span>
                                         </a></li>
-                                <?php } ?>
+        <?php } ?>
                             </ul>
                         </div>
 
                     </td>
 
-                <?php } ?>
-                <?php foreach ($columns as $column) { ?>
+                    <?php } ?>
+                    <?php foreach ($columns as $column) { ?>
                     <td>
                         <?php
                         $wild = substr($row->{$column->field_name}, 0, 1);
-                        if (($wild !== '<') && (!$unset_delete || !$unset_edit || !$unset_read || !empty($actions))) {
+                        if (($column->field_name !== 'jobStatus') && ($wild !== '<') && (!$unset_delete || !$unset_edit || !$unset_read || !empty($actions))) {
                             echo '<div class="add-menu-class" data-row="' . $num_row . '">' . $row->{$column->field_name} . '</div>';
                         } else {
                             echo $row->{$column->field_name};
                         }
                         ?>
                     </td>
-                <?php } ?>
+            <?php } ?>
             </tr>
-        <?php } ?>
+<?php } ?>
     </tbody>
     <tfoot>
     </tfoot>

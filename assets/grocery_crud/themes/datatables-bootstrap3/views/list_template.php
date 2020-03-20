@@ -6,7 +6,7 @@
 	//$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/demo_table_jui.css');
 	//$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/jquery-ui-1.10.3.custom.css');
 	
-        $this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/datatables.css?v=0.4');
+        $this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/datatables.css?v=0.6');
 	//$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/dataTables.bootstrap.min.css');
 	//$this->set_css($this->default_theme_path.'/datatables-bootstrap3/extras/TableTools/media/css/TableTools.css');
 	//$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/dataTables.bootstrap.min.css');
@@ -26,7 +26,7 @@
 	//$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/ui/'.grocery_CRUD::JQUERY_UI_JS);
         //$this->set_js_lib($this->default_theme_path.'/datatables-bootstrap3/js/jquery.dataTables.min.js');
 	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/datatables-extras.js');
-	$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/datatables.js?v=0.2.61');
+	$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/datatables.js?v=0.2.90');
 	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/extras/TableTools/media/js/ZeroClipboard.js');
 	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/extras/TableTools/media/js/TableTools.min.js');
 

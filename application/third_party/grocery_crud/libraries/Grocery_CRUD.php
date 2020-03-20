@@ -2182,10 +2182,10 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 	 **/
 	protected function load_js_fancybox()
 	{
-		$this->set_css($this->default_css_path.'/jquery_plugins/fancybox/jquery.fancybox.css');
+		$this->set_css($this->default_css_path.'/jquery_plugins/fancybox/jquery.fancybox.min.css');
 
-		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.fancybox-1.3.4.js');
-		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.easing-1.3.pack.js');
+		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.fancybox.min.js');
+		//$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.easing-1.3.pack.js');
 	}
 
 	protected function load_js_chosen()

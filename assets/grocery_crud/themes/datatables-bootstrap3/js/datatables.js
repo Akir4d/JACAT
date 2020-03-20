@@ -1,8 +1,9 @@
 var default_per_page = typeof default_per_page !== 'undefined' ? default_per_page : 25;
-var oTable = null;
+var oTable;
 var oTableArray = [];
 var oTableMapping = [];
 var examSS;
+var oSpecial = null;
 function supports_html5_storage()
 {
     try {
@@ -44,15 +45,15 @@ $(document).ready(function () {
             extend: 'copy',
             text: '<i class="fa fa-fw fa-clipboard"></i>',
             exportOptions: {
-                    columns: ['.printable']
-                }
+                columns: ['.printable']
+            }
         },
                 {
                     extend: 'excel',
                     text: '<i class="fa fa-fw fa-file-excel-o"></i>',
                     exportOptions: {
-                    columns: ['.printable']
-                }
+                        columns: ['.printable']
+                    }
                 });
 
     }
@@ -150,10 +151,10 @@ function loadListenersForDatatables() {
 
 function loadDataTable(this_datatables) {
     return oTable = $(this_datatables).dataTable({
-        //"responsive": true,
+        ///"responsive": true,
         "sPaginationType": "full_numbers",
         "bStateSave": use_storage,
-        //"scrollX": true,
+        ///"scrollX": true,
         "fnStateSave": function (oSettings, oData) {
             localStorage.setItem('DataTables_' + unique_hash, JSON.stringify(oData));
         },
@@ -163,6 +164,10 @@ function loadDataTable(this_datatables) {
         "iDisplayLength": default_per_page,
         "aaSorting": datatables_aaSorting,
         "fnInitComplete": function () {
+            if (oSpecial !== 0) {
+                this.fnSetColumnVis(oSpecial, false);
+            }
+            ;
         },
         "oLanguage": {
             "sProcessing": list_loading,
@@ -180,28 +185,15 @@ function loadDataTable(this_datatables) {
             }
         },
 
+        createdRow: function (row, data, dataIndex) {
+            on_create_process(row, data);
+        },
+
         "bDestory": true,
         "bRetrieve": true,
         "buttons": bButtons,
         "fnDrawCallback": function () {
-            //If there is no thumbnail this means that the fancybox library doesn't exist
-            if ($('.image-thumbnail').length > 0) {
-                $('.image-thumbnail').fancybox({
-                    'transitionIn': 'elastic',
-                    'transitionOut': 'elastic',
-                    'speedIn': 600,
-                    'speedOut': 200,
-                    'overlayShow': false
-                });
-            }
-            $('.add-menu-class').each(function (e) {
-                var sID = $(this).attr('data-row');
-                var tmod = $('#row-' + sID).find('div.hidden').find('a').first().text($(this).text());
-                var timpH = $('#row-' + sID).find('div.hidden').html();
-                $(this).html(timpH).attr('class', 'dropdown').removeAttr('data-row');
-            });
-            $('td>div.hidden').remove();
-            add_edit_button_listener();
+            after_draw_callback();
 
         },
         "dom": '<"box-header"<"pull-left"rl><"pull-right"B>>t<"box-footer"ip>'
@@ -269,10 +261,103 @@ $(window).on('resize', function () {
     }
 });
 
-$(document).ready(function () {
+function on_create_process(row, data) {
+    if (oSpecial == null) {
+        $(row).closest('div').find('thead')
+                .find('input[data-index]')
+                .each(function (e) {
+                    var a = $(this);
+                    var name = a.attr('name');
+                    if (name == 'jobStatus') {
+                        oSpecial = a.attr('data-index')
+                    }
+                });
+    }
+    if (oSpecial == null) {
+        oSpecial = 0;
+    }
+    if (oSpecial in data) {
+        if (data[oSpecial] == "red") {
+            $(row).addClass('bg-danger').hover(
+                    function () {
+                        $(this).addClass("bg-red");
+                    },
+                    function () {
+                        $(this).removeClass("bg-red");
+                    });
+        } else if (data[oSpecial] == "green") {
+            $(row).addClass('bg-success').hover(
+                    function () {
+                        $(this).addClass("bg-green");
+                    },
+                    function () {
+                        $(this).removeClass("bg-green");
+                    }
+            );
+        } else if (data[oSpecial] == "yellow") {
+            $(row).addClass('bg-warning').hover(
+                    function () {
+                        $(this).addClass("bg-orange");
+                    },
+                    function () {
+                        $(this).removeClass("bg-orange");
+                    }
+            );
+        } else if (data[oSpecial] == "blue") {
+            $(row).addClass('bg-info').hover(
+                    function () {
+                        $(this).addClass("bg-blue");
+                    },
+                    function () {
+                        $(this).removeClass("bg-blue");
+                    }
+            );
+        } else {
+            $(row).hover(
+                    function () {
+                        $(this).addClass("bg-gray-light");
+                    },
+                    function () {
+                        $(this).removeClass("bg-gray-light");
+                    }
+            );
+        }
+    }
+}
+
+function after_draw_callback() {
+    //If there is no thumbnail this means that the fancybox library doesn't exist
+    if ($('.image-thumbnail').length > 0) {
+        $('.image-thumbnail').fancybox({
+            'transitionIn': 'elastic',
+            'transitionOut': 'elastic',
+            'speedIn': 600, 'clickSlide': "close",
+            'speedOut': 200,
+            'overlayShow': false,
+            'buttons': [
+                "zoom",
+                "share",
+                "slideShow",
+                "fullScreen",
+                "download",
+                "thumbs",
+                "close"
+            ]
+        });
+    }
+    $('.add-menu-class').each(function (e) {
+        var sID = $(this).attr('data-row');
+        var tmod = $('#row-' + sID + ' div.hidden a.dropdown-toggle').text($(this).text());
+        var timpH = $('#row-' + sID + ' div.hidden').html();
+        $(this).html(timpH).attr('class', 'dropdown').removeAttr('data-row');
+    });
+    $('td>div.hidden').remove();
+
+    add_edit_button_listener();
     $('.sidebar-toggle').click(function () {
         setTimeout(function () {
             $('.groceryCrudTable').attr('style', 'width: ' + ($('.grocerycrud-container > div').width() - 4) + 'px');
         }, 300);
     });
-});
+}
+
