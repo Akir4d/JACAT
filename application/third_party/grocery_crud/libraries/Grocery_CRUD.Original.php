@@ -1609,7 +1609,6 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 	protected $js_files					= array();
 	protected $js_lib_files				= array();
 	protected $js_config_files			= array();
-        protected $custom_views                         = null;
 
 	protected function set_basic_Layout()
 	{
@@ -2183,10 +2182,10 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 	 **/
 	protected function load_js_fancybox()
 	{
-		$this->set_css($this->default_css_path.'/jquery_plugins/fancybox/jquery.fancybox.min.css');
+		$this->set_css($this->default_css_path.'/jquery_plugins/fancybox/jquery.fancybox.css');
 
-		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.fancybox.min.js');
-		//$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.easing-1.3.pack.js');
+		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.fancybox-1.3.4.js');
+		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.easing-1.3.pack.js');
 	}
 
 	protected function load_js_chosen()
@@ -3017,14 +3016,6 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$vars = (is_object($vars)) ? get_object_vars($vars) : $vars;
 
 		$file_exists = FALSE;
-
-                if ($this->custom_views !== null)
-		{
-			if (isset($this->custom_views[$view]))
-			{
-				$view = $this->custom_views[$view];
-			}
-		}
 
 		$ext = pathinfo($view, PATHINFO_EXTENSION);
 		$file = ($ext == '') ? $view.'.php' : $view;
@@ -5443,20 +5434,6 @@ class Grocery_CRUD extends grocery_CRUD_States
 				'upload_path' => $upload_dir,
 				'allowed_file_types' => $allowed_file_types,
 				'encrypted_field_name' => $this->_unique_field_name($field_name));
-		return $this;
-	}
-
-        /**
-	 *
-	 * Set custom views: allow to override default views as edit.php, add.php, ...
-	 * $views is an associative array like ('edit.php' => 'myedit.php', 'add.php'=>'myadd.php)
-	 *
-	 * @param mixed $view
-	 * @return Grocery_CRUD
-	 */
-	public function set_custom_views($views)
-	{
-		$this->custom_views = $views;
 		return $this;
 	}
 }
