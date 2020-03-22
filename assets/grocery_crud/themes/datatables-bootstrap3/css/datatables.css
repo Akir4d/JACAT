@@ -1,9 +1,19 @@
-.dt-ci-input { 
-    width: 100px;
+.dt-ci-input:placeholder-shown { 
+    width: 80px!important;
+    transition:width 500ms ease-in-out;
+    border-color: transparent!important; 
 }
 
-.dt-ci-input:active { 
-    width: 200px;
+.dt-ci-input:not(:placeholder-shown) { 
+    width: 160px!important;
+    transition:width 500ms ease-in-out;
+    border-color: lightsteelblue!important; 
+}
+
+.dt-ci-input:hover {
+  width: 160px!important;
+  transition:width 500ms ease-in-out;
+  border-color: lightsteelblue!important;
 }
 
 .black-text {

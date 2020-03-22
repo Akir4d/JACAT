@@ -28,5 +28,9 @@ application/composer.lock
 sql/backup/*
 sql/backup/!index.html
 
-### Database Mast Be ignored by git
+### Database config Mast Be ignored by git
 application/config/database.php
+
+###  Editors blacklist
+nbproject/*
+package-lock.json

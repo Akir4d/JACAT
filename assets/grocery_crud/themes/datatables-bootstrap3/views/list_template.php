@@ -3,41 +3,18 @@
         if($success_message !== null){
                echo  "<script> var loc = location.href + '/../..'; location.replace(loc.replace('/index', ''));</script>";
 	}
-	//$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/demo_table_jui.css');
-	//$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/jquery-ui-1.10.3.custom.css');
-	
-        $this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/datatables.css?v=0.6');
-	//$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/dataTables.bootstrap.min.css');
-	//$this->set_css($this->default_theme_path.'/datatables-bootstrap3/extras/TableTools/media/css/TableTools.css');
-	//$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/dataTables.bootstrap.min.css');
-	//$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/buttons.bootstrap.min.css');
-	//$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/searchPanes.dataTables.min.css');
-	//$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/select.dataTables.min.css');
+
+        $this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/datatables.css?v=0.20');
+
 	
 
     if ($dialog_forms) {
-        //$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.noty.js');
-        //$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/config/jquery.noty.config.js');
-        //$this->set_js_lib($this->default_javascript_path.'/common/lazyload-min.js');
+
     }
 
 	$this->set_js_lib($this->default_javascript_path.'/common/list.js');
-	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/jquery-ui.min.js');
-	//$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/ui/'.grocery_CRUD::JQUERY_UI_JS);
-        //$this->set_js_lib($this->default_theme_path.'/datatables-bootstrap3/js/jquery.dataTables.min.js');
-	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/datatables-extras.js');
-	$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/datatables.js?v=0.2.97');
-	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/extras/TableTools/media/js/ZeroClipboard.js');
-	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/extras/TableTools/media/js/TableTools.min.js');
 
-	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/jquery.dataTables.min.js');
-	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/dataTables.bootstrap.min.js');
-	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/dataTables.buttons.min.js');
-	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/buttons.bootstrap.min.js');
-	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/buttons.html5.min.js');
-	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/jszip.min.js');
-	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/buttons.print.min.js');
-	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/dataTables.select.min.js');
+	$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/datatables.js?v=0.2.99');
 	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/dataTables.responsive.min.js');
 	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/dataTables.searchPanes.min.js');
 	

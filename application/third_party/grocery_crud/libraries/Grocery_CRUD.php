@@ -333,13 +333,7 @@ class grocery_CRUD_Field_Types
 				}
 				else
 				{
-					$is_image = !empty($value) &&
-					( substr($value,-4) == '.jpg'
-							|| substr($value,-4) == '.png'
-							|| substr($value,-5) == '.jpeg'
-							|| substr($value,-4) == '.gif'
-							|| substr($value,-5) == '.tiff')
-							? true : false;
+					$is_image = $this->_is_image_file($value);
 
 					$file_url = base_url().$field_info->extras->upload_path."/$value";
 
@@ -2541,7 +2535,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
     		$all_values = array_values($value);
     		$read_only_value = implode(", ",$all_values);
     	}
-
+        
         return '<div id="field-'.$field_info->name.'" class="readonly_label">'.$read_only_value.'</div>';
 	}
 
@@ -2647,9 +2641,16 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 	protected function get_upload_file_readonly_input($field_info,$value)
 	{
 		$file = $file_url = base_url().$field_info->extras->upload_path.'/'.$value;
-
-		$value = !empty($value) ? '<a href="'.$file.'" target="_blank">'.$value.'</a>' : '';
-
+                $is_image = $this->_is_image_file($value);
+		$image_class = $is_image ? 'image-thumbnail' : '';
+                if($is_image) {
+                    $value = '<a href="'.$file_url.'" class="open-file image-thumbnail"';
+                    $value .= '><img src="'.$file_url.'" height="50px">';
+                    $value .= '</a>';
+                } else {
+                    $value = !empty($value) ? '<a href="'.$file.'" target="_blank">'.$value.'</a>' : '';
+                }
+                
 		return $this->get_readonly_input($field_info, $value);
 	}
 
@@ -2735,7 +2736,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 		return $bytes;
 	}
-
+        
 	protected function get_upload_file_input($field_info, $value)
 	{
 		$this->load_js_uploader();
@@ -2743,7 +2744,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		//Fancybox
 		$this->load_js_fancybox();
 
-		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery.fancybox.config.js');
+		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery.fancybox.config.js'.grocery_CRUD::RLIB);
 
 		$unique = mt_rand();
 
@@ -2778,13 +2779,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$uploader_display_none 	= empty($value) ? "" : "display:none;";
 		$file_display_none  	= empty($value) ?  "display:none;" : "";
 
-		$is_image = !empty($value) &&
-						( substr($value,-4) == '.jpg'
-								|| substr($value,-4) == '.png'
-								|| substr($value,-5) == '.jpeg'
-								|| substr($value,-4) == '.gif'
-								|| substr($value,-5) == '.tiff')
-					? true : false;
+		$is_image = $this->_is_image_file($value);
 
 		$image_class = $is_image ? 'image-thumbnail' : '';
 
@@ -2912,6 +2907,9 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 	protected function get_read_input_fields($field_values = null)
 	{
+                $this->load_js_fancybox();
+
+		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery.fancybox.config.js'.grocery_CRUD::RLIB);
 		$read_fields = $this->get_read_fields();
 
 		$this->field_types = null;
@@ -3586,11 +3584,11 @@ class Grocery_CRUD extends grocery_CRUD_States
 	 *
 	 * @var	string
 	 */
-	const	VERSION = "1.6.1";
-
-	const	JQUERY 			= "jquery-1.11.1.min.js";
-	const	JQUERY_UI_JS 	= "jquery-ui-1.10.3.custom.min.js";
-	const	JQUERY_UI_CSS 	= "jquery-ui-1.10.1.custom.min.css";
+	const	VERSION = "1.6.3";
+        const   RLIB = "?v=0.12";
+	const	JQUERY 			= "";//jquery-1.11.1.min.js
+	const	JQUERY_UI_JS 	= "";//jquery-ui-1.10.3.custom.min.js
+	const	JQUERY_UI_CSS 	= "jquery-ui-1.10.1.custom.min.css";//jquery-ui-1.10.1.custom.min.css
 
 	protected $state_code 			= null;
 	protected $state_info 			= null;
@@ -3782,7 +3780,18 @@ class Grocery_CRUD extends grocery_CRUD_States
 		return $this->change_field_type($field , $type, $extras);
 	}
 
-	/**
+        protected function _is_image_file($value) {
+            $is_image = !empty($value) &&
+						( substr($value,-4) == '.jpg'
+								|| substr($value,-4) == '.png'
+								|| substr($value,-5) == '.jpeg'
+								|| substr($value,-4) == '.gif'
+								|| substr($value,-5) == '.tiff')
+					? true : false;
+            return $is_image;
+        }
+
+        /**
 	 * Change the default primary key for a specific table.
 	 * If the $table_name is NULL then the primary key is for the default table name that we added at the set_table method
 	 *
@@ -4113,7 +4122,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 
 		$this->add_fields = $args;
 		$this->edit_fields = $args;
-
+                $this->read_fields = $args;
 		return $this;
 	}
 

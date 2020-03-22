@@ -151,7 +151,7 @@ function loadListenersForDatatables() {
 
 function loadDataTable(this_datatables) {
     return oTable = $(this_datatables).dataTable({
-        ///"responsive": true,
+        "responsive": true,
         "sPaginationType": "full_numbers",
         "bStateSave": use_storage,
         ///"scrollX": true,
