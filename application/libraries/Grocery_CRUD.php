@@ -333,13 +333,7 @@ class grocery_CRUD_Field_Types
 				}
 				else
 				{
-					$is_image = !empty($value) &&
-					( substr($value,-4) == '.jpg'
-							|| substr($value,-4) == '.png'
-							|| substr($value,-5) == '.jpeg'
-							|| substr($value,-4) == '.gif'
-							|| substr($value,-5) == '.tiff')
-							? true : false;
+					$is_image = $this->_is_image_file($value);
 
 					$file_url = base_url().$field_info->extras->upload_path."/$value";
 
@@ -1609,6 +1603,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 	protected $js_files					= array();
 	protected $js_lib_files				= array();
 	protected $js_config_files			= array();
+        protected $custom_views                         = null;
 
 	protected function set_basic_Layout()
 	{
@@ -1893,7 +1888,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 	protected function showAddForm()
 	{
-		$this->set_js_lib($this->default_javascript_path.'/'.grocery_CRUD::JQUERY);
+		//$this->set_js_lib($this->default_javascript_path.'/'.grocery_CRUD::JQUERY);
 
 		$data 				= $this->get_common_data();
 		$data->types 		= $this->get_field_types();
@@ -1917,7 +1912,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
     protected function showCloneForm($state_info)
     {
-        $this->set_js_lib($this->default_javascript_path.'/'.grocery_CRUD::JQUERY);
+        //$this->set_js_lib($this->default_javascript_path.'/'.grocery_CRUD::JQUERY);
 
         $data 				= $this->get_common_data();
         $data->types 		= $this->get_field_types();
@@ -1948,7 +1943,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
     protected function showEditForm($state_info)
 	{
-		$this->set_js_lib($this->default_javascript_path.'/'.grocery_CRUD::JQUERY);
+		//$this->set_js_lib($this->default_javascript_path.'/'.grocery_CRUD::JQUERY);
 
 		$data 				= $this->get_common_data();
 		$data->types 		= $this->get_field_types();
@@ -1978,7 +1973,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 	protected function showReadForm($state_info)
 	{
-		$this->set_js_lib($this->default_javascript_path.'/'.grocery_CRUD::JQUERY);
+		//$this->set_js_lib($this->default_javascript_path.'/'.grocery_CRUD::JQUERY);
 
 		$data 				= $this->get_common_data();
 		$data->types 		= $this->get_field_types();
@@ -2182,22 +2177,22 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 	 **/
 	protected function load_js_fancybox()
 	{
-		$this->set_css($this->default_css_path.'/jquery_plugins/fancybox/jquery.fancybox.css');
+		$this->set_css($this->default_css_path.'/jquery_plugins/fancybox/jquery.fancybox.min.css');
 
-		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.fancybox-1.3.4.js');
-		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.easing-1.3.pack.js');
+		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.fancybox.min.js');
+		//$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.easing-1.3.pack.js');
 	}
 
 	protected function load_js_chosen()
 	{
-		$this->set_css($this->default_css_path.'/jquery_plugins/chosen/chosen.css');
+		$this->set_css($this->default_css_path.'/jquery_plugins/chosen/chosen.boostrap.css');
 		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.chosen.min.js');
 	}
 
 	protected function load_js_jqueryui()
 	{
 		$this->set_css($this->default_css_path.'/ui/simple/'.grocery_CRUD::JQUERY_UI_CSS);
-		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/ui/'.grocery_CRUD::JQUERY_UI_JS);
+		//$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/ui/'.grocery_CRUD::JQUERY_UI_JS);
 	}
 
 	protected function load_js_uploader()
@@ -2206,7 +2201,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$this->set_css($this->default_css_path.'/jquery_plugins/file_upload/file-uploader.css');
 		$this->set_css($this->default_css_path.'/jquery_plugins/file_upload/jquery.fileupload-ui.css');
 
-		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/ui/'.grocery_CRUD::JQUERY_UI_JS);
+		//$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/ui/'.grocery_CRUD::JQUERY_UI_JS);
 		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/tmpl.min.js');
 		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/load-image.min.js');
 
@@ -2312,22 +2307,20 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$value_is_null = empty($value) && $value !== '0' && $value !== 0 ? true : false;
 
 		$input = "<div class='pretty-radio-buttons'>";
-
-		$true_string = is_array($field_info->extras) && array_key_exists(1,$field_info->extras) ? $field_info->extras[1] : $this->default_true_false_text[1];
+ 
 		$checked = $value === '1' || ($value_is_null && $field_info->default === '1') ? "checked = 'checked'" : "";
-		$input .=
-			"<div class=\"radio\"><label>
-				<input id='field-{$field_info->name}-true' type=\"radio\" name=\"{$field_info->name}\" value=\"1\" $checked />
-				$true_string
-			 </label> </div>";
+		$hidden_true = $value !== '1' || ($value_is_null && $field_info->default === '0') ? "hidden" : "";
+		$input .= "<b id='r-{$field_info->name}-true' onclick=\"SwTFbutton('{$field_info->name}',1);\" class=\"btn btn-success $hidden_true\" ><span class=\"glyphicon glyphicon-ok\"></span></b>
+			     <div  class=\"radio hidden\"><label>
+				<input id='field-{$field_info->name}-true' type=\"radio\" name=\"{$field_info->name}\" value=\"1\" $checked />".
+			 "</label> </div>";
 
-		$false_string =  is_array($field_info->extras) && array_key_exists(0,$field_info->extras) ? $field_info->extras[0] : $this->default_true_false_text[0];
 		$checked = $value === '0' || ($value_is_null && $field_info->default === '0') ? "checked = 'checked'" : "";
-		$input .=
-			"<div class=\"radio\"><label>
-				<input id='field-{$field_info->name}-false' type=\"radio\" name=\"{$field_info->name}\" value=\"0\" $checked />
-				$false_string
-			 </label> </div>";
+		$hidden_false = $value === '1' || ($value_is_null && $field_info->default === '1') ? "hidden" : "";
+		$input .= "<b id='r-{$field_info->name}-false' onclick=\"SwTFbutton('{$field_info->name}',0);\" class=\"btn btn-danger $hidden_false\" ><span class=\"glyphicon glyphicon-remove\"></span></b>
+				<div class=\"radio hidden\"><label>
+				<input id='field-{$field_info->name}-false' type=\"radio\" name=\"{$field_info->name}\" value=\"0\" $checked />".			
+			" </label> </div>";
 
 		$input .= "</div>";
 
@@ -2457,8 +2450,8 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 	protected function get_date_input($field_info,$value)
 	{
-		$this->set_css($this->default_css_path.'/ui/simple/'.grocery_CRUD::JQUERY_UI_CSS);
-		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/ui/'.grocery_CRUD::JQUERY_UI_JS);
+		//$this->set_css($this->default_css_path.'/ui/simple/'.grocery_CRUD::JQUERY_UI_CSS);
+		//$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/ui/'.grocery_CRUD::JQUERY_UI_JS);
 
 		if($this->language !== 'english')
 		{
@@ -2540,7 +2533,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
     		$all_values = array_values($value);
     		$read_only_value = implode(", ",$all_values);
     	}
-
+        
         return '<div id="field-'.$field_info->name.'" class="readonly_label">'.$read_only_value.'</div>';
 	}
 
@@ -2646,9 +2639,16 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 	protected function get_upload_file_readonly_input($field_info,$value)
 	{
 		$file = $file_url = base_url().$field_info->extras->upload_path.'/'.$value;
-
-		$value = !empty($value) ? '<a href="'.$file.'" target="_blank">'.$value.'</a>' : '';
-
+                $is_image = $this->_is_image_file($value);
+		$image_class = $is_image ? 'image-thumbnail' : '';
+                if($is_image) {
+                    $value = '<a href="'.$file_url.'" class="open-file image-thumbnail"';
+                    $value .= '><img src="'.$file_url.'" height="50px">';
+                    $value .= '</a>';
+                } else {
+                    $value = !empty($value) ? '<a href="'.$file.'" target="_blank">'.$value.'</a>' : '';
+                }
+                
 		return $this->get_readonly_input($field_info, $value);
 	}
 
@@ -2659,9 +2659,9 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 		if($has_priority_field || $is_ie_7)
 		{
-			$this->set_css($this->default_css_path.'/ui/simple/'.grocery_CRUD::JQUERY_UI_CSS);
+			//$this->set_css($this->default_css_path.'/ui/simple/'.grocery_CRUD::JQUERY_UI_CSS);
 			$this->set_css($this->default_css_path.'/jquery_plugins/ui.multiselect.css');
-			$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/ui/'.grocery_CRUD::JQUERY_UI_JS);
+			//$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/ui/'.grocery_CRUD::JQUERY_UI_JS);
 			$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/ui.multiselect.min.js');
 			$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery.multiselect.js');
 
@@ -2680,7 +2680,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		}
 		else
 		{
-			$this->set_css($this->default_css_path.'/jquery_plugins/chosen/chosen.css');
+			$this->set_css($this->default_css_path.'/jquery_plugins/chosen/chosen.boostrap.css');
 			$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.chosen.min.js');
 			$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery.chosen.config.js');
 		}
@@ -2734,7 +2734,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 		return $bytes;
 	}
-
+        
 	protected function get_upload_file_input($field_info, $value)
 	{
 		$this->load_js_uploader();
@@ -2742,7 +2742,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		//Fancybox
 		$this->load_js_fancybox();
 
-		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery.fancybox.config.js');
+		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery.fancybox.config.js'.grocery_CRUD::RLIB);
 
 		$unique = mt_rand();
 
@@ -2777,13 +2777,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$uploader_display_none 	= empty($value) ? "" : "display:none;";
 		$file_display_none  	= empty($value) ?  "display:none;" : "";
 
-		$is_image = !empty($value) &&
-						( substr($value,-4) == '.jpg'
-								|| substr($value,-4) == '.png'
-								|| substr($value,-5) == '.jpeg'
-								|| substr($value,-4) == '.gif'
-								|| substr($value,-5) == '.tiff')
-					? true : false;
+		$is_image = $this->_is_image_file($value);
 
 		$image_class = $is_image ? 'image-thumbnail' : '';
 
@@ -2911,6 +2905,9 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 	protected function get_read_input_fields($field_values = null)
 	{
+                $this->load_js_fancybox();
+
+		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery.fancybox.config.js'.grocery_CRUD::RLIB);
 		$read_fields = $this->get_read_fields();
 
 		$this->field_types = null;
@@ -3016,6 +3013,14 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$vars = (is_object($vars)) ? get_object_vars($vars) : $vars;
 
 		$file_exists = FALSE;
+
+                if ($this->custom_views !== null)
+		{
+			if (isset($this->custom_views[$view]))
+			{
+				$view = $this->custom_views[$view];
+			}
+		}
 
 		$ext = pathinfo($view, PATHINFO_EXTENSION);
 		$file = ($ext == '') ? $view.'.php' : $view;
@@ -3137,7 +3142,7 @@ class grocery_CRUD_States extends grocery_CRUD_Layout
 		17  => 'print',
 		18  => 'read',
         19  => 'delete_multiple',
-        20  => 'clone'
+        20  => 'clone',
 	);
 
     public function getStateInfo()
@@ -3577,11 +3582,11 @@ class Grocery_CRUD extends grocery_CRUD_States
 	 *
 	 * @var	string
 	 */
-	const	VERSION = "1.6.1";
-
-	const	JQUERY 			= "jquery-1.11.1.min.js";
-	const	JQUERY_UI_JS 	= "jquery-ui-1.10.3.custom.min.js";
-	const	JQUERY_UI_CSS 	= "jquery-ui-1.10.1.custom.min.css";
+	const	VERSION = "1.6.3";
+        const   RLIB = "?v=0.12";
+	const	JQUERY 			= "";//jquery-1.11.1.min.js
+	const	JQUERY_UI_JS 	= "";//jquery-ui-1.10.3.custom.min.js
+	const	JQUERY_UI_CSS 	= "jquery-ui-1.10.1.custom.min.css";//jquery-ui-1.10.1.custom.min.css
 
 	protected $state_code 			= null;
 	protected $state_info 			= null;
@@ -3773,7 +3778,18 @@ class Grocery_CRUD extends grocery_CRUD_States
 		return $this->change_field_type($field , $type, $extras);
 	}
 
-	/**
+        protected function _is_image_file($value) {
+            $is_image = !empty($value) &&
+						( substr($value,-4) == '.jpg'
+								|| substr($value,-4) == '.png'
+								|| substr($value,-5) == '.jpeg'
+								|| substr($value,-4) == '.gif'
+								|| substr($value,-5) == '.tiff')
+					? true : false;
+            return $is_image;
+        }
+
+        /**
 	 * Change the default primary key for a specific table.
 	 * If the $table_name is NULL then the primary key is for the default table name that we added at the set_table method
 	 *
@@ -4104,7 +4120,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 
 		$this->add_fields = $args;
 		$this->edit_fields = $args;
-
+                $this->read_fields = $args;
 		return $this;
 	}
 
@@ -5434,6 +5450,20 @@ class Grocery_CRUD extends grocery_CRUD_States
 				'upload_path' => $upload_dir,
 				'allowed_file_types' => $allowed_file_types,
 				'encrypted_field_name' => $this->_unique_field_name($field_name));
+		return $this;
+	}
+
+        /**
+	 *
+	 * Set custom views: allow to override default views as edit.php, add.php, ...
+	 * $views is an associative array like ('edit.php' => 'myedit.php', 'add.php'=>'myadd.php)
+	 *
+	 * @param mixed $view
+	 * @return Grocery_CRUD
+	 */
+	public function set_custom_views($views)
+	{
+		$this->custom_views = $views;
 		return $this;
 	}
 }
