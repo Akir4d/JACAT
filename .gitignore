@@ -34,3 +34,9 @@ application/config/database.php
 ###  Editors blacklist
 nbproject/*
 package-lock.json
+
+### This to make my tests painless
+application/modules/admin/controllers/Playground.php
+application/modules/admin/views/playground.php
+application/modules/admin/library/Playground_lib.php
+application/modules/admin/model/Playground_model.php
