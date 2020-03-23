@@ -1,5 +1,5 @@
 .dt-ci-input:placeholder-shown { 
-    width: 80px!important;
+    width: 45px!important;
     transition:width 500ms ease-in-out;
     border-color: transparent!important; 
 }

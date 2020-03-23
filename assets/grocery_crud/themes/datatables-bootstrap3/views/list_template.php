@@ -4,7 +4,7 @@
                echo  "<script> var loc = location.href + '/../..'; location.replace(loc.replace('/index', ''));</script>";
 	}
 
-        $this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/datatables.css?v=0.20');
+        $this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/datatables.css?v=0.21');
 
 	
 
