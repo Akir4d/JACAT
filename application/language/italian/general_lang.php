@@ -1,7 +1,7 @@
 <?php
 
 	$lang['website_name'] = "Il Mio Sito";
-	$lang['current_language'] = "Linguaggio Attuale";
+	$lang['current_language'] = "Lingua Attuale";
 
 	// Menu
 	$lang['home'] = "Home";

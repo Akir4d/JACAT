@@ -1,6 +1,6 @@
-## CodeIgniter 3 Bootstrap by Akirad Project
+## JACAT -> Just Another CodeIgniter/AdminLTE template
 
-**Latest Build: 2020-03-09**
+**Latest Build: 2020-03-24**
 
 **Note: This project is still in progress, but welcome for any issues encountered**
 
@@ -14,7 +14,7 @@ This repository is developed upon the following tools:
 * [codeigniter-restserver](https://github.com/chriskacerguis/codeigniter-restserver) - base setup for API module
 * [Ion Auth](http://benedmunds.com/ion_auth/) - (3.0) authentication library for CodeIgniter by [Ben Edmunds](http://benedmunds.com/)
 * [Bootstrap](http://getbootstrap.com/) (v3.4.1) - popular frontend framework
-* [Grocery CRUD](http://www.grocerycrud.com/) (v1.6.2) - feature-rich library to build CRUD tables
+* [Grocery CRUD](http://www.grocerycrud.com/) (custom based on v1.6.3) - feature-rich library to build CRUD tables
 * [Image CRUD](http://www.grocerycrud.com/image-crud) (v0.8) - CRUD library for image management
 * [AdminLTE](https://github.com/almasaeed2010/AdminLTE) (v2.4.18) - bootstrap theme for Admin Panel
 

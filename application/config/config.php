@@ -75,8 +75,13 @@ $config['url_suffix'] = '';
 | there is an available translation if you intend to use something other
 | than english.
 |
+| 'auto' means to switch language automatically, you have to configure also
+| allowed_auto_languages to prevent php errors.  
+|
+|
 */
-$config['language']	= 'english';
+$config['language']	= 'auto';
+$config['allowed_auto_languages'] = array('english', 'italian', 'french', 'spanish', 'simplified-chinese',  'traditional-chinese');
 
 /*
 |--------------------------------------------------------------------------
@@ -511,3 +516,21 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+
+/*
+| This enables Automatic language switch
+| if it not works, be sure you have php-intl enabled in your php.ini file
+|
+*/
+if($config['language'] === 'auto') 
+		{
+		try {
+            $config['language']  = strtolower(Locale::getDisplayLanguage(explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE'])[0])); 
+                if(!empty($config['allowed_auto_languages']) && !in_array($config['language'], $config['allowed_auto_languages']))  
+                    {
+                        $config['language'] = "english";
+                    }
+			} catch (\Throwable $e) {
+				$config['language'] = "english";
+            } 
+        }

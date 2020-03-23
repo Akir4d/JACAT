@@ -1,13 +1,10 @@
 $(function(){
-	var forceLocale = 'en';
-	if (typeof ciLocaleOverride !== "undefined") {
-		forceLocale = ciLocaleOverride;
-	}
+
 	var fmdate = js_date_format.toUpperCase().replace('YY', 'YYYY') + ' ' + 'HH:mm:ss';
 	console.log(fmdate)
     $('.datetime-input').datetimepicker({
 		format: fmdate,
-		locale: forceLocale
+		locale: cibs_language
     });
     
 	$('.datetime-input-clear').button();
