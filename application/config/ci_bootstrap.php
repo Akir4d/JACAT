@@ -62,9 +62,17 @@ $config['ci_bootstrap'] = array(
 				'label'	=> 'English',
 				'value'	=> 'english'
 			),
+			'fr' => array(
+				'label'	=> 'Français',
+				'value'	=> 'french'
+			),
 			'it' => array(
 				'label'	=> 'Italiano',
 				'value'	=> 'italian'
+			),
+			'es' => array(
+				'label'	=> 'Español',
+				'value' => 'spanish'
 			),
 			'zh' => array(
 				'label'	=> '繁體中文',
@@ -73,10 +81,6 @@ $config['ci_bootstrap'] = array(
 			'cn' => array(
 				'label'	=> '简体中文',
 				'value'	=> 'simplified-chinese'
-			),
-			'es' => array(
-				'label'	=> 'Español',
-				'value' => 'spanish'
 			)
 		)
 	),

@@ -1906,8 +1906,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$data->is_ajax 			= $this->_is_ajax();
 
 		$this->_theme_view('add.php',$data);
-		$this->_inline_js("var js_date_format = '".$this->js_date_format."';");
-
+		$this->_inline_js('var cibs_language = "'.$this->language.'";var js_date_format = "'.$this->js_date_format.'";');
 		$this->_get_ajax_results();
 	}
 
@@ -1936,7 +1935,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
         $data->is_ajax 			= $this->_is_ajax();
 
         $this->_theme_view('edit.php',$data);
-        $this->_inline_js("var js_date_format = '".$this->js_date_format."';");
+        $this->_inline_js('var cibs_language = "'.$this->language.'";var js_date_format = "'.$this->js_date_format.'";');
 
         $this->_get_ajax_results();
     }
@@ -1967,7 +1966,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$data->is_ajax 			= $this->_is_ajax();
 
 		$this->_theme_view('edit.php',$data);
-		$this->_inline_js("var js_date_format = '".$this->js_date_format."';");
+		$this->_inline_js('var cibs_language = "'.$this->language.'";var js_date_format = "'.$this->js_date_format.'";');
 
 		$this->_get_ajax_results();
 	}
@@ -1998,7 +1997,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$data->is_ajax 			= $this->_is_ajax();
 
 		$this->_theme_view('read.php',$data);
-		$this->_inline_js("var js_date_format = '".$this->js_date_format."';");
+		$this->_inline_js('var cibs_language = "'.$this->language.'";var js_date_format = "'.$this->js_date_format.'";');
 
 		$this->_get_ajax_results();
 	}
@@ -2388,27 +2387,8 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 	protected function get_datetime_input($field_info,$value)
 	{
-		//$this->set_css($this->default_css_path.'/ui/simple/'.grocery_CRUD::JQUERY_UI_CSS);
-		//$this->set_css($this->default_css_path.'/jquery_plugins/jquery.ui.datetime.css');
-		//$this->set_css($this->default_css_path.'/jquery_plugins/jquery-ui-timepicker-addon.css');
-		//$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/ui/'.grocery_CRUD::JQUERY_UI_JS);
-		//$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery-ui-timepicker-addon.js');
 
-		if($this->language !== 'english')
-		{
-			include($this->default_config_path.'/language_alias.php');
-			if(array_key_exists($this->language, $language_alias))
-			{
-
-				$i18n_datetime_js_file = $this->default_javascript_path.'/jquery_plugins/config/localized/inject.local.'.$language_alias[$this->language].'.js';
-				if(file_exists($i18n_datetime_js_file))
-				{
-					$this->set_js_lib($i18n_datetime_js_file);
-				}
-			}
-		}
-
-		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery-datetimepicker.config.js');
+		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery-datetimepicker.config.js?v=0.2');
 
 		if(!empty($value) && $value != '0000-00-00 00:00:00' && $value != '1970-01-01 00:00:00'){
 			list($year,$month,$day) = explode('-',substr($value,0,10));
@@ -2449,20 +2429,8 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		//$this->set_css($this->default_css_path.'/ui/simple/'.grocery_CRUD::JQUERY_UI_CSS);
 		//$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/ui/'.grocery_CRUD::JQUERY_UI_JS);
 
-		if($this->language !== 'english')
-		{
-			include($this->default_config_path.'/language_alias.php');
-			if(array_key_exists($this->language, $language_alias))
-			{
-				$i18n_datetime_js_file = $this->default_javascript_path.'/jquery_plugins/config/localized/inject.local.'.$language_alias[$this->language].'.js';
-				if(file_exists($i18n_datetime_js_file))
-				{
-					$this->set_js_lib($i18n_datetime_js_file);
-				}
-			}
-		}
 
-		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery-datetimepicker-dateonly.config.js');
+		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery-datetimepicker-dateonly.config.js?v=0.2');
 
 		if(!empty($value) && $value != '0000-00-00' && $value != '1970-01-01')
 		{
