@@ -98,10 +98,15 @@ $(document).ready(function () {
         localStorage.removeItem('DataTables_' + unique_hash);
         localStorage.removeItem('datatables_search_' + unique_hash);
 
-        chosen_table = datatables_get_chosen_table($(this).closest('.groceryCrudTable'));
+        //chosen_table = datatables_get_chosen_table($(this).closest('.groceryCrudTable'));
 
-        chosen_table.fnFilterClear();
-        $(this).closest('.groceryCrudTable').find("thead tr th input").val("");
+        //chosen_table.fnFilterClear();oTable.fnFilter
+        $(".groceryCrudTable thead input").each(function () {
+            $(this).val('');
+            oTable.fnFilter('', parseInt($(this).attr('data-index')));
+        });
+
+
     });
 
     loadListenersForDatatables();
