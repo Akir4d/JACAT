@@ -4,8 +4,7 @@ var oTableArray = [];
 var oTableMapping = [];
 var examSS;
 var oSpecial = null;
-function supports_html5_storage()
-{
+function supports_html5_storage() {
     try {
         JSON.parse("{}");
         return 'localStorage' in window && window['localStorage'] !== null;
@@ -33,14 +32,12 @@ var mColumns = [];
 $(document).ready(function () {
 
     $('table.groceryCrudTable thead tr th').each(function (index) {
-        if (!$(this).hasClass('actions'))
-        {
+        if (!$(this).hasClass('actions')) {
             mColumns[index] = index;
         }
     });
 
-    if (!unset_export)
-    {
+    if (!unset_export) {
         bButtons.push({
             extend: 'copy',
             text: '<i class="fa fa-fw fa-clipboard"></i>',
@@ -48,18 +45,17 @@ $(document).ready(function () {
                 columns: ['.printable']
             }
         },
-                {
-                    extend: 'excel',
-                    text: '<i class="fa fa-fw fa-file-excel-o"></i>',
-                    exportOptions: {
-                        columns: ['.printable']
-                    }
-                });
+            {
+                extend: 'excel',
+                text: '<i class="fa fa-fw fa-file-excel-o"></i>',
+                exportOptions: {
+                    columns: ['.printable']
+                }
+            });
 
     }
 
-    if (!unset_print)
-    {
+    if (!unset_print) {
         bButtons.push({
             extend: 'print',
             text: '<i class="fa fa-fw fa-print"></i>',
@@ -90,11 +86,9 @@ $(document).ready(function () {
 
     var search_values = localStorage.getItem('datatables_search_' + unique_hash);
 
-    if (search_values !== null)
-    {
+    if (search_values !== null) {
         $.each($.parseJSON(search_values), function (num, val) {
-            if (val !== '')
-            {
+            if (val !== '') {
                 $(".groceryCrudTable thead tr th:eq(" + num + ")").children(':first').val(val);
             }
         });
@@ -200,31 +194,25 @@ function loadDataTable(this_datatables) {
     });
 }
 
-function datatables_get_chosen_table(table_as_object)
-{
+function datatables_get_chosen_table(table_as_object) {
     //chosen_table_index = oTableMapping[table_as_object.attr('id')];
     return oTable;//Array[chosen_table_index];
 }
 
-function delete_row(delete_url, row_id)
-{
-    if (confirm(message_alert_delete))
-    {
+function delete_row(delete_url, row_id) {
+    if (confirm(message_alert_delete)) {
         $.ajax({
             url: delete_url,
             dataType: 'json',
-            success: function (data)
-            {
-                if (data.success)
-                {
+            success: function (data) {
+                if (data.success) {
                     chosen_table = datatables_get_chosen_table($('tr#row-' + row_id).closest('.groceryCrudTable'));
 
                     $('tr#row-' + row_id).addClass('row_selected');
                     var anSelected = fnGetSelected(chosen_table);
                     chosen_table.fnDeleteRow(anSelected[0]);
                     $(".refresh-data").trigger("click");
-                } else
-                {
+                } else {
                     error_message(data.error_message);
                 }
             }
@@ -234,15 +222,12 @@ function delete_row(delete_url, row_id)
     return false;
 }
 
-function fnGetSelected(oTableLocal)
-{
+function fnGetSelected(oTableLocal) {
     var aReturn = new Array();
     var aTrs = oTableLocal.fnGetNodes();
 
-    for (var i = 0; i < aTrs.length; i++)
-    {
-        if ($(aTrs[i]).hasClass('row_selected'))
-        {
+    for (var i = 0; i < aTrs.length; i++) {
+        if ($(aTrs[i]).hasClass('row_selected')) {
             aReturn.push(aTrs[i]);
         }
     }
@@ -264,14 +249,14 @@ $(window).on('resize', function () {
 function on_create_process(row, data) {
     if (oSpecial == null) {
         $(row).closest('div').find('thead')
-                .find('input[data-index]')
-                .each(function (e) {
-                    var a = $(this);
-                    var name = a.attr('name');
-                    if (name == 'jobStatus') {
-                        oSpecial = a.attr('data-index')
-                    }
-                });
+            .find('input[data-index]')
+            .each(function (e) {
+                var a = $(this);
+                var name = a.attr('name');
+                if (name == 'jobStatus') {
+                    oSpecial = a.attr('data-index')
+                }
+            });
     }
     if (oSpecial == null) {
         oSpecial = 0;
@@ -279,47 +264,47 @@ function on_create_process(row, data) {
     if (oSpecial in data) {
         if (data[oSpecial] == "red") {
             $(row).addClass('bg-danger').hover(
-                    function () {
-                        $(this).addClass("bg-red");
-                    },
-                    function () {
-                        $(this).removeClass("bg-red");
-                    });
+                function () {
+                    $(this).addClass("bg-red");
+                },
+                function () {
+                    $(this).removeClass("bg-red");
+                });
         } else if (data[oSpecial] == "green") {
             $(row).addClass('bg-success').hover(
-                    function () {
-                        $(this).addClass("bg-green");
-                    },
-                    function () {
-                        $(this).removeClass("bg-green");
-                    }
+                function () {
+                    $(this).addClass("bg-green");
+                },
+                function () {
+                    $(this).removeClass("bg-green");
+                }
             );
         } else if (data[oSpecial] == "yellow") {
             $(row).addClass('bg-warning').hover(
-                    function () {
-                        $(this).addClass("bg-orange");
-                    },
-                    function () {
-                        $(this).removeClass("bg-orange");
-                    }
+                function () {
+                    $(this).addClass("bg-orange");
+                },
+                function () {
+                    $(this).removeClass("bg-orange");
+                }
             );
         } else if (data[oSpecial] == "blue") {
             $(row).addClass('bg-info').hover(
-                    function () {
-                        $(this).addClass("bg-blue");
-                    },
-                    function () {
-                        $(this).removeClass("bg-blue");
-                    }
+                function () {
+                    $(this).addClass("bg-blue");
+                },
+                function () {
+                    $(this).removeClass("bg-blue");
+                }
             );
         } else {
             $(row).hover(
-                    function () {
-                        $(this).addClass("bg-gray-light");
-                    },
-                    function () {
-                        $(this).removeClass("bg-gray-light");
-                    }
+                function () {
+                    $(this).addClass("bg-gray-light");
+                },
+                function () {
+                    $(this).removeClass("bg-gray-light");
+                }
             );
         }
     }
@@ -360,7 +345,16 @@ function after_draw_callback() {
         }, 300);
     });
 }
-
+$(document).ready(function (l) {
+    $('.ci_btOn').html(function (e) {
+        $(this).parent().html('<span class="glyphicon glyphicon-ok ci_btOn" style="color:#00a65a"><b class="hidden">' +
+            $(this).text() + '</b></span>');
+    });
+    $('.ci_btOff').html(function (e) {
+        $(this).parent().html('<span class="glyphicon glyphicon-remove ci_btOff" style="color:#f56954"><b class="hidden">' +
+            $(this).text() + '</b></span>');
+    });
+});
 
 //Fancybox Hack https://github.com/fancyapps/fancybox/issues/1100#issuecomment-462074860 to add Rotate
 var RotateImage = function (instance) {
@@ -377,25 +371,25 @@ $.extend(RotateImage.prototype, {
     init: function () {
         var self = this;
         self.$button_right = $('<button data-rotate-right class="fancybox-button fancybox-button--rotate" title="">' +
-                '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">' +
-                '  <path d="M11.074,9.967a4.43,4.43,0,1,1-4.43-4.43V8.859l5.537-4.43L6.644,0V3.322a6.644,6.644,0,1,0,6.644,6.644Z" transform="translate(10.305 1) rotate(30)"/>' +
-                '</svg>' +
-                '</button>')
-                .prependTo(this.instance.$refs.toolbar)
-                .on('click', function (e) {
-                    self.rotate('right');
-                });
+            '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">' +
+            '  <path d="M11.074,9.967a4.43,4.43,0,1,1-4.43-4.43V8.859l5.537-4.43L6.644,0V3.322a6.644,6.644,0,1,0,6.644,6.644Z" transform="translate(10.305 1) rotate(30)"/>' +
+            '</svg>' +
+            '</button>')
+            .prependTo(this.instance.$refs.toolbar)
+            .on('click', function (e) {
+                self.rotate('right');
+            });
         self.$button_left = $('<button data-rotate-left class="fancybox-button fancybox-button--rotate" title="">' +
-                '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">' +
-                '  <path d="M11.074,6.644a4.43,4.43,0,1,0-4.43,4.43V7.752l5.537,4.43-5.537,4.43V13.289a6.644,6.644,0,1,1,6.644-6.644Z" transform="translate(21.814 15.386) rotate(150)"/>' +
-                '</svg>' +
-                '</button>')
-                .prependTo(this.instance.$refs.toolbar)
-                .on('click', function (e) {
-                    self.rotate('left');
-                });
+            '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">' +
+            '  <path d="M11.074,6.644a4.43,4.43,0,1,0-4.43,4.43V7.752l5.537,4.43-5.537,4.43V13.289a6.644,6.644,0,1,1,6.644-6.644Z" transform="translate(21.814 15.386) rotate(150)"/>' +
+            '</svg>' +
+            '</button>')
+            .prependTo(this.instance.$refs.toolbar)
+            .on('click', function (e) {
+                self.rotate('left');
+            });
 
-        
+
     },
 
     rotate: function (direction) {
@@ -420,6 +414,7 @@ $.extend(RotateImage.prototype, {
         $(image).css('webkitTransform', 'rotate(' + angle + 'deg)');
         $(image).css('mozTransform', 'rotate(' + angle + 'deg)');
     }
+
 });
 
 $(document).on('onInit.fb', function (e, instance) {

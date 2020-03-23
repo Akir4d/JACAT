@@ -96,4 +96,7 @@ function SwTFbutton(value, type) {
 	$("#" + target3).removeClass('hidden');
 }
 
+$(document).ready(function() {
+	$('.qq-upload-button').removeClass('qq-upload-button').addClass('btn btn-default');
+});
 

@@ -1597,7 +1597,8 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 	private $views_as_string			= '';
 	private $echo_and_die				= false;
 	protected $theme 					= null;
-	protected $default_true_false_text 	= array('inactive' , 'active');
+	protected $default_true_false_text 	= array('<b class="ci_btOff">0</b>', 
+	'<b class="ci_btOn">1</b>');
 
 	protected $css_files				= array();
 	protected $js_files					= array();
@@ -2308,15 +2309,15 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 		$input = "<div class='pretty-radio-buttons'>";
  
-		$checked = $value === '1' || ($value_is_null && $field_info->default === '1') ? "checked = 'checked'" : "";
-		$hidden_true = $value !== '1' || ($value_is_null && $field_info->default === '0') ? "hidden" : "";
+		$checked = intval($value) === 1 || ($value_is_null && $field_info->default === '1') ? "checked = 'checked'" : "";
+		$hidden_true = intval($value) === 0 ? "hidden" : "";
 		$input .= "<b id='r-{$field_info->name}-true' onclick=\"SwTFbutton('{$field_info->name}',1);\" class=\"btn btn-success $hidden_true\" ><span class=\"glyphicon glyphicon-ok\"></span></b>
 			     <div  class=\"radio hidden\"><label>
 				<input id='field-{$field_info->name}-true' type=\"radio\" name=\"{$field_info->name}\" value=\"1\" $checked />".
 			 "</label> </div>";
 
-		$checked = $value === '0' || ($value_is_null && $field_info->default === '0') ? "checked = 'checked'" : "";
-		$hidden_false = $value === '1' || ($value_is_null && $field_info->default === '1') ? "hidden" : "";
+		$checked = intval($value) === 0 || ($value_is_null && $field_info->default === '0') ? "checked = 'checked'" : "";
+		$hidden_false = intval($value) === 1 ? "hidden" : "";
 		$input .= "<b id='r-{$field_info->name}-false' onclick=\"SwTFbutton('{$field_info->name}',0);\" class=\"btn btn-danger $hidden_false\" ><span class=\"glyphicon glyphicon-remove\"></span></b>
 				<div class=\"radio hidden\"><label>
 				<input id='field-{$field_info->name}-false' type=\"radio\" name=\"{$field_info->name}\" value=\"0\" $checked />".			
@@ -2387,24 +2388,19 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 	protected function get_datetime_input($field_info,$value)
 	{
-		$this->set_css($this->default_css_path.'/ui/simple/'.grocery_CRUD::JQUERY_UI_CSS);
-		$this->set_css($this->default_css_path.'/jquery_plugins/jquery.ui.datetime.css');
-		$this->set_css($this->default_css_path.'/jquery_plugins/jquery-ui-timepicker-addon.css');
-		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/ui/'.grocery_CRUD::JQUERY_UI_JS);
-		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery-ui-timepicker-addon.js');
+		//$this->set_css($this->default_css_path.'/ui/simple/'.grocery_CRUD::JQUERY_UI_CSS);
+		//$this->set_css($this->default_css_path.'/jquery_plugins/jquery.ui.datetime.css');
+		//$this->set_css($this->default_css_path.'/jquery_plugins/jquery-ui-timepicker-addon.css');
+		//$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/ui/'.grocery_CRUD::JQUERY_UI_JS);
+		//$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery-ui-timepicker-addon.js');
 
 		if($this->language !== 'english')
 		{
 			include($this->default_config_path.'/language_alias.php');
 			if(array_key_exists($this->language, $language_alias))
 			{
-				$i18n_date_js_file = $this->default_javascript_path.'/jquery_plugins/ui/i18n/datepicker/jquery.ui.datepicker-'.$language_alias[$this->language].'.js';
-				if(file_exists($i18n_date_js_file))
-				{
-					$this->set_js_lib($i18n_date_js_file);
-				}
 
-				$i18n_datetime_js_file = $this->default_javascript_path.'/jquery_plugins/ui/i18n/timepicker/jquery-ui-timepicker-'.$language_alias[$this->language].'.js';
+				$i18n_datetime_js_file = $this->default_javascript_path.'/jquery_plugins/config/localized/inject.local.'.$language_alias[$this->language].'.js';
 				if(file_exists($i18n_datetime_js_file))
 				{
 					$this->set_js_lib($i18n_datetime_js_file);
@@ -2412,7 +2408,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 			}
 		}
 
-		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery-ui-timepicker-addon.config.js');
+		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery-datetimepicker.config.js');
 
 		if(!empty($value) && $value != '0000-00-00 00:00:00' && $value != '1970-01-01 00:00:00'){
 			list($year,$month,$day) = explode('-',substr($value,0,10));
@@ -2458,15 +2454,15 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 			include($this->default_config_path.'/language_alias.php');
 			if(array_key_exists($this->language, $language_alias))
 			{
-				$i18n_date_js_file = $this->default_javascript_path.'/jquery_plugins/ui/i18n/datepicker/jquery.ui.datepicker-'.$language_alias[$this->language].'.js';
-				if(file_exists($i18n_date_js_file))
+				$i18n_datetime_js_file = $this->default_javascript_path.'/jquery_plugins/config/localized/inject.local.'.$language_alias[$this->language].'.js';
+				if(file_exists($i18n_datetime_js_file))
 				{
-					$this->set_js_lib($i18n_date_js_file);
+					$this->set_js_lib($i18n_datetime_js_file);
 				}
 			}
 		}
 
-		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery.datepicker.config.js');
+		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery-datetimepicker-dateonly.config.js');
 
 		if(!empty($value) && $value != '0000-00-00' && $value != '1970-01-01')
 		{
@@ -4212,7 +4208,6 @@ class Grocery_CRUD extends grocery_CRUD_States
 			if(!isset($this->lang_strings[$handle]))
 				$this->lang_strings[$handle] = $lang_string;
 
-		$this->default_true_false_text = array( $this->l('form_inactive') , $this->l('form_active'));
 		$this->subject = $this->subject === null ? $this->l('list_record') : $this->subject;
 
 	}

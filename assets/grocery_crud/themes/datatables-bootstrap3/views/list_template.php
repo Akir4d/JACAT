@@ -14,7 +14,7 @@
 
 	$this->set_js_lib($this->default_javascript_path.'/common/list.js');
 
-	$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/datatables.js?v=0.2.99');
+	$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/datatables.js?v=0.3.1');
 	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/dataTables.responsive.min.js');
 	//$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/dataTables.searchPanes.min.js');
 	

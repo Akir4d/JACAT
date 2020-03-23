@@ -43,9 +43,7 @@ class Admin_Controller extends MY_Controller {
 		$this->load->library('Grocery_CRUD');
 		$crud = new grocery_CRUD();
 		$crud->set_table($table);
-                $crud->set_language($this->config->item('language'));
-		$crud->set_lang_string('form_active', '<center><b class="btn btn-success" onclick="javascript:ciBsOnHandler(this)">OK</b></center>')
-			->set_lang_string('form_inactive', '<center><b class="btn btn-danger" onclick="javascript:ciBsOffHandler(this)">NO</b></center>');
+        $crud->set_language($this->config->item('language'));
 		// auto-generate subject
 		if ( empty($subject) )
 		{

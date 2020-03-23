@@ -1,0 +1,1 @@
+var ciLocaleOverride = "pa-in"

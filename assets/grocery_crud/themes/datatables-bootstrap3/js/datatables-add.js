@@ -125,6 +125,7 @@ function clearForm() {
 	$('.chosen-multiple-select, .chosen-select, .ajax-chosen-select').each(function () {
 		$(this).trigger("liszt:updated");
 	});
+	
 }
 
 function SwTFbutton(value, type) {
@@ -135,3 +136,8 @@ function SwTFbutton(value, type) {
 	$("#" + target2).click(); 
 	$("#" + target3).removeClass('hidden');
 }
+
+$(document).ready(function() {
+	$('.qq-upload-button').removeClass('qq-upload-button').addClass('btn btn-default');
+});
+

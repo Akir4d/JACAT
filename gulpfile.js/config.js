@@ -51,19 +51,17 @@ module.exports = {
 			// Admin Panel - AdminLTE theme
 			adminlte: [
 				dir_bower + '/bootstrap/dist/css/bootstrap.min.css',
-				dir_bower + '/bootstrap-datepicker/dist/css/bootstrap-datepicker3.standalone.min.css',
-				dir_bower + '/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css',
-				dir_bower + '/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css',
-				dir_bower + '/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css',
 				dir_bower + '/jquery-ui-bootstrap/assets/css/bootstrap.min.css',
-				dir_bower + '/admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css',
-				dir_bower + '/admin-lte/plugins/timepicker/bootstrap-timepicker.min.css',
 				dir_bower + '/admin-lte/plugins/pace/pace.min.css',
 				dir_bower + '/admin-lte/dist/css/AdminLTE.min.css',
 				dir_bower + '/admin-lte/dist/css/skins/_all-skins.min.css'
 			],
 			// Admin Panel - 3rd party libraries
 			admin_lib: [
+				dir_bower + '/seiyria-bootstrap-slider/dist/css/bootstrap-slider.min.css',
+				dir_bower + '/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css',
+				dir_bower + '/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css',
+				dir_bower + '/admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css',
 				dir_bower + '/font-awesome/css/font-awesome.min.css',
 				dir_bower + '/Ionicons/css/ionicons.min.css',
 				dir_bower + '/spectrum/spectrum.css',
@@ -149,10 +147,8 @@ module.exports = {
 				dir_bower + '/jquery/dist/jquery.min.js',
 				dir_bower + '/jquery-ui/jquery-ui.min.js',
 				dir_bower + '/bootstrap/dist/js/bootstrap.min.js',
-				dir_bower + '/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
 				dir_bower + '/admin-lte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js',
 				dir_bower + '/admin-lte/plugins/iCheck/icheck.min.js',
-				dir_bower + '/admin-lte/plugins/timepicker/bootstrap-timepicker.min.js',
 				dir_bower + '/admin-lte/plugins/pace/pace.min.js',
 				dir_bower + '/admin-lte/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js',
 				dir_bower + '/admin-lte/dist/js/adminlte.min.js'
@@ -175,6 +171,7 @@ module.exports = {
 				dir_bower + '/morris.js/morris.min.js',
 				dir_bower + '/moment/min/moment.min.js',
 				dir_bower + '/moment/min/locales.min.js',
+				dir_bower + '/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
 				dir_bower + '/jszip/dist/jszip.min.js',
 				dir_bower + '/pdfmake/build/pdfmake.min.js',
 				dir_bower + '/datatables.net-buttons/js/dataTables.buttons.min.js',

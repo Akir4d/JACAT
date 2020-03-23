@@ -1,10 +1,7 @@
 <?php
-//$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/datatables.css');
-//$this->set_css($this->default_theme_path . '/datatables-bootstrap3/css/dataTables.bootstrap.min.css');
+
 $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/jquery.form.min.js');
-$this->set_js_config($this->default_theme_path . '/datatables-bootstrap3/js/datatables-edit.js?v0.3');
-//$this->set_css($this->default_theme_path.'/datatables-bootstrap3/css/jquery-ui-1.10.3.custom.css');
-//$this->set_css($this->default_theme_path.'/datatables-bootstrap3/js/jquery-ui.min.js');
+$this->set_js_config($this->default_theme_path . '/datatables-bootstrap3/js/datatables-edit.js?v0.7');
 $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/jquery.noty.min.js');
 $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/spectrum.min.js');
 $this->set_js_lib($this->default_javascript_path . '/jquery_plugins/config/jquery.noty.config.js');
