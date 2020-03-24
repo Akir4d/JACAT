@@ -1,6 +1,6 @@
-## CodeIgniter 3 Bootstrap by Akirad Project
+## CodeIgniter AdminLTE 
 
-**Latest Build: 2020-03-09**
+**Latest Build: 2020-03-24**
 
 **Note: This project is still in progress, but welcome for any issues encountered**
 
