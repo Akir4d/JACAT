@@ -2,7 +2,7 @@ $(function(){
 	var fmdate = js_date_format.toUpperCase().replace('YY', 'YYYY');
 	$('.datepicker-input').datetimepicker({
 			format: fmdate,
-			locale: cibs_language
+			locale: grocery_crud_language
 	});
 	
 	$('.datepicker-input-clear').button();

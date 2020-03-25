@@ -4,7 +4,7 @@ $(function(){
 	console.log(fmdate)
     $('.datetime-input').datetimepicker({
 		format: fmdate,
-		locale: cibs_language
+		locale: grocery_crud_language
     });
     
 	$('.datetime-input-clear').button();

@@ -1906,7 +1906,13 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$data->is_ajax 			= $this->_is_ajax();
 
 		$this->_theme_view('add.php',$data);
-		$this->_inline_js('var cibs_language = "'.$this->language.'";var js_date_format = "'.$this->js_date_format.'";');
+		$lang = 'en';
+		include($this->default_config_path.'/language_alias.php');
+			if(array_key_exists($this->language, $language_alias))
+			{
+				$lang = $language_alias['$this->language'];
+			}
+		$this->_inline_js('var grocery_crud_language = "'.$lang.'";var js_date_format = "'.$this->js_date_format.'";');
 		$this->_get_ajax_results();
 	}
 
@@ -1934,8 +1940,14 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
         $data->validation_url	= $this->getValidationInsertUrl();
         $data->is_ajax 			= $this->_is_ajax();
 
-        $this->_theme_view('edit.php',$data);
-        $this->_inline_js('var cibs_language = "'.$this->language.'";var js_date_format = "'.$this->js_date_format.'";');
+		$this->_theme_view('edit.php',$data);
+		$lang = 'en';
+        include($this->default_config_path.'/language_alias.php');
+			if(array_key_exists($this->language, $language_alias))
+			{
+				$lang = $language_alias[$this->language];
+			}
+		$this->_inline_js('var grocery_crud_language = "'.$lang.'";var js_date_format = "'.$this->js_date_format.'";');
 
         $this->_get_ajax_results();
     }
@@ -1966,7 +1978,13 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$data->is_ajax 			= $this->_is_ajax();
 
 		$this->_theme_view('edit.php',$data);
-		$this->_inline_js('var cibs_language = "'.$this->language.'";var js_date_format = "'.$this->js_date_format.'";');
+		$lang = 'en';
+		include($this->default_config_path.'/language_alias.php');
+			if(array_key_exists($this->language, $language_alias))
+			{
+				$lang = $language_alias[$this->language];
+			}
+		$this->_inline_js('var grocery_crud_language = "'.$lang.'";var js_date_format = "'.$this->js_date_format.'";');
 
 		$this->_get_ajax_results();
 	}
@@ -1997,7 +2015,13 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$data->is_ajax 			= $this->_is_ajax();
 
 		$this->_theme_view('read.php',$data);
-		$this->_inline_js('var cibs_language = "'.$this->language.'";var js_date_format = "'.$this->js_date_format.'";');
+		$lang = 'en';
+		include($this->default_config_path.'/language_alias.php');
+			if(array_key_exists($this->language, $language_alias))
+			{
+				$lang = $language_alias[$this->language];
+			}
+		$this->_inline_js('var grocery_crud_language = "'.$lang.'";var js_date_format = "'.$this->js_date_format.'";');
 
 		$this->_get_ajax_results();
 	}
@@ -2388,7 +2412,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 	protected function get_datetime_input($field_info,$value)
 	{
 
-		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery-datetimepicker.config.js?v=0.2');
+		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery-datetimepicker.config.js?v=0.10');
 
 		if(!empty($value) && $value != '0000-00-00 00:00:00' && $value != '1970-01-01 00:00:00'){
 			list($year,$month,$day) = explode('-',substr($value,0,10));
@@ -2430,7 +2454,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		//$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/ui/'.grocery_CRUD::JQUERY_UI_JS);
 
 
-		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery-datetimepicker-dateonly.config.js?v=0.2');
+		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery-datetimepicker-dateonly.config.js?v=0.10');
 
 		if(!empty($value) && $value != '0000-00-00' && $value != '1970-01-01')
 		{

@@ -2,7 +2,7 @@
 	var fmdate = js_date_format.toUpperCase().replace('YY', 'YYYY') + ' ' + 'HH:mm:ss';
     $('.datetime-input').datetimepicker({
 		format: fmdate,
-		locale: cibs_language
+		locale: jacat_language
 	});
     
 	$('.datetime-input-clear').button();
