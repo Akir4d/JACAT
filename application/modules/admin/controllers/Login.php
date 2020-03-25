@@ -7,8 +7,6 @@ class Login extends MY_Controller {
         public function __construct()
 	{
 		parent::__construct();
-                //preload additional languages files for example login
-		$this->lang->load(array('auth'));
 	}
 	/**
 	 * Login page and submission
@@ -39,8 +37,7 @@ class Login extends MY_Controller {
 				$this->system_message->set_error($errors);
 				refresh();
 			}
-		}
-                //$this->load->helper('language'); 
+		} 
                 
 		
 		// display form when no POST data, or validation failed

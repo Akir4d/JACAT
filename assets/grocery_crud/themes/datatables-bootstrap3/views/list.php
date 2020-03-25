@@ -1,19 +1,19 @@
-<table cellpadding="0" cellspacing="0" border="0" class="groceryCrudTable table table-responsive no-padding" id="<?php echo uniqid(); ?>">
+<table cellpadding="0" cellspacing="0" border="0" class="groceryCrudTable table invisible" id="<?php echo uniqid(); ?>">
     <thead>
-        <tr>
+        <tr id="multiSearchToggle" hidden>
 
             <?php if (!$unset_delete || !$unset_edit || !$unset_read || !empty($actions)) { ?>
                 <th>
 
-                    <input type="text" class="form-control dt-ci-input search_hidden hidden" />
-                    <div class="btn-group">					
-                        <button class="btn btn-default refresh-data" role="button" onclick="location.reload()" data-url="<?php echo $ajax_list_url; ?>">
-                            <i class="fa fa-refresh"></i>
+                    <input type="text" class="form-control dt-ci-input search_hidden invisible" />
+                   			
+                        <button class="btn btn-default refresh-data" role="button" data-url="<?php echo $ajax_list_url; ?>">
+                            <i class="fas fa-sync-alt"></i>
                         </button>
-                        <button onclick='$(".groceryCrudTable").find("thead tr th input").val("");' class="clear-filtering btn btn-default">
-                            <i class="fa fa-eraser"></i> <i class="glyphicon glyphicon-arrow-right"></i>
+                        <button onclick='$(".groceryCrudTable").find("thead tr th input").val("");' class="clear-filtering btn btn-outline-secondary float-right">
+                            <i class="fas fa-times"></i> <i class="fas fa-long-arrow-alt-right"></i>
                         </button>
-                    </div>
+                    
 
                     </div>
 
@@ -23,7 +23,11 @@
             $a = 0;
             foreach ($columns as $column) {
                 ?>
-                <th><input type="text" data-index="<?php echo ++$a ?>" autocomplete="no" name="<?php echo $column->field_name; ?>" placeholder=" &#xF002; <?php echo $column->display_as; ?>" class="form-control dt-ci-input search_<?php echo $column->field_name; ?>" style="font-family: FontAwesome, Arial;" /></th>
+                <th>
+                    <input type="text" data-index="<?php echo ++$a ?>" autocomplete="no" name="<?php echo $column->field_name; ?>" 
+                    placeholder=" &#xF002; <?php echo $column->display_as; ?>" 
+                    class="fas form-control dt-ci-input search_<?php echo $column->field_name; ?>" 
+                    style="font-family: 'Font Awesome 5 Free', Arial;" /></th>
             <?php } ?>
         </tr>
         <tr>
@@ -56,7 +60,7 @@
                                     ?>
 
                                     <a href="<?php echo $action_url; ?>" class="btn btn-default">
-                                        <i class="fa <?php echo $action->css_class; ?>"></i>
+                                        <i class="<?php echo $action->css_class; ?>"></i>
                                     </a>
                                     <?php
                                 }
@@ -64,31 +68,31 @@
                             ?>
         <?php if (!$unset_read) { ?>
                                 <a href="<?php echo $row->read_url ?>" class="btn btn-default">
-                                    <i class="fa fa-eye"></i>
+                                    <i class="fas fa-eye"></i>
                                 </a>
                             <?php } ?>
 
         <?php if (!$unset_clone) { ?>
                                 <a href="<?php echo $row->clone_url ?>" class="btn btn-default">
-                                    <i class="fa fa-copy"></i>
+                                    <i class="fas fa-copy"></i>
                                 </a>
                             <?php } ?>
 
         <?php if (!$unset_edit) { ?>
                                 <a href="<?php echo $row->edit_url ?>" class="btn btn-default">
-                                    <i class="fa fa-pencil"></i>
+                                    <i class="fas fa-pencil-alt"></i>
                                 </a>
                             <?php } ?>
 
         <?php if (!$unset_delete) { ?>
                                 <a onclick = "javascript: return delete_row('<?php echo $row->delete_url ?>', '<?php echo $num_row ?>')"
                                    href="javascript:void(0)" class="btn btn-default">
-                                    <i class="fa fa-trash-o text-danger"></i>
+                                    <i class="fas fa-trash-alt text-danger"></i>
                                 </a>
         <?php } ?>
                         </div>
-                        <div class="dropdown hidden">
-                            <a type="button" class="black-text dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <div class="dropdown invisible">
+                            <a type="button" class="black-text" data-toggle="dropdown" aria-expanded="false">
                             </a>
                             <ul class="dropdown-menu">
 
@@ -98,7 +102,7 @@
                                         $action = $actions[$action_unique_id];
                                         ?>
 
-                                        <li> <a href="<?php echo $action_url; ?>">
+                                        <li> <a class="dropdown-item" href="<?php echo $action_url; ?>">
                                                 <i class="fa <?php echo $action->css_class; ?>"></i> <?php echo $action->label ?>
                                             </a>
                                         </li> 
@@ -107,27 +111,27 @@
                                 }
                                 ?>
         <?php if (!$unset_read) { ?>
-                                    <li>      <a href="<?php echo $row->read_url ?>">
+                                    <li>      <a class="dropdown-item" href="<?php echo $row->read_url ?>">
                                             <i class="fa fa-eye"></i> <?php echo $this->l('list_view'); ?>
                                         </a></li> 
                                 <?php } ?>
 
         <?php if (!$unset_clone) { ?>
-                                    <li>       <a href="<?php echo $row->clone_url ?>">
+                                    <li>       <a class="dropdown-item" href="<?php echo $row->clone_url ?>">
                                             <i class="fa fa-copy"></i> <?php echo $this->l('list_clone'); ?>
                                         </a></li> 
                                 <?php } ?>
 
         <?php if (!$unset_edit) { ?>
-                                    <li>      <a href="<?php echo $row->edit_url ?>">
-                                            <i class="fa fa-pencil"></i> <?php echo $this->l('list_edit'); ?>
+                                    <li>      <a class="dropdown-item" href="<?php echo $row->edit_url ?>">
+                                            <i class="fas fa-pencil-alt"></i> <?php echo $this->l('list_edit'); ?>
                                         </a></li> 
                                 <?php } ?>
 
         <?php if (!$unset_delete) { ?>
-                                    <li> <a onclick = "javascript: return delete_row('<?php echo $row->delete_url ?>', '<?php echo $num_row ?>')"
+                                    <li> <a class="dropdown-item" onclick = "javascript: return delete_row('<?php echo $row->delete_url ?>', '<?php echo $num_row ?>')"
                                             href="javascript:void(0)">
-                                            <i class="fa fa-trash-o text-danger"></i>
+                                            <i class="fas fa-trash-alt text-danger"></i>
                                             <span class="text-danger"><?php echo $this->l('list_delete') ?></span>
                                         </a></li>
         <?php } ?>

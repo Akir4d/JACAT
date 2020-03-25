@@ -1910,7 +1910,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		include($this->default_config_path.'/language_alias.php');
 			if(array_key_exists($this->language, $language_alias))
 			{
-				$lang = $language_alias['$this->language'];
+				$lang = $language_alias[$this->language];
 			}
 		$this->_inline_js('var grocery_crud_language = "'.$lang.'";var js_date_format = "'.$this->js_date_format.'";');
 		$this->_get_ajax_results();
@@ -2221,7 +2221,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 	protected function load_js_uploader()
 	{
-		$this->set_css($this->default_css_path.'/ui/simple/'.grocery_CRUD::JQUERY_UI_CSS);
+		//$this->set_css($this->default_css_path.'/ui/simple/'.grocery_CRUD::JQUERY_UI_CSS);
 		$this->set_css($this->default_css_path.'/jquery_plugins/file_upload/file-uploader.css');
 		$this->set_css($this->default_css_path.'/jquery_plugins/file_upload/jquery.fileupload-ui.css');
 
@@ -2230,6 +2230,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/load-image.min.js');
 
 		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.iframe-transport.js');
+		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.ui.widget.js');
 		$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.fileupload.js');
 		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery.fileupload.config.js');
 	}
@@ -2334,15 +2335,15 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
  
 		$checked = intval($value) === 1 || ($value_is_null && $field_info->default === '1') ? "checked = 'checked'" : "";
 		$hidden_true = intval($value) === 0 ? "hidden" : "";
-		$input .= "<b id='r-{$field_info->name}-true' onclick=\"SwTFbutton('{$field_info->name}',1);\" class=\"btn btn-success $hidden_true\" ><span class=\"glyphicon glyphicon-ok\"></span></b>
-			     <div  class=\"radio hidden\"><label>
+		$input .= "<b id='r-{$field_info->name}-true' onclick=\"SwTFbutton('{$field_info->name}',1);\" class=\"btn btn-success\" $hidden_true><span class=\"fas fa-check\"></span></b>
+			     <div  class=\"radio\" hidden><label>
 				<input id='field-{$field_info->name}-true' type=\"radio\" name=\"{$field_info->name}\" value=\"1\" $checked />".
 			 "</label> </div>";
 
 		$checked = intval($value) === 0 || ($value_is_null && $field_info->default === '0') ? "checked = 'checked'" : "";
 		$hidden_false = intval($value) === 1 ? "hidden" : "";
-		$input .= "<b id='r-{$field_info->name}-false' onclick=\"SwTFbutton('{$field_info->name}',0);\" class=\"btn btn-danger $hidden_false\" ><span class=\"glyphicon glyphicon-remove\"></span></b>
-				<div class=\"radio hidden\"><label>
+		$input .= "<b id='r-{$field_info->name}-false' onclick=\"SwTFbutton('{$field_info->name}',0);\" class=\"btn btn-danger\" $hidden_false><span class=\"fas fa-times\"></span></b>
+				<div class=\"radio\" hidden><label>
 				<input id='field-{$field_info->name}-false' type=\"radio\" name=\"{$field_info->name}\" value=\"0\" $checked />".			
 			" </label> </div>";
 
@@ -2412,7 +2413,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 	protected function get_datetime_input($field_info,$value)
 	{
 
-		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery-datetimepicker.config.js?v=0.10');
+		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery-datetimepicker.config.js?v=0.15');
 
 		if(!empty($value) && $value != '0000-00-00 00:00:00' && $value != '1970-01-01 00:00:00'){
 			list($year,$month,$day) = explode('-',substr($value,0,10));
@@ -2423,7 +2424,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		{
 			$datetime = '';
 		}
-		$input = "<input id='field-{$field_info->name}' name='{$field_info->name}' type='text' value='$datetime' maxlength='19' class='datetime-input form-control' />
+		$input = "<input id='field-{$field_info->name}' autocomplete='new-password' name='{$field_info->name}' type='text' data-toggle='datetimepicker' data-target='#field-{$field_info->name}' value='$datetime' maxlength='19' class='datetime-input form-control' />
 		<a class='datetime-input-clear' tabindex='-1'>".$this->l('form_button_clear')."</a>
 		({$this->ui_date_format}) hh:mm:ss";
 		return $input;
@@ -2444,7 +2445,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$extra_attributes = '';
 		if(!empty($field_info->db_max_length))
 			$extra_attributes .= "maxlength='{$field_info->db_max_length}'";
-		$input = "<input id='field-{$field_info->name}' class='form-control' name='{$field_info->name}' type='password' value='$value' $extra_attributes />";
+		$input = "<input id='field-{$field_info->name}' autocomplete='new-password' class='form-control' name='{$field_info->name}' type='password' value='$value' $extra_attributes />";
 		return $input;
 	}
 
@@ -2454,7 +2455,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		//$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/ui/'.grocery_CRUD::JQUERY_UI_JS);
 
 
-		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery-datetimepicker-dateonly.config.js?v=0.10');
+		$this->set_js_config($this->default_javascript_path.'/jquery_plugins/config/jquery-datetimepicker-dateonly.config.js?v=0.15');
 
 		if(!empty($value) && $value != '0000-00-00' && $value != '1970-01-01')
 		{
@@ -2466,7 +2467,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 			$date = '';
 		}
 
-		$input = "<input id='field-{$field_info->name}' name='{$field_info->name}' type='text' value='$date' maxlength='10' class='datepicker-input form-control' />
+		$input = "<input id='field-{$field_info->name}' autocomplete='new-password' name='{$field_info->name}' type='text' value='$date' data-toggle='datetimepicker' data-target='#field-{$field_info->name}' maxlength='10' class='datepicker-input form-control' />
 		<a class='datepicker-input-clear' tabindex='-1'>".$this->l('form_button_clear')."</a> (".$this->ui_date_format.")";
 		return $input;
 	}
@@ -4194,7 +4195,12 @@ class Grocery_CRUD extends grocery_CRUD_States
 		{
 			$this->language = strtolower($this->config->default_language);
 		}
-		include($this->default_language_path.'/'.$this->language.'.php');
+		$filename = $this->default_language_path.'/'.$this->language.'.php';
+		if (!file_exists($filename)) {
+			$filename = $this->default_language_path.'/english.php';
+		}
+		include($filename);
+		
 
 		foreach($lang as $handle => $lang_string)
 			if(!isset($this->lang_strings[$handle]))

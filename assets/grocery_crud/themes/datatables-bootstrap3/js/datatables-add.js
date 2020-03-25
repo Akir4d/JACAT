@@ -79,17 +79,38 @@ $(function () {
 		return false;
 	});
 
+	$('#crudForm').change(function() {
+		modified = true;
+	 });
 
 	if ($('#cancel-button').closest('.ui-dialog').length === 0) {
 
 		$('#cancel-button').click(function () {
-			if ($(this).hasClass('back-to-list') || confirm(message_alert_add_form)) {
+			if ($(this).hasClass('back-to-list') || !modified ) {
 				window.location = list_url;
+			} else {
+				bootbox.confirm({
+					message: '<br><h3>' + message_alert_add_form + '</h3>',
+					buttons: {
+						confirm: {
+							label:  '<i class="fas fa-arrow-alt-circle-left"></i> ' + back_to_list, 
+							className: 'btn-danger'
+						},
+						cancel: {
+							label:  edit_cancel,
+							className: 'btn-default'
+						}
+					},
+					callback: function (result) {
+						if (result) {
+							window.location = list_url;
+						}
+					}
+				});
 			}
 
 			return false;
 		});
-
 	}
 });
 
@@ -132,9 +153,9 @@ function SwTFbutton(value, type) {
 	var target = "r-" + value + (type ? "-true" : "-false"); 
 	var target2 = "field-" + value + (type ? "-false" : "-true"); 
 	var target3 = "r-" + value + (type ? "-false" : "-true");
-	$("#" + target).addClass("hidden"); 
+	$("#" + target).prop("hidden", true); 
 	$("#" + target2).click(); 
-	$("#" + target3).removeClass('hidden');
+	$("#" + target3).removeAttr('hidden');
 }
 
 $(document).ready(function() {

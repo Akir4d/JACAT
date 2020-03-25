@@ -1,4 +1,4 @@
-<ol class="breadcrumb">
+<ol class="breadcrumb float-sm-right">
 	<?php
 		for ($i=0; $i<sizeof($breadcrumb); $i++)
 		{
@@ -7,12 +7,12 @@
 
 			if ($active)
 			{
-				echo "<li class='$active'>$name</li>";
+				echo "<li class='breadcrumb-item $active'>$name</li>";
 			}
 			else
 			{
 				$url = $breadcrumb[$i]['url'];
-				echo "<li class='$active'><a href='$url'>$name</a></li>";
+				echo "<li class='breadcrumb-item $active'><a href='$url'>$name</a></li>";
 			}
 		}
 	?>

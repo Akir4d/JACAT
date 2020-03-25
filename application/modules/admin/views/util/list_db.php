@@ -1,9 +1,9 @@
 
-<div class="box">
-	<div class="box-header">
-		<h3 class="box-title">Database Versions</h3>
+<div class="card">
+	<div class="card-header">
+		<h3 class="card-title">Database Versions</h3>
 	</div>
-	<div class="box-body">
+	<div class="card-body">
 		<?php /* Backup button */ ?>
 		<p>
 			<a href="util/backup_db" class="btn btn-primary">Backup Current Database</a>

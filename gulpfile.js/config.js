@@ -24,21 +24,29 @@ module.exports = {
 	copy: {
 		src: {
 			// Font files from Bower packages
+			/*
 			fonts: [
 				dir_bower + '/bootstrap/dist/fonts/**',
 				dir_bower + '/font-awesome/fonts/**',
 				dir_bower + '/Ionicons/fonts/**'
 			],
-			// Files (JS / CSS / etc.) directly copy to destination folder
+			*/
+			// Files (JS / CSS / etc.) directly copy to destination folder.
+			
 			files: [
+				dir_bower + '/**',
+				//Github pages compatibility
+				"!" + dir_bower + '/**/*.html',
+				"!" + dir_bower + '/**/*.md',
 			]
 		},
 		dest: {
-			fonts: dir_dist + '/fonts',
+			//fonts: dir_dist + '/fonts',
 			files: dir_dist
 		}
 	},
 
+	/*
 	// Task: concat and minify CSS files
 	// Plugin: gulp-clean-css (https://github.com/scniro/gulp-clean-css)
 	cssmin: {
@@ -199,7 +207,7 @@ module.exports = {
 		options: {
 		}
 	},
-
+	*/
 	// Tasks: optimize images
 	// Plugin: gulp-imagemin (https://github.com/sindresorhus/gulp-imagemin)
 	imagemin: {

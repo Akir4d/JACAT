@@ -10,18 +10,19 @@ $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/spectrum.mi
 //$this->set_css($this->default_theme_path . '/datatables-bootstrap3/css/dataTables.bootstrap.min.css');
 //$this->set_js_config($this->default_theme_path . '/datatables-bootstrap3/js/dataTables.bootstrap.min.js');
 ?>
-<div class='box box-primary datatables'>
-    <div class="box-header with-border">
+<div class='card card-primary datatables'>
+    <div class="card-header with-border">
         <?php echo $this->l('list_record'); ?> <?php echo $subject ?>
     </div>
     <div class='form-container table-container form-content form-div'>
         <?php echo form_open($update_url, 'method="post" id="crudForm" enctype="multipart/form-data" class="form-horizontal"'); ?>
-        <div class="box-body">
+        <div class="card-body">
+            
             <?php
             $counter = 0;
             foreach ($fields as $field) {
                 ?>
-                <div class="form-group">
+                <div class="form-group row">
                     <label for="<?php echo $field->field_name; ?>" class="col-sm-2 control-label">
                         <?php
                         echo strip_tags($input_fields[$field->field_name]->display_as);
@@ -48,9 +49,9 @@ $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/spectrum.mi
             </div>
         </div>
 
-        <div class='box-footer'>
+        <div class='card-footer'>
                 <button class="btn btn-info b10 back-to-list" type="button" id="cancel-button">
-                    <i class="fa fa-rotate-left"></i>
+                    <i class="fas fa-arrow-alt-circle-left"></i>
                     <?php echo $this->l('form_back_to_list'); ?>
                 </button>
         </div>

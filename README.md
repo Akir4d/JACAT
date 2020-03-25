@@ -1,6 +1,6 @@
-## JACAT -> Just Another CodeIgniter/AdminLTE template
+## JACAT (Just Another CodeIgniter/AdminLTE template)
 
-**Latest Build: 2020-03-24**
+**Latest Build: 2020-03-28**
 
 **Note: This project is still in progress, but welcome for any issues encountered**
 
@@ -8,15 +8,15 @@ A starter template that supports multi-tenant (Frontend / Admin Panel / API) web
 If you plan to upgrade form original you have to use [sql/upgrade_from_old_codeigniter_3_bootstrap.sql](sql/upgrade_from_old_codeigniter_3_bootstrap.sql) and also check the changes inside [application/modules/admin/config/ion_auth.php](application/modules/admin/config/ion_auth.php)
 
 This repository is developed upon the following tools: 
-* [CodeIgniter](http://www.codeigniter.com/) (v3.1.11) - PHP framework
+* [CodeIgniter](http://www.codeigniter.com/) (3.1.11) - PHP framework
 * [CodeIgniter HMVC Extensions](https://bitbucket.org/wiredesignz/codeigniter-modular-extensions-hmvc) - modular structure by [wiredesignz](http://wiredesignz.co.nz/)
 * [codeigniter-base-model](https://github.com/jamierumbelow/codeigniter-base-model) - more advanced CRUD functions for models by [jamierumbelow](https://github.com/jamierumbelow)
 * [codeigniter-restserver](https://github.com/chriskacerguis/codeigniter-restserver) - base setup for API module
-* [Ion Auth](http://benedmunds.com/ion_auth/) - (3.0) authentication library for CodeIgniter by [Ben Edmunds](http://benedmunds.com/)
-* [Bootstrap](http://getbootstrap.com/) (v3.4.1) - popular frontend framework
+* [Ion Auth](http://benedmunds.com/ion_auth) - (3.0) authentication library for CodeIgniter by [Ben Edmunds](http://benedmunds.com/)
+* [Bootstrap](http://getbootstrap.com/) (3.4.1) - popular frontend framework
 * [Grocery CRUD](http://www.grocerycrud.com/) (custom based on v1.6.3) - feature-rich library to build CRUD tables
 * [Image CRUD](http://www.grocerycrud.com/image-crud) (v0.8) - CRUD library for image management
-* [AdminLTE](https://github.com/almasaeed2010/AdminLTE) (v2.4.18) - bootstrap theme for Admin Panel
+* [AdminLTE](https://github.com/almasaeed2010/AdminLTE) (3.0.2) - bootstrap theme for Admin Panel
 
 
 ### Features

@@ -1,5 +1,5 @@
 .dt-ci-input:placeholder-shown { 
-    width: 45px!important;
+    width: 50px!important;
     transition:width 500ms ease-in-out;
     border-color: transparent!important; 
 }
@@ -17,7 +17,7 @@
 }
 
 .black-text {
-    color: #333;
+    color: #666;
 }
 
 tr div.dropdown a {
@@ -28,36 +28,108 @@ tr div.dropdown ul li a {
     color: #666;
 }
 
-tr.bg-red div.dropdown a {
-    color: white;
-}
 
-tr.bg-red div.dropdown ul li a {
+tr.tr-red div.dropdown a {
     color: #666;
 }
 
-tr.bg-green div.dropdown a {
-    color: white;
-}
-
-tr.bg-green div.dropdown ul li a {
+tr.tr-red div.dropdown ul li a {
     color: #666;
 }
 
-tr.bg-orange div.dropdown a {
-    color: white;
-}
-
-tr.bg-orange div.dropdown ul li a {
+tr.tr-gray div.dropdown a {
     color: #666;
 }
 
-tr.bg-blue div.dropdown a {
-    color: white;
-}
 
-tr.bg-blue div.dropdown ul li a {
+
+tr.tr-gray div.dropdown ul li a {
     color: #666;
 }
 
+tr.tr-green div.dropdown a {
+    color: #666;
+}
+
+tr.tr-green div.dropdown ul li a {
+    color: #666;
+}
+
+tr.tr-yellow div.dropdown a {
+    color: #666;
+}
+
+tr.tr-yellow div.dropdown ul li a {
+    color: #666;
+}
+
+tr.tr-blue div.dropdown a {
+    color: #666;
+}
+
+tr.tr-blue div.dropdown ul li a {
+    color: #666;
+}
+
+tr.tr-blue {
+    background-color: #c2ddfa;
+    color: #666;
+  }
+  
+tr.tr-green {
+    background-color: #c7eed0;
+    color: #666;
+  }
+
+  
+tr.tr-yellow {
+    background-color: #fff7dd;
+    color: #666;
+  }
+  
+tr.tr-red {
+    background-color: #ffaab3;
+    color: #666;
+  }
+
+tr.tr-gray {
+    background-color: #ffffff;
+    color: #666;
+  }
+
+tr.tr-gray:hover {
+    background-color: #f4f6f9;
+    color: #000;
+}
+tr.tr-gray:hover a.black-text{
+    color: #000;
+}
+
+tr.tr-blue:hover {
+    background-color: #0275d8;
+}
+tr.tr-blue:hover a.black-text{
+    color: #fff;
+}
+
+tr.tr-green:hover {
+    background-color: #28a745;
+}
+tr.tr-green:hover a.black-text{
+    color: #fff;
+}
+
+tr.tr-yellow:hover {
+    background-color: #fd7e14;
+}
+tr.tr-yellow:hover a.black-text{
+    color: #fff;
+}
+
+tr.tr-red:hover {
+    background-color: #dc3545;
+}
+tr.tr-red:hover a.black-text{
+    color: #fff;
+}
 
