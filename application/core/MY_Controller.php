@@ -28,6 +28,11 @@ class MY_Controller extends MX_Controller {
         protected $mInjectAfterPageTitle = '';
         protected $mInjectBeforeFooter = '';
 	protected $mBodyClass = '';
+	protected $mNavBarStyle = '';
+	protected $mNavMenuBg = '';
+	protected $mSideBarStyle = '';
+	protected $mAsideBarStyle = '';
+	protected $mFooterStyle = '';
 	protected $mMenu = array();
 	protected $mBreadcrumb = array();
 
@@ -71,6 +76,11 @@ class MY_Controller extends MX_Controller {
 		$this->mPageTitlePrefix = empty($config['page_title_prefix']) ? '' : $config['page_title_prefix'];
 		$this->mPageTitle = empty($config['page_title']) ? '' : $config['page_title'];
 		$this->mBodyClass = empty($config['body_class']) ? '' : $config['body_class'];
+		$this->mNavBarStyle = empty($config['nav_bar_style']) ? '' : $config['nav_bar_style'];
+		$this->mNavMenuBg = empty($config['nav_menu_bg']) ? '' : $config['nav_menu_bg'];
+		$this->mSideBarStyle = empty($config['side_bar_style']) ? '' : $config['side_bar_style'];
+		$this->mAsideBarStyle = empty($config['aside_bar_style']) ? '' : $config['aside_bar_style'];
+		$this->mFooterStyle = empty($config['footer_style']) ? '' : $config['footer_style'];
 		$this->mMenu = empty($config['menu']) ? array() : $config['menu'];
 		$this->mMetaData = empty($config['meta_data']) ? array() : $config['meta_data'];
 		$this->mScripts = empty($config['scripts']) ? array() : $config['scripts'];
@@ -221,7 +231,11 @@ class MY_Controller extends MX_Controller {
 		$this->mViewData['user'] = $this->mUser;
 		$this->mViewData['ga_id'] = empty($this->mConfig['ga_id']) ? '' : $this->mConfig['ga_id'];
 		$this->mViewData['body_class'] = $this->mBodyClass;
-
+		$this->mViewData['nav_bar_style'] = $this->mNavBarStyle;
+		$this->mViewData['nav_menu_bg'] = $this->mNavMenuBg;
+		$this->mViewData['side_bar_style'] = $this->mSideBarStyle;
+		$this->mViewData['aside_bar_style'] = $this->mAsideBarStyle;
+		$this->mViewData['footer_style'] = $this->mFooterStyle;
 		// automatically push current page to last record of breadcrumb
 		$this->push_breadcrumb($this->mPageTitle);
 		$this->mViewData['breadcrumb'] = $this->mBreadcrumb;

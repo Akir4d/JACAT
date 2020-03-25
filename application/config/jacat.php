@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | 	/application/config/jacat_example.php
 */
 
-$jacat_ver = "?ver=0.5.0";
+$jacat_ver = "?ver=0.5.1";
 
 $config['jacat'] = array(
 
@@ -37,21 +37,31 @@ $config['jacat'] = array(
 		'head'	=> array(
 		),
 		'foot'	=> array(
-			'assets/dist/frontend/lib.min.js' . $jacat_ver,
-			'assets/dist/frontend/app.min.js' . $jacat_ver
+			'/assets/dist/admin-lte/plugins/jquery/jquery.min.js' . $jacat_ver,
+			'/assets/dist/bootstrap/dist/js/bootstrap.bundle.min.js' . $jacat_ver,
+			'/assets/dist/admin-lte/dist/js/adminlte.min.js' . $jacat_ver,
 		),
 	),
 
 	// Default stylesheets to embed at page head
 	'stylesheets' => array(
 		'screen' => array(
-			'assets/dist/frontend/lib.min.css' . $jacat_ver,
-			'assets/dist/frontend/app.min.css' . $jacat_ver
+			'/assets/dist/admin-lte/dist/css/adminlte.min.css' . $jacat_ver,
+			'/assets/dist/admin-lte/plugins/fontawesome-free/css/all.min.css' . $jacat_ver,
+			'/assets/dist/admin-lte//plugins/icheck-bootstrap/icheck-bootstrap.min.css'. $jacat_ver,
+			'/assets/dist/ionicons/docs/css/ionicons.min.css' . $jacat_ver,
 		)
 	),
 
 	// Default CSS class for <body> tag
-	'body_class' => '',
+	'body_class' => 'sidebar-mini hold-transition layout-top-nav',
+
+	'nav_bar_style' => 'navbar navbar-expand navbar-dark',
+	'nav_menu_bg' => 'bg-dark',
+	'side_bar_style' => '',
+	'aside_bar_style' => '',
+	'footer_style' => 'bg-dark',
+
 	
 	// Multilingual settings
 	'languages' => array(

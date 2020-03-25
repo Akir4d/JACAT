@@ -1,13 +1,10 @@
-<div class="footer">
-	<div class="container">
+<footer class="main-footer <?php echo $footer_style; ?>">
 		<?php if (ENVIRONMENT=='development'): ?>
-			<p class="pull-right text-muted">
+			<div class="float-right d-none d-sm-inline">
 				JACAT Version: <strong><?php echo JACAT_VERSION; ?></strong>, 
 				CI Version: <strong><?php echo CI_VERSION; ?></strong>, 
 				Elapsed Time: <strong>{elapsed_time}</strong> seconds, 
 				Memory Usage: <strong>{memory_usage}</strong>
-			</p>
-		<?php endif; ?>
-		<p class="text-muted">&copy; <strong><?php echo date('Y'); ?></strong> All rights reserved.</p>
-	</div>
-</div>
+			</div>
+		<?php endif; ?>&copy; <strong><?php echo date('Y'); ?></strong> All rights reserved.
+</footer>

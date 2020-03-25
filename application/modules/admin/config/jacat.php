@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | 	/application/config/jacat_example.php
 */
 
-$cib3_ver ="?ver=0.4.17";
+$jacat_ver ="?ver=0.4.17";
 
 $config['jacat'] = array(
 
@@ -35,25 +35,31 @@ $config['jacat'] = array(
 	// Default scripts to embed at page head or end
 	'scripts' => array(
 		'head'	=> array(
-			'assets/dist/admin/adminlte.min.js' . $cib3_ver,
-			'assets/dist/admin/lib.min.js' . $cib3_ver,
-			'assets/dist/admin/app.min.js' . $cib3_ver
 		),
 		'foot'	=> array(
+			'/assets/dist/admin-lte/plugins/jquery/jquery.min.js' . $jacat_ver,
+			'/assets/dist/bootstrap/dist/js/bootstrap.bundle.min.js' . $jacat_ver,
+			'/assets/dist/admin-lte/dist/js/adminlte.min.js' . $jacat_ver,
 		),
 	),
 
 	// Default stylesheets to embed at page head
 	'stylesheets' => array(
 		'screen' => array(
-			'assets/dist/admin/adminlte.min.css' . $cib3_ver,
-			'assets/dist/admin/lib.min.css' . $cib3_ver,
-			'assets/dist/admin/app.min.css' . $cib3_ver
+			'/assets/dist/admin-lte/dist/css/adminlte.min.css' . $jacat_ver,
+			'/assets/dist/admin-lte/plugins/fontawesome-free/css/all.min.css' . $jacat_ver,
+			'/assets/dist/admin-lte//plugins/icheck-bootstrap/icheck-bootstrap.min.css'. $jacat_ver,
+			'/assets/dist/ionicons/docs/css/ionicons.min.css' . $jacat_ver
 		)
 	),
 
-	// Default CSS class for <body> tag
+	// Default CSS class 
 	'body_class' => 'sidebar-mini',
+	'nav_bar_style' => 'navbar navbar-expand navbar-white navbar-light',
+	'nav_menu_bg' => '',
+	'side_bar_style' => '',
+	'aside_bar_style' => '',
+	'footer_style' => '',
 	
 	// Multilingual settings
 	'languages' => array(
