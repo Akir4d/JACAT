@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------------
-| CI Bootstrap 3 Configuration
+| JACAT Configuration
 | -------------------------------------------------------------------------
 | This file lets you define default values to be passed into views when calling 
 | MY_Controller's render() function. 
@@ -20,7 +20,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | 	- $this->mPageAuth
 */
 
-$config['ci_bootstrap'] = array(
+$config['jacat'] = array(
 
 	/*
 	| -------------------------------------------------------------------------
@@ -30,10 +30,10 @@ $config['ci_bootstrap'] = array(
 	*/
 
 	// Site name
-	'site_name' => 'CI Bootstrap 3',
+	'site_name' => 'JACAT',
 
 	// Default page title prefix
-	'page_title_prefix' => 'CI Bootstrap 3 - ',
+	'page_title_prefix' => 'JACAT - ',
 
 	// Default page title
 	// (set empty then MY_Controller will automatically generate one based on controller / action)
@@ -42,8 +42,8 @@ $config['ci_bootstrap'] = array(
 	// Default meta data
 	// (name => content)
 	'meta_data'	=> array(
-		'author'		=> 'Michael Chan (https://github.com/waifung0207)',
-		'description'	=> 'CI Bootstrap 3',
+		'author'		=> 'Paolo Rampino (https://github.com/Akir4d)',
+		'description'	=> 'JACAT',
 		'keywords'		=> 'PHP,CodeIgniter,CRUD'
 	),
 
@@ -140,8 +140,8 @@ $config['ci_bootstrap'] = array(
 	// Email config (to be used in MY_Email library)
 	'email' => array(
 		'from_email'		=> 'noreply@email.com',
-		'from_name'			=> 'CI Bootstrap',
-		'subject_prefix'	=> '[CI Bootstrap] ',
+		'from_name'			=> 'JACAT',
+		'subject_prefix'	=> '[JACAT] ',
 
 		// Mailgun HTTP API
 		'mailgun_api'		=> array(
@@ -192,7 +192,7 @@ $config['ci_bootstrap'] = array(
 		array(
 			'auth'		=> array('webmaster', 'admin', 'manager', 'staff'),
 			'name'		=> 'Github Repo',
-			'url'		=> CI_BOOTSTRAP_REPO,
+			'url'		=> JACAT_REPO,
 			'target'	=> '_blank',
 			'color'		=> 'text-green'
 		),

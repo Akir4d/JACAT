@@ -5,7 +5,7 @@ $config['image_crud_default_language'] = 'english';
 
 
 /**
- * Added by CI Bootstrap 3
+ * Added by JACAT
  */
 
 // For setting max image size

@@ -1,5 +1,5 @@
 {
-    "name": "ci_bootstrap_3",
+    "name": "JACAT",
     "require": {
         "firebase/php-jwt": "^3.0",
         "google/recaptcha": "~1.1",

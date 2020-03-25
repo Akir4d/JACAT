@@ -1,4 +1,4 @@
-// Added by CI Bootstrap 3
+// Added by JACAT
 $(function(){
 	$('textarea.texteditor').summernote({
 		height: 200

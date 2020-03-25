@@ -25,7 +25,7 @@ class Form_builder {
 		$CI->load->library('form_validation');
 		$CI->load->config('form_validation');
 
-		// CI Bootstrap libraries
+		// JACAT libraries
 		$CI->load->library('system_message');
 	}
 

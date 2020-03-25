@@ -22,10 +22,10 @@
 */
 
 /**
- * Changes by CI Bootstrap 3 (https://github.com/Akir4d/ci_bootstrap_3).
+ * Changes by JACAT (https://github.com/Akir4d/JACAT).
  * 
- * The following values are changed to fit with CI Bootstrap:
- *  - $config['site_title'] = 'CI Bootstrap'; (default: 'Example.com')
+ * The following values are changed to fit with JACAT:
+ *  - $config['site_title'] = 'JACAT'; (default: 'Example.com')
  * 	- $config['email_templates'] = 'email/auth/'; (default: 'auth/email/')
  * 	- $config['email_activate']	= 'activate.php'; (default: 'activate.tpl.php')
  * 	- $config['email_forgot_password'] = 'forgot_password.php'; (default: 'forgot_password.tpl.php')

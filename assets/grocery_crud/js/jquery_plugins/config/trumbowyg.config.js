@@ -1,4 +1,4 @@
-// Added by CI Bootstrap 3
+// Added by JACAT
 $(function(){
 	// Reference: http://alex-d.github.io/Trumbowyg/documentation.html
 	var options = {

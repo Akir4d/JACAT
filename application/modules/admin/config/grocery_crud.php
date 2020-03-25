@@ -35,7 +35,7 @@
 	$config['grocery_crud_environment'] = 'production';
 
 	/**
-	 * Added by CI Bootstrap 3
+	 * Added by JACAT
 	 */
 	$config['grocery_crud_unset_jquery'] = FALSE;
 	$config['grocery_crud_unset_jquery_ui'] = FALSE;

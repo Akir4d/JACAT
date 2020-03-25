@@ -86,7 +86,7 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 
 /*
 |--------------------------------------------------------------------------
-| Custom Constants (added by CI Bootstrap)
+| Custom Constants (added by JACAT)
 |--------------------------------------------------------------------------
 | Constants to be used in both Frontend and other modules
 |
@@ -104,8 +104,8 @@ if (!(PHP_SAPI === 'cli' OR defined('STDIN')))
 	define('API_HOST', $_SERVER['HTTP_HOST'].dirname($_SERVER['SCRIPT_NAME']));
 }
 
-define('CI_BOOTSTRAP_REPO',			'https://github.com/Akir4d/ci_bootstrap_3');
-define('CI_BOOTSTRAP_VERSION',		'Build 20200310');	// will follow semantic version (e.g. v1.x.x) after first stable launch
+define('JACAT_REPO',			'https://github.com/Akir4d/JACAT');
+define('JACAT_VERSION',		'Build 20200323');	// will follow semantic version (e.g. v1.x.x) after first stable launch
 
 // Upload paths
 //define('UPLOAD_COVER_PHOTO',	'assets/uploads/cover_photos');

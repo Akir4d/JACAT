@@ -3,18 +3,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------------
-| CI Bootstrap 3 Configuration
+| JACAT Configuration
 | -------------------------------------------------------------------------
 | This file lets you define default values to be passed into views 
 | when calling MY_Controller's render() function. 
 | 
 | See example and detailed explanation from:
-| 	/application/config/ci_bootstrap_example.php
+| 	/application/config/jacat_example.php
 */
 
-$cib3_ver ="?ver=0.3.17";
+$cib3_ver ="?ver=0.4.17";
 
-$config['ci_bootstrap'] = array(
+$config['jacat'] = array(
 
 	// Site name
 	'site_name' => 'Admin Panel',
@@ -148,7 +148,7 @@ $config['ci_bootstrap'] = array(
 		array(
 			'auth'		=> array('webmaster', 'admin', 'manager', 'staff'),
 			'name'		=> 'Github Repo',
-			'url'		=> CI_BOOTSTRAP_REPO,
+			'url'		=> JACAT_REPO,
 			'target'	=> '_blank',
 			'color'		=> 'text-green'
 		),

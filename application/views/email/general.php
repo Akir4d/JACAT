@@ -1,6 +1,6 @@
 <?php $this->load->view('email/_header'); ?>
 
-<p>This email is sent automatically from <a href="<?php echo site_url(); ?>">CI Bootstrap Website</a>.</p>
+<p>This email is sent automatically from <a href="<?php echo site_url(); ?>">JACAT Website</a>.</p>
 
 <table>
 	<?php foreach ($data as $key => $value): ?>

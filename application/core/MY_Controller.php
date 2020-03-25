@@ -14,7 +14,7 @@ class MY_Controller extends MX_Controller {
 	protected $mAction = 'index';		// controller function being called
 	protected $mMethod = 'GET';			// HTTP request method
 
-	// Config values from config/ci_bootstrap.php
+	// Config values from config/jacat.php
 	protected $mConfig = array();
 	protected $mBaseUrl = array();
 	protected $mSiteName = '';
@@ -60,10 +60,10 @@ class MY_Controller extends MX_Controller {
 		$this->_setup();
 	}
 
-	// Setup values from file: config/ci_bootstrap.php
+	// Setup values from file: config/jacat.php
 	private function _setup()
 	{
-		$config = $this->config->item('ci_bootstrap');
+		$config = $this->config->item('jacat');
 		
 		// load default values
 		$this->mBaseUrl = empty($this->mModule) ? base_url() : base_url($this->mModule).'/';
@@ -91,7 +91,7 @@ class MY_Controller extends MX_Controller {
 				redirect($home_url);
 			}
 
-			// get language from URL, or from config's default value (in ci_bootstrap.php)
+			// get language from URL, or from config's default value (in jacat.php)
 			$this->mAvailableLanguages = $lang_config['available'];
 			$language = array_key_exists($this->uri->segment(1), $this->mAvailableLanguages) ? $this->uri->segment(1) : $lang_config['default'];
 

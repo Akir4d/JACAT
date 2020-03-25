@@ -3,21 +3,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------------
-| CI Bootstrap 3 Configuration
+| JACAT Configuration
 | -------------------------------------------------------------------------
 | This file lets you define default values to be passed into views 
 | when calling MY_Controller's render() function. 
 | 
 | See example and detailed explanation from:
-| 	/application/config/ci_bootstrap_example.php
+| 	/application/config/jacat_example.php
 */
 
-$cibs3_ver = "?ver=0.1.0";
+$jacat_ver = "?ver=0.5.0";
 
-$config['ci_bootstrap'] = array(
+$config['jacat'] = array(
 
 	// Site name
-	'site_name' => 'CI Bootstrap 3',
+	'site_name' => 'JACAT',
 
 	// Default page title prefix
 	'page_title_prefix' => '',
@@ -37,16 +37,16 @@ $config['ci_bootstrap'] = array(
 		'head'	=> array(
 		),
 		'foot'	=> array(
-			'assets/dist/frontend/lib.min.js' . $cibs3_ver,
-			'assets/dist/frontend/app.min.js' . $cibs3_ver
+			'assets/dist/frontend/lib.min.js' . $jacat_ver,
+			'assets/dist/frontend/app.min.js' . $jacat_ver
 		),
 	),
 
 	// Default stylesheets to embed at page head
 	'stylesheets' => array(
 		'screen' => array(
-			'assets/dist/frontend/lib.min.css' . $cibs3_ver,
-			'assets/dist/frontend/app.min.css' . $cibs3_ver
+			'assets/dist/frontend/lib.min.css' . $jacat_ver,
+			'assets/dist/frontend/app.min.css' . $jacat_ver
 		)
 	),
 

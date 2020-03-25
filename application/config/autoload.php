@@ -102,7 +102,7 @@ $autoload['helper'] = array('array', 'inflector', 'string', 'url');
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array('ci_bootstrap');
+$autoload['config'] = array('jacat');
 
 /*
 | -------------------------------------------------------------------

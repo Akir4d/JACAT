@@ -35,7 +35,7 @@ function image_url($path)
 function lang_url($lang, $url = NULL)
 {
 	$CI =& get_instance();
-	$config = $CI->config->item('ci_bootstrap');
+	$config = $CI->config->item('jacat');
 	
 	if ( empty($config['languages']) )
 	{

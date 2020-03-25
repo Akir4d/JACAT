@@ -1,9 +1,9 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Changes by CI Bootstrap 3 (https://github.com/waifung0207/ci_bootstrap_3).
+ * Changes by JACAT (https://github.com/Akir4d/jacat).
  * 
- * The following values are changed to fit with CI Bootstrap:
+ * The following values are changed to fit with JACAT:
  * 	- $config['tables']['users'] = 'admin_users'; (default: 'users')
  * 	- $config['tables']['groups'] = 'admin_groups'; (default: 'groups')
  * 	- $config['tables']['users_groups'] = 'admin_users_groups'; (default: 'users_groups')

@@ -60,7 +60,7 @@ Below configuration are preferred; other environments are not well-tested, but s
 ### Setup Guide
 
 1. git clone this repo
-2. Create a database (e.g. named "ci_bootstrap_3"), then import /sql/latest.sql into MySQL server
+2. Create a database (e.g. named "jacat"), then import /sql/latest.sql into MySQL server
 3. Inside /application/config/ copy "database.model.php" as "database.php" and make sure that database config is set correctly
 4. You should be able to access Frontend Website, Admin Panel and API Site (with Swagger Doc) respectively
 5. Visit the Demo Controllers (exist in both Frontend / Admin Panel / API) for sample usage
@@ -87,7 +87,7 @@ application/                    --- Main CodeIgniter source files
     config/
         production/             --- Configuration when ENVIRONMENT is set as "production"
         autoload.php            --- By default, some files are loaded for this repo
-        ci_bootstrap.php        --- Core configuration file for all sites
+        jacat.php               --- Core configuration file for all sites
         database.php            --- Need to verify to ensure connection with MySQL database
         email.php               --- Created to centralize email configuration (default: using Mailgun)
         form_validation.php     --- Created to centralize validation forms for all forms, include ReCAPTCHA settings
@@ -171,7 +171,7 @@ Frontend - Home:
 ![](screenshots/frontend_home.png "Frontend Home")
 
 
-More screenshots can be viewed from the [screenshots folder](https://github.com/Akir4d/ci_bootstrap_3/blob/master/screenshots/) under this repository.
+More screenshots can be viewed from the [screenshots folder](https://github.com/Akir4d/JACAT/blob/master/screenshots/) under this repository.
 
 
 ### TODO

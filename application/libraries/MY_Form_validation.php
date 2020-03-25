@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Enhanced Form Validation library by CI Bootstrap 3
+ * Enhanced Form Validation library by JACAT
  */
 class MY_Form_validation extends CI_Form_validation {
 

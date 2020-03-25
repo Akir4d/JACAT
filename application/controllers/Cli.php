@@ -67,7 +67,7 @@ class Cli extends MX_Controller {
 		echo '====== Task: Empty database (Completed)'.PHP_EOL;
 	}
 
-	// Backup only the default tables (from CI Bootstrap)
+	// Backup only the default tables (from JACAT)
 	public function save_default_db()
 	{
 		$this->load->dbutil();

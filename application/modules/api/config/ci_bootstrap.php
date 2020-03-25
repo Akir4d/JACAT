@@ -3,16 +3,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------------
-| CI Bootstrap 3 Configuration
+| JACAT Configuration
 | -------------------------------------------------------------------------
 | This file lets you define default values to be passed into views 
 | when calling MY_Controller's render() function. 
 | 
 | See example and detailed explanation from:
-| 	/application/config/ci_bootstrap_example.php
+| 	/application/config/jacat_example.php
 */
 
-$config['ci_bootstrap'] = array(
+$config['jacat'] = array(
 
 	// Site name
 	'site_name' => 'API Doc',

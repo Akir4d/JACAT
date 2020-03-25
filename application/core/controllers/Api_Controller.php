@@ -16,7 +16,7 @@ class API_Controller extends REST_Controller {
 		parent::__construct();
 		
 		// send PHP headers when necessary (e.g. enable CORS)
-		$config = $this->config->item('ci_bootstrap');
+		$config = $this->config->item('jacat');
 		$headers = empty($config['headers']) ? array() : $config['headers'];
 		foreach ($headers as $header)
 		{

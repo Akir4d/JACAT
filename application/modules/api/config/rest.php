@@ -3,9 +3,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Changes by CI Bootstrap 3 (https://github.com/waifung0207/ci_bootstrap_3).
+ * Changes by JACAT (https://github.com/Akir4d/JACAT).
  * 
- * The following values are changed to fit with CI Bootstrap:
+ * The following values are changed to fit with JACAT:
  *  - $config['rest_keys_table'] = 'api_keys'; (default: 'keys')
  *  - $config['rest_logs_table'] = 'api_logs'; (default: 'logs')
  *  - $config['rest_access_table'] = 'api_access'; (default: 'access')

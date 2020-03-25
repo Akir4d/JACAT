@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed.');
 
 /**
- * Enhanced Email library by CI Bootstrap 3
+ * Enhanced Email library by JACAT
  */
 class MY_Email extends CI_Email {
 
@@ -12,7 +12,7 @@ class MY_Email extends CI_Email {
 	{
 		parent::__construct($config);
 		$this->CI =& get_instance();
-		$this->CI->config->load('ci_bootstrap');
+		$this->CI->config->load('jacat');
 	}
 	
 	// Send email templates using default CodeIgniter setting (e.g. SMTP)
@@ -20,7 +20,7 @@ class MY_Email extends CI_Email {
 	public function send_email_template($to_email, $to_name, $subject, $view, $view_data = NULL)
 	{
 		// load values from config
-		$config = $this->CI->config->item('ci_bootstrap')['email'];
+		$config = $this->CI->config->item('jacat')['email'];
 		$from_email = $config['from_email'];
 		$from_name = $config['from_name'];
 		$subject = $config['subject_prefix'].$subject;
@@ -67,7 +67,7 @@ class MY_Email extends CI_Email {
 	public function send_by_mailgun($to_email, $to_name, $subject, $view, $view_data = NULL)
 	{
 		// load values from config
-		$config = $this->CI->config->item('ci_bootstrap')['email'];
+		$config = $this->CI->config->item('jacat')['email'];
 		$mailgun_config = $config['mailgun_api'];
 
 		// config not set correctly

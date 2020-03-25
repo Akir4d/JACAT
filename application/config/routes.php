@@ -55,7 +55,7 @@ $route['translate_uri_dashes'] = FALSE;
 
 /*
 | -------------------------------------------------------------------------
-| Added by CI Bootstrap 3
+| Added by JACAT
 | Multilingual routing (use 2 characters (e.g. en, zh, cn, es) for switching languages)
 | -------------------------------------------------------------------------
 */
@@ -64,7 +64,7 @@ $route['^(\w{2})$'] = $route['default_controller'];
 
 /*
 | -------------------------------------------------------------------------
-| Added by CI Bootstrap 3
+| Added by JACAT
 | Additional routes on top of codeigniter-restserver
 | -------------------------------------------------------------------------
 | Examples from rule: "api/(:any)/(:num)"
@@ -84,7 +84,7 @@ $route['api/(:any)/(:num)/(:any)']		= 'api/$1/$3/$2';
 
 /*
 | -------------------------------------------------------------------------
-| Added by CI Bootstrap 3
+| Added by JACAT
 | Uncomment these if require API versioning (by module name like api_v1)
 | -------------------------------------------------------------------------
 */

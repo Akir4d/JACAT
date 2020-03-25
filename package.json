@@ -1,13 +1,13 @@
 {
-  "name": "ci_bootstrap_3",
+  "name": "JACAT",
   "version": "0.2.0",
-  "description": "",
+  "description": "Just Another Codeigniter/AdminLTE Template",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Akir4d/ci_bootstrap_3"
+    "url": "https://github.com/Akir4d/JACAT"
   },
   "authors": [
     "Michael Chan <waifung.hk>",
