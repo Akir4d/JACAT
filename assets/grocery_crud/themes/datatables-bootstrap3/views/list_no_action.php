@@ -8,7 +8,7 @@
                     <input type="text" class="form-control dt-ci-input search_hidden hidden" />
                     <div class="btn-group">					
                         <button class="btn btn-default refresh-data" role="button" onclick="location.reload()" data-url="<?php echo $ajax_list_url; ?>">
-                            <i class="fa fa-refresh"></i>
+                            <i class="fas fa-sync-alt"></i>
                         </button>
                         <button onclick='$(".groceryCrudTable").find("thead tr th input").val("");' class="clear-filtering btn btn-default">
                             <i class="fa fa-eraser"></i> <i class="glyphicon glyphicon-arrow-right"></i>
@@ -76,14 +76,14 @@
 
         <?php if (!$unset_edit) { ?>
                                 <a href="<?php echo $row->edit_url ?>" class="btn btn-default">
-                                    <i class="fa fa-pencil"></i>
+                                    <i class="fas fa-pencil-alt"></i>
                                 </a>
                             <?php } ?>
 
         <?php if (!$unset_delete) { ?>
                                 <a onclick = "javascript: return delete_row('<?php echo $row->delete_url ?>', '<?php echo $num_row ?>')"
                                    href="javascript:void(0)" class="btn btn-default">
-                                    <i class="fa fa-trash-o text-danger"></i>
+                                    <i class="fas fa-trash-alt text-danger"></i>
                                 </a>
         <?php } ?>
                         </div>
@@ -120,14 +120,14 @@
 
         <?php if (!$unset_edit) { ?>
                                     <li>      <a href="<?php echo $row->edit_url ?>">
-                                            <i class="fa fa-pencil"></i> <?php echo $this->l('list_edit'); ?>
+                                            <i class="fas fa-pencil-alt"></i> <?php echo $this->l('list_edit'); ?>
                                         </a></li> 
                                 <?php } ?>
 
         <?php if (!$unset_delete) { ?>
                                     <li> <a onclick = "javascript: return delete_row('<?php echo $row->delete_url ?>', '<?php echo $num_row ?>')"
                                             href="javascript:void(0)">
-                                            <i class="fa fa-trash-o text-danger"></i>
+                                            <i class="fas fa-trash-alt text-danger"></i>
                                             <span class="text-danger"><?php echo $this->l('list_delete') ?></span>
                                         </a></li>
         <?php } ?>

@@ -3,6 +3,6 @@ var gulp = require('gulp'),
 
 gulp.task('rebuild', gulpSequence('clean',
 	['copy', 'imagemin'],
-	['cssmin', 'uglify:lib'],
-	['sass', 'uglify']
+//	['cssmin', 'uglify:lib'],
+//	['sass', 'uglify']
 ));

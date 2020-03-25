@@ -70,4 +70,5 @@ class MX_Lang extends CI_Lang
 		
 		return $this->language;
 	}
+	
 }

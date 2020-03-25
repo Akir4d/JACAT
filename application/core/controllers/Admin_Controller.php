@@ -27,8 +27,11 @@ class Admin_Controller extends MY_Controller {
 	{
 		// load skin according to user role
 		$config = $this->mConfig['adminlte'];
-		$this->mBodyClass = $config['body_class'][$this->mUserMainGroup];
-
+		$this->mNavbarClass = $config['navbar_class'][$this->mUserMainGroup];
+		$this->mNavmenuBg = $config['navmenu_bg'][$this->mUserMainGroup];
+		$this->mSideClass = $config['side_class'][$this->mUserMainGroup];
+		$this->mAsideClass = $config['aside_class'][$this->mUserMainGroup];
+		$this->mFooterClass = $config['footer_class'][$this->mUserMainGroup];
 		// additional view data
 		$this->mViewData['useful_links'] = $this->mUsefulLinks;
 
@@ -43,7 +46,7 @@ class Admin_Controller extends MY_Controller {
 		$this->load->library('Grocery_CRUD');
 		$crud = new grocery_CRUD();
 		$crud->set_table($table);
-        $crud->set_language($this->config->item('language'));
+        $crud->set_language($this->get_idiom());
 		// auto-generate subject
 		if ( empty($subject) )
 		{

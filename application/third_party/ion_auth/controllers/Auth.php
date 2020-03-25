@@ -26,7 +26,7 @@ class Auth extends CI_Controller
 	 */
 	public function index()
 	{
-
+		echo 'qui';
 		if (!$this->ion_auth->logged_in())
 		{
 			// redirect them to the login page

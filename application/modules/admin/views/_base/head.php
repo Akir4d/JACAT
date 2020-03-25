@@ -30,6 +30,7 @@
 			echo "<script src='$url'></script>".PHP_EOL;
 		}
 	?>
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
 	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>

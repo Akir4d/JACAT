@@ -232,6 +232,72 @@ class Form {
 		return $this->btn_submit($label, $extra);
 	}
 	
+	private function lplaceholder ($placeholder, $input, $addother ="") {
+
+		return str_replace('>', 'placeholder="'.$placeholder.'" '.$addother.'>', $input);
+	}
+
+	/**
+	 * Bootstrap 4 functions
+	 */
+	public function bs4_text($label, $name, $value = NULL, $extra = array(), $icon = 'fas fa-user')
+	{
+		$extra['class'] = empty($extra['class']) ? 'form-control' : $extra['class'];
+		return '<div class="input-group mb-3">'.$this->lplaceholder($label, $this->field_text($name, $value, $extra))
+			  .'<div class="input-group-append">
+					<div class="input-group-text">
+					<span class="'.$icon.'">
+					</span>
+					</div>
+					</div>
+				</div>';
+	}
+
+	public function bs4_email($label, $name = 'email', $value = NULL, $extra = array(), $icon = 'fas fa-at')
+	{
+		$extra['class'] = empty($extra['class']) ? 'form-control' : $extra['class'];
+		return '<div class="input-group mb-3">'.$this->lplaceholder($label, $this->field_email($name, $value, $extra))
+			  .'<div class="input-group-append">
+					<div class="input-group-text">
+					<span class="'.$icon.'">
+					</span>
+					</div>
+					</div>
+				</div>';
+	}
+
+	public function bs4_password($label, $name = 'password', $value = NULL, $extra = array(), $icon = 'fas fa-lock')
+	{
+		$extra['class'] = empty($extra['class']) ? 'form-control' : $extra['class'];
+		return '<div class="input-group mb-3" >'.$this->lplaceholder($label, $this->field_password($name, $value, $extra), 'autocomplete="new-password"')
+			  .'<div class="input-group-append">
+					<div class="input-group-text">
+					<span class="'.$icon.'">
+					</span>
+					</div>
+					</div>
+				</div>';
+	}
+
+	public function bs4_textarea($label, $name, $value = NULL, $extra = array(), $icon = 'fas fa-text-height')
+	{
+		$extra['class'] = empty($extra['class']) ? 'form-control' : $extra['class'];
+		return '<div class="input-group mb-3">'.$this->lplaceholder($label, $this->field_textarea($name, $value, $extra))
+			  .'<div class="input-group-append">
+					<div class="input-group-text">
+					<span class="'.$icon.'">
+					</span>
+					</div>
+					</div>
+				</div>';
+	}
+
+	public function bs4_submit($label = 'Submit', $class = 'btn btn-primary', $extra = array())
+	{
+		$extra['class'] = $class;
+		return $this->btn_submit($label, $extra);
+	}
+
 	/**
 	 * Success / Error messages
 	 */

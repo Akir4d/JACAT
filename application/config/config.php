@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 |--------------------------------------------------------------------------
@@ -52,7 +52,7 @@ $config['index_page'] = '';
 |
 | WARNING: If you set this to 'PATH_INFO', URIs will always be URL-decoded!
 */
-$config['uri_protocol']	= 'REQUEST_URI';
+$config['uri_protocol']    = 'REQUEST_URI';
 
 /*
 |--------------------------------------------------------------------------
@@ -75,13 +75,11 @@ $config['url_suffix'] = '';
 | there is an available translation if you intend to use something other
 | than english.
 |
-| 'auto' means to switch language automatically, you have to configure also
-| allowed_auto_languages to prevent php errors.  
+| 'auto' means to switch language automatically.  
 |
 |
 */
-$config['language']	= 'auto';
-$config['allowed_auto_languages'] = array('english', 'italian', 'french', 'spanish', 'simplified-chinese',  'traditional-chinese');
+$config['language']    = 'auto';
 
 /*
 |--------------------------------------------------------------------------
@@ -395,11 +393,11 @@ $config['sess_regenerate_destroy'] = FALSE;
 |       'cookie_httponly') will also affect sessions.
 |
 */
-$config['cookie_prefix']	= '';
-$config['cookie_domain']	= '';
-$config['cookie_path']		= '/';
-$config['cookie_secure']	= FALSE;
-$config['cookie_httponly'] 	= FALSE;
+$config['cookie_prefix']    = '';
+$config['cookie_domain']    = '';
+$config['cookie_path']        = '/';
+$config['cookie_secure']    = FALSE;
+$config['cookie_httponly']     = FALSE;
 
 /*
 |--------------------------------------------------------------------------
@@ -518,19 +516,25 @@ $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
 
 /*
-| This enables Automatic language switch
-| if it not works, be sure you have php-intl enabled in your php.ini file
+| This enables Automatic, allowed language are determinated by directory listed 
+| on application/language.
 |
-*/
-if($config['language'] === 'auto') 
-		{
-		try {
-            $config['language']  = strtolower(Locale::getDisplayLanguage(explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE'])[0])); 
-                if(!empty($config['allowed_auto_languages']) && !in_array($config['language'], $config['allowed_auto_languages']))  
-                    {
-                        $config['language'] = "english";
-                    }
-			} catch (\Throwable $e) {
-				$config['language'] = "english";
-            } 
+| If it not works, be sure you have php-intl enabled in your php.ini file
+|
+
+if ($config['language'] === 'auto') {
+    try {
+        $config['language']  = strtolower(Locale::getDisplayLanguage(explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE'])[0]));
+        $path_search = APPPATH.'language/';
+        $all_languages_in_path = glob($path_search.'*', GLOB_ONLYDIR);
+        foreach ($all_languages_in_path  as $key => $value){
+            $all_languages_in_path [$key] = str_replace($path_search,'', $value);
         }
+        if (!empty($alanguages) && !in_array($config['language'], $alanguages)) {
+            $config['language'] = "english";
+        }
+    } catch (\Throwable $e) {
+        $config['language'] = "english";
+    }
+}
+*/
