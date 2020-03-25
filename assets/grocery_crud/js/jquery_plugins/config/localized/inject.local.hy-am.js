@@ -1,1 +1,0 @@
-var ciLocaleOverride = "hy-am"
