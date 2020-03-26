@@ -1910,7 +1910,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		include($this->default_config_path.'/language_alias.php');
 			if(array_key_exists($this->language, $language_alias))
 			{
-				$lang = $language_alias['$this->language'];
+				$lang = $language_alias[$this->language];
 			}
 		$this->_inline_js('var grocery_crud_language = "'.$lang.'";var js_date_format = "'.$this->js_date_format.'";');
 		$this->_get_ajax_results();
