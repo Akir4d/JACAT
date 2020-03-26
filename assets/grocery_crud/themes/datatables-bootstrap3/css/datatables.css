@@ -17,7 +17,7 @@
 }
 
 .black-text {
-    color: #333;
+    color: #666;
 }
 
 tr div.dropdown a {
@@ -28,36 +28,73 @@ tr div.dropdown ul li a {
     color: #666;
 }
 
-tr.bg-red div.dropdown a {
-    color: white;
-}
 
-tr.bg-red div.dropdown ul li a {
+tr.tr-red div.dropdown a {
     color: #666;
 }
 
-tr.bg-green div.dropdown a {
-    color: white;
-}
-
-tr.bg-green div.dropdown ul li a {
+tr.tr-red div.dropdown ul li a {
     color: #666;
 }
 
-tr.bg-orange div.dropdown a {
-    color: white;
-}
-
-tr.bg-orange div.dropdown ul li a {
+tr.tr-grey div.dropdown a {
     color: #666;
 }
 
-tr.bg-blue div.dropdown a {
-    color: white;
-}
-
-tr.bg-blue div.dropdown ul li a {
+tr.tr-grey div.dropdown ul li a {
     color: #666;
 }
+
+tr.tr-green div.dropdown a {
+    color: #666;
+}
+
+tr.tr-green div.dropdown ul li a {
+    color: #666;
+}
+
+tr.tr-yellow div.dropdown a {
+    color: #666;
+}
+
+tr.tr-yellow div.dropdown ul li a {
+    color: #666;
+}
+
+tr.tr-blue div.dropdown a {
+    color: #666;
+}
+
+tr.tr-blue div.dropdown ul li a {
+    color: #666;
+}
+
+tr.tr-blue {
+    background-color: #c2ddfa;
+    color: #666;
+  }
+  
+tr.tr-green {
+    background-color: #c7eed0;
+    color: #666;
+  }
+
+  
+tr.tr-yellow {
+    background-color: #fff7dd;
+    color: #666;
+  }
+  
+  
+tr.tr-red {
+    background-color: #ffaab3;
+    color: #666;
+  }
+
+  tr.tr-grey {
+    background-color: #f8f9fa;
+    color: #666;
+  }
+
 
 

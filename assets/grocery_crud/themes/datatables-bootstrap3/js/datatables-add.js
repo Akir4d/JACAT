@@ -132,9 +132,9 @@ function SwTFbutton(value, type) {
 	var target = "r-" + value + (type ? "-true" : "-false"); 
 	var target2 = "field-" + value + (type ? "-false" : "-true"); 
 	var target3 = "r-" + value + (type ? "-false" : "-true");
-	$("#" + target).addClass("hidden"); 
+	$("#" + target).prop("hidden", true); 
 	$("#" + target2).click(); 
-	$("#" + target3).removeClass('hidden');
+	$("#" + target3).removeAttr('hidden');
 }
 
 $(document).ready(function() {

@@ -55,11 +55,10 @@ $config['jacat'] = array(
 
 	// Default CSS class for <body> tag
 	'body_class' => 'sidebar-mini hold-transition layout-top-nav',
-
-	'nav_bar_style' => 'navbar navbar-expand navbar-dark',
-	'nav_menu_bg' => 'bg-dark',
-	'side_bar_style' => '',
-	'aside_bar_style' => '',
+	'navbar_class' => 'navbar navbar-expand navbar-dark',
+	'navmenu_bg' => 'bg-dark',
+	'side_class' => '',
+	'aside_class' => '',
 	'footer_style' => 'bg-dark',
 
 	

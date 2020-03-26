@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------------
@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | 	/application/config/jacat_example.php
 */
 
-$jacat_ver ="?ver=0.4.17";
+$jacat_ver = "?ver=0.4.20";
 
 $config['jacat'] = array(
 
@@ -31,14 +31,27 @@ $config['jacat'] = array(
 		'description'	=> '',
 		'keywords'		=> ''
 	),
-	
+
 	// Default scripts to embed at page head or end
 	'scripts' => array(
 		'head'	=> array(
-		),
-		'foot'	=> array(
 			'/assets/dist/admin-lte/plugins/jquery/jquery.min.js' . $jacat_ver,
 			'/assets/dist/bootstrap/dist/js/bootstrap.bundle.min.js' . $jacat_ver,
+			'/assets/dist/admin-lte/plugins/datatables/jquery.dataTables.js' . $jacat_ver,
+			'/assets/dist/admin-lte/plugins/datatables-bs4/js/dataTables.bootstrap4.js' . $jacat_ver,
+			'/assets/dist/admin-lte/plugins/datatables-responsive/js/dataTables.responsive.min.js' . $jacat_ver,
+			'/assets/dist/admin-lte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' . $jacat_ver,
+			'/assets/dist/admin-lte/plugins/datatables-select/js/select.bootstrap4.min.js' . $jacat_ver,
+			'/assets/dist/admin-lte/plugins/jszip/jszip.min.js' . $jacat_ver,
+			'/assets/dist/admin-lte/plugins/pdfmake/pdfmake.min.js' . $jacat_ver,
+			'/assets/dist/admin-lte/plugins/moment/moment-with-locales.min.js' . $jacat_ver,
+			'/assets/dist/admin-lte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' . $jacat_ver,
+			'/assets/dist/admin-lte/plugins/datatables-buttons/js/dataTables.buttons.min.js'. $jacat_ver,
+			'/assets/dist/admin-lte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js' . $jacat_ver,
+			'/assets/dist/admin-lte/plugins/datatables-buttons/js/buttons.html5.min.js' . $jacat_ver,
+			'/assets/dist/admin-lte/plugins/datatables-buttons/js/buttons.print.min.js' . $jacat_ver,
+		),
+		'foot'	=> array(
 			'/assets/dist/admin-lte/dist/js/adminlte.min.js' . $jacat_ver,
 		),
 	),
@@ -48,34 +61,38 @@ $config['jacat'] = array(
 		'screen' => array(
 			'/assets/dist/admin-lte/dist/css/adminlte.min.css' . $jacat_ver,
 			'/assets/dist/admin-lte/plugins/fontawesome-free/css/all.min.css' . $jacat_ver,
-			'/assets/dist/admin-lte//plugins/icheck-bootstrap/icheck-bootstrap.min.css'. $jacat_ver,
-			'/assets/dist/ionicons/docs/css/ionicons.min.css' . $jacat_ver
+			'/assets/dist/admin-lte/plugins/icheck-bootstrap/icheck-bootstrap.min.css' . $jacat_ver,
+			'/assets/dist/admin-lte/plugins/datatables-bs4/css/dataTables.bootstrap4.css' . $jacat_ver,
+			'/assets/dist/ionicons/docs/css/ionicons.min.css' . $jacat_ver,
+			'/assets/dist/admin-lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' . $jacat_ver,
+			'/assets/dist/admin-lte/plugins/datatables-select/css/select.bootstrap4.min.css' . $jacat_ver,
+			'/assets/dist/admin-lte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' . $jacat_ver,
+			'/assets/dist/admin-lte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' . $jacat_ver
 		)
 	),
 
 	// Default CSS class 
 	'body_class' => 'sidebar-mini',
-	'nav_bar_style' => 'navbar navbar-expand navbar-white navbar-light',
-	'nav_menu_bg' => '',
-	'side_bar_style' => '',
-	'aside_bar_style' => '',
+	'navbar_class' => 'navbar-white navbar-light',
+	'navmenu_bg' => '',
+	'side_style' => '',
+	'aside_style' => 'sidebar-dark-info',
 	'footer_style' => '',
-	
+
 	// Multilingual settings
-	'languages' => array(
-	),
+	'languages' => array(),
 
 	// Menu items
 	'menu' => array(
 		'home' => array(
 			'name'		=> 'Home',
 			'url'		=> '',
-			'icon'		=> 'fa fa-home',
+			'icon'		=> 'fas fa-home',
 		),
 		'user' => array(
 			'name'		=> 'Users',
 			'url'		=> 'user',
-			'icon'		=> 'fa fa-users',
+			'icon'		=> 'fas fa-users',
 			'children'  => array(
 				'List'			=> 'user',
 				'Create'		=> 'user/create',
@@ -85,7 +102,7 @@ $config['jacat'] = array(
 		'panel' => array(
 			'name'		=> 'Admin Panel',
 			'url'		=> 'panel',
-			'icon'		=> 'fa fa-cog',
+			'icon'		=> 'fas fa-cog',
 			'children'  => array(
 				'Admin Users'			=> 'panel/admin_user:fa fa-cogs',
 				'Create Admin User'		=> 'panel/admin_user_create',
@@ -95,7 +112,7 @@ $config['jacat'] = array(
 		'util' => array(
 			'name'		=> 'Utilities',
 			'url'		=> 'util',
-			'icon'		=> 'fa fa-cogs',
+			'icon'		=> 'fas fa-cogs',
 			'children'  => array(
 				'Database Versions'		=> 'util/list_db',
 			)
@@ -103,7 +120,7 @@ $config['jacat'] = array(
 		'logout' => array(
 			'name'		=> 'Sign Out',
 			'url'		=> 'panel/logout',
-			'icon'		=> 'fa fa-sign-out',
+			'icon'		=> 'fas fa-sign-out-alt',
 		)
 	),
 
@@ -127,11 +144,35 @@ $config['jacat'] = array(
 
 	// AdminLTE settings
 	'adminlte' => array(
-		'body_class' => array(
-			'webmaster'	=> 'skin-red sidebar-mini',
-			'admin'		=> 'skin-purple sidebar-mini',
-			'manager'	=> 'skin-black sidebar-mini',
-			'staff'		=> 'skin-blue sidebar-mini',
+		'navbar_class' => array(
+			'webmaster'	=> 'navbar-dark navbar-danger',
+			'admin'		=> 'navbar-white navbar-light',
+			'manager'	=> 'navbar-white navbar-light',
+			'staff'		=> 'navbar-white navbar-light',
+		),
+		'navmenu_bg' => array(
+			'webmaster'	=> '',
+			'admin'		=> '',
+			'manager'	=> '',
+			'staff'		=> '',
+		),
+		'side_class' => array(
+			'webmaster'	=> '',
+			'admin'		=> '',
+			'manager'	=> '',
+			'staff'		=> '',
+		),
+		'aside_class' => array(
+			'webmaster'	=> 'sidebar-dark-danger',
+			'admin'		=> 'sidebar-dark-warning',
+			'manager'	=> 'sidebar-dark-purple',
+			'staff'		=> 'sidebar-dark-purple',
+		),
+		'footer_class' => array(
+			'webmaster'	=> '',
+			'admin'		=> '',
+			'manager'	=> '',
+			'staff'		=> '',
 		)
 	),
 
@@ -142,7 +183,7 @@ $config['jacat'] = array(
 			'name'		=> 'Frontend Website',
 			'url'		=> '',
 			'target'	=> '_blank',
-			'color'		=> 'text-aqua'
+			'color'		=> 'text-info'
 		),
 		array(
 			'auth'		=> array('webmaster', 'admin'),

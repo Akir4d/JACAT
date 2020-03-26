@@ -40,14 +40,14 @@ $(document).ready(function () {
     if (!unset_export) {
         bButtons.push({
             extend: 'copy',
-            text: '<i class="fa fa-fw fa-clipboard"></i>',
+            text: '<i class="far fa-clipboard"></i>',
             exportOptions: {
                 columns: ['.printable']
             }
         },
             {
                 extend: 'excel',
-                text: '<i class="fa fa-fw fa-file-excel-o"></i>',
+                text: '<i class="far fa-file-excel"></i>',
                 exportOptions: {
                     columns: ['.printable']
                 }
@@ -58,7 +58,7 @@ $(document).ready(function () {
     if (!unset_print) {
         bButtons.push({
             extend: 'print',
-            text: '<i class="fa fa-fw fa-print"></i>',
+            text: '<i class="fas fa-print"></i>',
             exportOptions: {
                 columns: ['.printable']
             }
@@ -121,7 +121,7 @@ $(document).ready(function () {
 
     $('th.actions').unbind('click');
     $('th.actions>div .DataTables_sort_icon').remove();
-    $('.groceryCrudTable').attr('style', 'width: ' + $('.grocerycrud-container > div').width() + 'px');
+    fix_table_size();
 });
 
 function loadListenersForDatatables() {
@@ -151,7 +151,7 @@ function loadListenersForDatatables() {
 function loadDataTable(this_datatables) {
     return oTable = $(this_datatables).dataTable({
         "responsive": true,
-        "sPaginationType": "full_numbers",
+        //"sPaginationType": "full_numbers",
         "bStateSave": use_storage,
         ///"scrollX": true,
         "fnStateSave": function (oSettings, oData) {
@@ -195,7 +195,7 @@ function loadDataTable(this_datatables) {
             after_draw_callback();
 
         },
-        "dom": '<"box-header"<"pull-left"rl><"pull-right"B>>t<"box-footer"ip>'
+        "dom": '<"card-body"B<"float-right"f>t><"card-footer"lr<"float-right"p>i>'
     });
 }
 
@@ -245,9 +245,7 @@ var dtBsWidth = $(window).width();
 $(window).on('resize', function () {
     if ($(this).width() != dtBsWidth) {
         dtBsWidth = $(this).width();
-        setTimeout(function () {
-            $('.groceryCrudTable').attr('style', 'width: ' + ($('.grocerycrud-container > div').width() - 4) + 'px');
-        }, 300);
+        fix_table_size();
     }
 });
 
@@ -268,49 +266,15 @@ function on_create_process(row, data) {
     }
     if (oSpecial in data) {
         if (data[oSpecial] == "red") {
-            $(row).addClass('bg-danger').hover(
-                function () {
-                    $(this).addClass("bg-red");
-                },
-                function () {
-                    $(this).removeClass("bg-red");
-                });
+            $(row).addClass('tr-red');
         } else if (data[oSpecial] == "green") {
-            $(row).addClass('bg-success').hover(
-                function () {
-                    $(this).addClass("bg-green");
-                },
-                function () {
-                    $(this).removeClass("bg-green");
-                }
-            );
+            $(row).addClass('tr-green');
         } else if (data[oSpecial] == "yellow") {
-            $(row).addClass('bg-warning').hover(
-                function () {
-                    $(this).addClass("bg-orange");
-                },
-                function () {
-                    $(this).removeClass("bg-orange");
-                }
-            );
+            $(row).addClass('tr-yellow');
         } else if (data[oSpecial] == "blue") {
-            $(row).addClass('bg-info').hover(
-                function () {
-                    $(this).addClass("bg-blue");
-                },
-                function () {
-                    $(this).removeClass("bg-blue");
-                }
-            );
+            $(row).addClass('tr-blue');
         } else {
-            $(row).hover(
-                function () {
-                    $(this).addClass("bg-gray-light");
-                },
-                function () {
-                    $(this).removeClass("bg-gray-light");
-                }
-            );
+            $(row).addClass("tr-gray");
         }
     }
 }
@@ -337,26 +301,31 @@ function after_draw_callback() {
     }
     $('.add-menu-class').each(function (e) {
         var sID = $(this).attr('data-row');
-        var tmod = $('#row-' + sID + ' div.hidden a.dropdown-toggle').text($(this).text());
-        var timpH = $('#row-' + sID + ' div.hidden').html();
+        var tmod = $('#row-' + sID + ' div.invisible a.black-text').text($(this).text());
+        var timpH = $('#row-' + sID + ' div.invisible').html();
         $(this).html(timpH).attr('class', 'dropdown').removeAttr('data-row');
     });
-    $('td>div.hidden').remove();
+    $('td>div.invisible').remove();
 
     add_edit_button_listener();
-    $('.sidebar-toggle').click(function () {
-        setTimeout(function () {
-            $('.groceryCrudTable').attr('style', 'width: ' + ($('.grocerycrud-container > div').width() - 4) + 'px');
-        }, 300);
+    $(".nav-link[data-widget=pushmenu]").click(function () {
+        fix_table_size();
     });
+    if (!$('.more-searchOption').length) {
+        $('.dataTables_filter').addClass('d-inline').parent().append(' <a class="more-searchOption btn btn-default d-inline"><i class="fas fa-search-plus"></i></a>');
+        $('.more-searchOption').click(function () { if ($('#multiSearchToggle').prop('hidden')) { $('#multiSearchToggle').prop('hidden', null) } else { $('#multiSearchToggle').prop('hidden', true) } });
+        $('.dataTables_length').addClass('d-inline').append('&emsp;&emsp;');
+        $('.dataTables_info').addClass('d-inline').append('&emsp;');
+        $('table.groceryCrudTable').removeClass('invisible');
+    }
 }
 $(document).ready(function (l) {
     $('.ci_btOn').html(function (e) {
-        $(this).parent().html('<span class="glyphicon glyphicon-ok ci_btOn" style="color:#00a65a"><b class="hidden">' +
+        $(this).parent().html('<span class="fas fa-check ci_btOn" style="color:#00a65a"><b class="invisible">' +
             $(this).text() + '</b></span>');
     });
     $('.ci_btOff').html(function (e) {
-        $(this).parent().html('<span class="glyphicon glyphicon-remove ci_btOff" style="color:#f56954"><b class="hidden">' +
+        $(this).parent().html('<span class="fas fa-times ci_btOff" style="color:#f56954"><b class="invisible">' +
             $(this).text() + '</b></span>');
     });
 });
@@ -421,6 +390,17 @@ $.extend(RotateImage.prototype, {
     }
 
 });
+
+function fix_table_size() {
+    // $('.groceryCrudTable').attr('style', 'width: 100%');
+    // oTable.fnAdjustColumnSizing();
+    // $('.groceryCrudTable').attr('style', 'width: ' + parseInt($(document).outerWidth() - $('aside').width()) + 'px'); 
+    setTimeout(function () {
+        $('table.groceryCrudTable').first().attr('style', 'width: ' + parseInt($('div.dataTablesContainer').first().width() * 0.98) + 'px');
+        oTable.fnAdjustColumnSizing(oTable);
+        //oTable.fnDraw(oTable);
+    }, 300);
+}
 
 $(document).on('onInit.fb', function (e, instance) {
     if (!!instance.opts.rotate) {

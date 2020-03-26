@@ -1,6 +1,9 @@
-<nav class="mt-2">
-	<ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
 
+
+<nav class="mt-2">
+	
+	<ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
+	<li class="nav-header">MAIN NAVIGATION</li>
 		<?php foreach ($menu as $parent => $parent_params) : ?>
 
 			<?php if (empty($page_auth[$parent_params['url']]) || $this->ion_auth->in_group($page_auth[$parent_params['url']])) : ?>
@@ -25,7 +28,7 @@
 								<i class="right fas fa-angle-left"></i>
 							</p>
 						</a>
-						<ul class='nav treeview-menu'>
+						<ul class='nav nav-treeview'>
 							<?php foreach ($parent_params['children'] as $name => $urlin) : ?>
 								<?php
 								$ur = explode(':', $urlin);
@@ -50,10 +53,12 @@
 			<?php endif; ?>
 
 		<?php endforeach; ?>
-
+		
 		<?php if (!empty($useful_links)) : ?>
+			<li class="nav-header">USEFUL LINKS</li>
 			<?php foreach ($useful_links as $link) : ?>
 				<?php if ($this->ion_auth->in_group($link['auth'])) : ?>
+
 					<li class="nav-item">
 						<a class="nav-link" href="<?php echo starts_with($link['url'], 'http') ? $link['url'] : base_url($link['url']); ?>" target='<?php echo $link['target']; ?>'>
 							<i class="nav-icon far fa-circle <?php echo $link['color']; ?>"></i>

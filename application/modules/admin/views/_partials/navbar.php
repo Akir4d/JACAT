@@ -1,4 +1,4 @@
-<nav class="main-header <?php echo $nav_bar_style; ?>">
+<nav class="main-header navbar navbar-expand <?php echo $navbar_class; ?>">
 	<ul class="navbar-nav">
 		<li class="nav-item">
 			<a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>

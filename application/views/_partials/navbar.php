@@ -1,4 +1,4 @@
-<nav class="main-header <?php echo $nav_bar_style; ?>" role="navigation">
+<nav class="main-header <?php echo $navbar_class; ?>" role="navigation">
 <div class="container">
 
 	<div class="navbar-header">

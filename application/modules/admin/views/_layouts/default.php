@@ -4,12 +4,12 @@
 
 	<?php // Left side column. contains the logo and sidebar 
 	?>
-	<aside class="main-sidebar sidebar-dark-primary elevation-4">
+	<aside class="main-sidebar elevation-4 <?php echo $aside_class; ?>">
 		<a href="#" class="brand-link">
 			<img src="" alt="" class="brand-image img-circle elevation-3">
 			<span class="brand-text font-weight-light"><?php echo $site_name; ?></span>
 		</a>
-	<!--	<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+		<!--	<div class="user-panel mt-3 pb-3 mb-3 d-flex">
 			<div class="info">
 				<a href="panel/account" class="d-block"><?php echo $user->first_name; ?></a>
 			</div>
@@ -27,14 +27,24 @@
 	<?php // Right side column. Contains the navbar and content of the page 
 	?>
 	<div class="content-wrapper">
-		<section class="content-header">
-			<h1><?php echo $page_title; ?></h1>
-			<?php echo $inject_after_page_title; ?>
-			<?php $this->load->view('_partials/breadcrumb'); ?>
-		</section>
+		<div class="content-header">
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div class="col-sm-6">
+						<h1 class="m-0 text-dark"><?php echo $page_title; ?></h1>
+					</div><!-- /.col -->
+					<div class="col-sm-6">
+						<?php $this->load->view('_partials/breadcrumb'); ?>
+					</div><!-- /.col -->
+				</div><!-- /.row -->
+			</div><!-- /.container-fluid -->
+		</div>
+		<?php echo $inject_after_page_title; ?>
 		<section class="content">
-			<?php $this->load->view($inner_view); ?>
-			<?php $this->load->view('_partials/back_btn'); ?>
+			<div class="container-fluid">
+				<?php $this->load->view($inner_view); ?>
+				<?php $this->load->view('_partials/back_btn'); ?>
+			</div>
 		</section>
 		<?php echo $inject_before_footer; ?>
 	</div>

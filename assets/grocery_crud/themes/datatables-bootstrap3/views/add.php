@@ -3,11 +3,11 @@ $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/jquery.form
 $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/jquery.noty.min.js');
 $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/spectrum.min.js');
 $this->set_js_lib($this->default_javascript_path . '/jquery_plugins/config/jquery.noty.config.js');
-$this->set_js_config($this->default_theme_path . '/datatables-bootstrap3/js/datatables-add.js?v0.9');
+$this->set_js_config($this->default_theme_path . '/datatables-bootstrap3/js/datatables-add.js?v0.10');
 ?>
 
-<div class='box box-primary datatables'>
-    <div class="box-header with-border">
+<div class='card card-primary datatables'>
+    <div class="card-header with-border">
         <?php echo $this->l('form_add'); ?> <?php echo $subject ?>
     </div>
     <div class='form-container table-container form-content form-div'>
@@ -17,7 +17,7 @@ $this->set_js_config($this->default_theme_path . '/datatables-bootstrap3/js/data
             $counter = 0;
             foreach ($fields as $field) {
                 ?>
-                <div class="form-group">
+                <div class="form-group row">
                     <label for="<?php echo $field->field_name; ?>" class="col-sm-2 control-label">
                         <?php
                         echo strip_tags($input_fields[$field->field_name]->display_as);
