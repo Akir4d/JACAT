@@ -241,7 +241,7 @@ class Form {
 	 */
 	public function bs4_text($label, $name, $value = NULL, $extra = array(), $icon = 'fas fa-user')
 	{
-		$extra['class'] = empty($config['class']) ? 'form-control' : $config['class'];
+		$extra['class'] = empty($extra['class']) ? 'form-control' : $extra['class'];
 		return '<div class="input-group mb-3">'.$this->lplaceholder($label, $this->field_text($name, $value, $extra))
 			  .'<div class="input-group-append">
 					<div class="input-group-text">
@@ -254,7 +254,7 @@ class Form {
 
 	public function bs4_email($label, $name = 'email', $value = NULL, $extra = array(), $icon = 'fas fa-envelope')
 	{
-		$extra['class'] = empty($config['class']) ? 'form-control' : $config['class'];
+		$extra['class'] = empty($extra['class']) ? 'form-control' : $extra['class'];
 		return '<div class="input-group mb-3">'.$this->lplaceholder($label, $this->field_email($name, $value, $extra))
 			  .'<div class="input-group-append">
 					<div class="input-group-text">
@@ -267,7 +267,7 @@ class Form {
 
 	public function bs4_password($label, $name = 'password', $value = NULL, $extra = array(), $icon = 'fas fa-lock')
 	{
-		$extra['class'] = empty($config['class']) ? 'form-control' : $config['class'];
+		$extra['class'] = empty($extra['class']) ? 'form-control' : $extra['class'];
 		return '<div class="input-group mb-3">'.$this->lplaceholder($label, $this->field_password($name, $value, $extra))
 			  .'<div class="input-group-append">
 					<div class="input-group-text">
@@ -280,7 +280,7 @@ class Form {
 
 	public function bs4_textarea($label, $name, $value = NULL, $extra = array(), $icon = 'fas fa-text-height')
 	{
-		$extra['class'] = empty($config['class']) ? 'form-control' : $config['class'];
+		$extra['class'] = empty($extra['class']) ? 'form-control' : $extra['class'];
 		return '<div class="input-group mb-3">'.$this->lplaceholder($label, $this->field_textarea($name, $value, $extra))
 			  .'<div class="input-group-append">
 					<div class="input-group-text">

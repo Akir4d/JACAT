@@ -23,7 +23,7 @@
             $a = 0;
             foreach ($columns as $column) {
                 ?>
-                <th><input type="text" data-index="<?php echo ++$a ?>" autocomplete="no" name="<?php echo $column->field_name; ?>" placeholder=" &#xF002; <?php echo $column->display_as; ?>" class="form-control dt-ci-input search_<?php echo $column->field_name; ?>" style="font-family: FontAwesome, Arial;" /></th>
+                <th><input type="text" data-index="<?php echo ++$a ?>" autocomplete="no" name="<?php echo $column->field_name; ?>" placeholder=" &#xF002; <?php echo $column->display_as; ?>" class="form-control dt-ci-input search_<?php echo $column->field_name; ?>" style="font-family: 'Font Awesome 5 Free', Arial;" /></th>
             <?php } ?>
         </tr>
         <tr>
