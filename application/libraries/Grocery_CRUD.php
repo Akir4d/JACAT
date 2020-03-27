@@ -2423,7 +2423,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		{
 			$datetime = '';
 		}
-		$input = "<input id='field-{$field_info->name}' name='{$field_info->name}' type='text' data-toggle='datetimepicker' data-target='#field-{$field_info->name}' value='$datetime' maxlength='19' class='datetime-input form-control' />
+		$input = "<input id='field-{$field_info->name}' autocomplete='new-password' name='{$field_info->name}' type='text' data-toggle='datetimepicker' data-target='#field-{$field_info->name}' value='$datetime' maxlength='19' class='datetime-input form-control' />
 		<a class='datetime-input-clear' tabindex='-1'>".$this->l('form_button_clear')."</a>
 		({$this->ui_date_format}) hh:mm:ss";
 		return $input;
@@ -2444,7 +2444,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$extra_attributes = '';
 		if(!empty($field_info->db_max_length))
 			$extra_attributes .= "maxlength='{$field_info->db_max_length}'";
-		$input = "<input id='field-{$field_info->name}' class='form-control' name='{$field_info->name}' type='password' value='$value' $extra_attributes />";
+		$input = "<input id='field-{$field_info->name}' autocomplete='new-password' class='form-control' name='{$field_info->name}' type='password' value='$value' $extra_attributes />";
 		return $input;
 	}
 
@@ -2466,7 +2466,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 			$date = '';
 		}
 
-		$input = "<input id='field-{$field_info->name}' name='{$field_info->name}' type='text' value='$date' data-toggle='datetimepicker' data-target='#field-{$field_info->name}' maxlength='10' class='datepicker-input form-control' />
+		$input = "<input id='field-{$field_info->name}' autocomplete='new-password' name='{$field_info->name}' type='text' value='$date' data-toggle='datetimepicker' data-target='#field-{$field_info->name}' maxlength='10' class='datepicker-input form-control' />
 		<a class='datepicker-input-clear' tabindex='-1'>".$this->l('form_button_clear')."</a> (".$this->ui_date_format.")";
 		return $input;
 	}

@@ -78,6 +78,7 @@ class MY_Lang extends CI_Lang {
 	public function __construct()
 	{
 		parent::__construct();
+		
 	}
 
 	// --------------------------------------------------------------------
@@ -104,6 +105,8 @@ class MY_Lang extends CI_Lang {
 
 			return;
 		}
+
+		
 
 		$langfile = str_replace('.php', '', $langfile);
 

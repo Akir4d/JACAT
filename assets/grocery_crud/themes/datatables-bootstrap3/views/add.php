@@ -12,7 +12,7 @@ $this->set_js_config($this->default_theme_path . '/datatables-bootstrap3/js/data
     </div>
     <div class='form-container table-container form-content form-div'>
         <?php echo form_open($insert_url, 'method="post" id="crudForm" enctype="multipart/form-data" class="form-horizontal"'); ?>
-        <div class="box-body">
+        <div class="card-body">
             <?php
             $counter = 0;
             foreach ($fields as $field) {

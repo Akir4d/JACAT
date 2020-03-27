@@ -89,6 +89,8 @@ class MY_Controller extends MX_Controller {
 
 		// multilingual setup
 		$lang_config = empty($config['languages']) ? array() : $config['languages'];
+		
+
 		if ( !empty($lang_config) )
 		{
 			$this->mMultilingual = TRUE;
@@ -109,10 +111,12 @@ class MY_Controller extends MX_Controller {
 			$this->mBaseUrl.= $language.'/';
 
 			// autoload language files
-			foreach ($lang_config['autoload'] as $file)
-				$this->lang->load($file, $this->mAvailableLanguages[$language]['value']);
+			$this->lang->load($config['language_files'], $this->mAvailableLanguages[$language]['value']);
 
 			$this->mLanguage = $language;
+		} else {
+			// autoload language files (autoswitch)
+			$this->lang->load($config['language_files']);
 		}
 		
 		// restrict pages

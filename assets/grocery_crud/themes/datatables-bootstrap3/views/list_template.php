@@ -24,11 +24,7 @@ $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/datatables.
 
 	var unique_hash = '<?php echo $unique_hash; ?>';
 
-	var displaying_paging_string = "<?php echo str_replace(
-										array('{start}', '{end}', '{results}'),
-										array('_START_', '_END_', '_TOTAL_'),
-										$this->l('list_displaying')
-									); ?>";
+	var displaying_paging_string = "<?php echo str_replace(array('{start}', '{end}', '{results}'),array('_START_', '_END_', '_TOTAL_'), $this->l('list_displaying')); ?>";
 	var filtered_from_string = "<?php echo str_replace('{total_results}', '_MAX_', $this->l('list_filtered_from')); ?>";
 	var show_entries_string = "<?php echo str_replace('{paging}', '_MENU_', $this->l('list_show_entries')); ?>";
 	var search_string = "<?php echo $this->l('list_search'); ?>";

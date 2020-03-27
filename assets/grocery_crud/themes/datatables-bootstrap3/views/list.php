@@ -6,14 +6,14 @@
                 <th>
 
                     <input type="text" class="form-control dt-ci-input search_hidden invisible" />
-                    <div class="btn-group float-right">					
+                   			
                         <button class="btn btn-default refresh-data" role="button" onclick="location.reload()" data-url="<?php echo $ajax_list_url; ?>">
                             <i class="fas fa-sync-alt"></i>
                         </button>
-                        <button onclick='$(".groceryCrudTable").find("thead tr th input").val("");' class="clear-filtering btn btn-default">
-                            <i class="fa fa-eraser"></i> <i class="fas fa-long-arrow-alt-right"></i>
+                        <button onclick='$(".groceryCrudTable").find("thead tr th input").val("");' class="clear-filtering btn btn-outline-secondary float-right">
+                            <i class="fas fa-times"></i> <i class="fas fa-long-arrow-alt-right"></i>
                         </button>
-                    </div>
+                    
 
                     </div>
 

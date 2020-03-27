@@ -3,39 +3,42 @@
 <div class="row">
 
 	<div class="col-md-6">
-		<div class="box box-primary">
-			<div class="box-header">
-				<h3 class="box-title">User Info</h3>
+		<div class="card card-primary">
+			<div class="card-header">
+				<h3 class="card-title">User Info</h3>
 			</div>
-			<div class="box-body">
+			<div class="card-body">
 				<?php echo $form->open(); ?>
 
-					<?php echo $form->bs3_text('First Name', 'first_name'); ?>
-					<?php echo $form->bs3_text('Last Name', 'last_name'); ?>
-					<?php echo $form->bs3_text('Username', 'username'); ?>
-					<?php echo $form->bs3_text('Email', 'email'); ?>
+				<?php echo $form->bs4_text(lang('index_fname_th'), 'first_name'); ?>
+				<?php echo $form->bs4_text(lang('index_lname_th'), 'last_name'); ?>
+				<?php echo $form->bs4_text(lang('forgot_password_username_identity_label'), 'username'); ?>
+				<?php echo $form->bs4_text('Email', 'email'); ?>
 
-					<?php echo $form->bs3_password('Password', 'password'); ?>
-					<?php echo $form->bs3_password('Retype Password', 'retype_password'); ?>
+				<?php echo $form->bs4_password(lang('edit_user_validation_password_label'), 'password'); ?>
+				<?php echo $form->bs4_password(lang('edit_user_validation_password_confirm_label'), 'retype_password'); ?>
 
-					<?php if ( !empty($groups) ): ?>
+				<?php if (!empty($groups)) : ?>
 					<div class="form-group">
-						<label for="groups">Groups</label>
+						<label for="groups"><?php echo lang('index_groups_th') ?> </label>
 						<div>
-						<?php foreach ($groups as $group): ?>
-							<label class="checkbox-inline">
-								<input type="checkbox" name="groups[]" value="<?php echo $group->id; ?>"> <?php echo $group->name; ?>
-							</label>
-						<?php endforeach; ?>
+							<?php foreach ($groups as $group) : ?>
+								<label class="checkbox-inline">
+									<input type="checkbox" name="groups[]" value="<?php echo $group->id; ?>"> <?php echo $group->name; ?>
+								</label>
+							<?php endforeach; ?>
 						</div>
 					</div>
-					<?php endif; ?>
-
-					<?php echo $form->bs3_submit(); ?>
-					
+				<?php endif; ?>
+			</div>
+			<div class="card-footer">
+				<div class="float-right">
+					<?php echo $form->bs4_submit(lang('create_user_submit_btn')); ?>
+				</div>
 				<?php echo $form->close(); ?>
 			</div>
+
 		</div>
 	</div>
-	
+
 </div>

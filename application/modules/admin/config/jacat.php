@@ -79,7 +79,10 @@ $config['jacat'] = array(
 	'aside_style' => 'sidebar-dark-info',
 	'footer_style' => '',
 
-	// Multilingual settings
+	// Language files to autoload
+	'language_files' => array('auth', 'ion_auth', 'general'),
+
+	// Manual Multilingual (empty means browser sensitive autoswitch)
 	'languages' => array(),
 
 	// Menu items
@@ -125,7 +128,7 @@ $config['jacat'] = array(
 	),
 
 	// Login page
-	'login_url' => 'admin/login',
+	'login_url' => '/admin/login',
 
 	// Restricted pages
 	'page_auth' => array(
@@ -146,7 +149,7 @@ $config['jacat'] = array(
 	'adminlte' => array(
 		'navbar_class' => array(
 			'webmaster'	=> 'navbar-dark navbar-danger',
-			'admin'		=> 'navbar-white navbar-light',
+			'admin'		=> 'navbar-white navbar-warning',
 			'manager'	=> 'navbar-white navbar-light',
 			'staff'		=> 'navbar-white navbar-light',
 		),

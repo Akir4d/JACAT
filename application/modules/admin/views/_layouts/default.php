@@ -3,22 +3,29 @@
 	<?php $this->load->view('_partials/navbar'); ?>
 
 	<?php // Left side column. contains the logo and sidebar 
+	$logo = $base_url . '../assets/dist/images/jacat-logo.png';
+	$logouser = $base_url . '../assets/dist/images/jacat-logo-inv.png';
 	?>
 	<aside class="main-sidebar elevation-4 <?php echo $aside_class; ?>">
 		<a href="#" class="brand-link">
-			<img src="" alt="" class="brand-image img-circle elevation-3">
+			<img src="<?php echo $logo; ?>" alt="Logo" class="brand-image img-circle elevation-3">
 			<span class="brand-text font-weight-light"><?php echo $site_name; ?></span>
 		</a>
-		<!--	<div class="user-panel mt-3 pb-3 mb-3 d-flex">
-			<div class="info">
-				<a href="panel/account" class="d-block"><?php echo $user->first_name; ?></a>
-			</div>
-		</div>-->
-		<?php // (Optional) Add Search box here 
-		?>
-		<?php //$this->load->view('_partials/sidemenu_search'); 
-		?>
 		<div class="sidebar">
+			<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+				<div class="image">
+					<img src="<?php echo $logouser; ?>" class="img-circle elevation-2" alt="User Image">
+				</div>
+				<div class="info">
+					<a href="#" class="d-block"><?php echo $user->first_name; ?></a>
+				</div>
+			</div>
+
+			<?php // (Optional) Add Search box here 
+			?>
+			<?php //$this->load->view('_partials/sidemenu_search'); 
+			?>
+
 
 			<?php $this->load->view('_partials/sidemenu'); ?>
 		</div>

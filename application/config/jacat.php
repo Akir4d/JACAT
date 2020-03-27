@@ -14,6 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $jacat_ver = "?ver=0.5.1";
 
+
 $config['jacat'] = array(
 
 	// Site name
@@ -61,11 +62,12 @@ $config['jacat'] = array(
 	'aside_class' => '',
 	'footer_style' => 'bg-dark',
 
+	// language files to autoload
+	'language_files' => array('auth', 'ion_auth', 'general'),
 	
 	// Multilingual settings
 	'languages' => array(
 		'default'		=> 'en',
-		'autoload'		=> array('general'),
 		'available'		=> array(
 			'en' => array(
 				'label'	=> 'English',
