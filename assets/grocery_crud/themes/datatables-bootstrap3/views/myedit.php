@@ -58,7 +58,7 @@ $this->set_js_lib($this->default_javascript_path . '/jquery_plugins/config/jquer
     <?php echo $this->l('form_update_and_go_back'); ?>
                 </button>
                 <button class="btn btn-default cancel-button b10" type="button" id="cancel-button">
-                    <i class="fa fa-warning"></i>
+                    <i class="fas fa-exclamation-triangle"></i>
                 <?php echo $this->l('form_cancel'); ?>
                 </button>
 <?php } ?>

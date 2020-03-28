@@ -35,39 +35,40 @@ $config['jacat'] = array(
 	// Default scripts to embed at page head or end
 	'scripts' => array(
 		'head'	=> array(
-			'/assets/dist/admin-lte/plugins/jquery/jquery.min.js' . $jacat_ver,
-			'/assets/dist/bootstrap/dist/js/bootstrap.bundle.min.js' . $jacat_ver,
-			'/assets/dist/admin-lte/plugins/datatables/jquery.dataTables.js' . $jacat_ver,
-			'/assets/dist/admin-lte/plugins/datatables-bs4/js/dataTables.bootstrap4.js' . $jacat_ver,
-			'/assets/dist/admin-lte/plugins/datatables-responsive/js/dataTables.responsive.min.js' . $jacat_ver,
-			'/assets/dist/admin-lte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' . $jacat_ver,
-			'/assets/dist/admin-lte/plugins/datatables-select/js/select.bootstrap4.min.js' . $jacat_ver,
-			'/assets/dist/admin-lte/plugins/jszip/jszip.min.js' . $jacat_ver,
-			'/assets/dist/admin-lte/plugins/pdfmake/pdfmake.min.js' . $jacat_ver,
-			'/assets/dist/admin-lte/plugins/moment/moment-with-locales.min.js' . $jacat_ver,
-			'/assets/dist/admin-lte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' . $jacat_ver,
-			'/assets/dist/admin-lte/plugins/datatables-buttons/js/dataTables.buttons.min.js'. $jacat_ver,
-			'/assets/dist/admin-lte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js' . $jacat_ver,
-			'/assets/dist/admin-lte/plugins/datatables-buttons/js/buttons.html5.min.js' . $jacat_ver,
-			'/assets/dist/admin-lte/plugins/datatables-buttons/js/buttons.print.min.js' . $jacat_ver,
+			'assets/dist/admin-lte/plugins/jquery/jquery.min.js' . $jacat_ver,
+			'assets/dist/bootstrap/dist/js/bootstrap.bundle.min.js' . $jacat_ver,
+			'assets/dist/admin-lte/plugins/datatables/jquery.dataTables.js' . $jacat_ver,
+			'assets/dist/admin-lte/plugins/datatables-bs4/js/dataTables.bootstrap4.js' . $jacat_ver,
+			'assets/dist/admin-lte/plugins/datatables-responsive/js/dataTables.responsive.min.js' . $jacat_ver,
+			'assets/dist/admin-lte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' . $jacat_ver,
+			'assets/dist/admin-lte/plugins/datatables-select/js/select.bootstrap4.min.js' . $jacat_ver,
+			'assets/dist/admin-lte/plugins/jszip/jszip.min.js' . $jacat_ver,
+			'assets/dist/admin-lte/plugins/pdfmake/pdfmake.min.js' . $jacat_ver,
+			'assets/dist/admin-lte/plugins/moment/moment-with-locales.min.js' . $jacat_ver,
+			'assets/dist/admin-lte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' . $jacat_ver,
+			'assets/dist/admin-lte/plugins/datatables-buttons/js/dataTables.buttons.min.js'. $jacat_ver,
+			'assets/dist/admin-lte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js' . $jacat_ver,
+			'assets/dist/admin-lte/plugins/datatables-buttons/js/buttons.html5.min.js' . $jacat_ver,
+			'assets/dist/admin-lte/plugins/datatables-buttons/js/buttons.print.min.js' . $jacat_ver,
+			'assets/dist/bootbox.js/dist/bootbox.all.min.js' . $jacat_ver,
 		),
 		'foot'	=> array(
-			'/assets/dist/admin-lte/dist/js/adminlte.min.js' . $jacat_ver,
+			'assets/dist/admin-lte/dist/js/adminlte.min.js' . $jacat_ver,
 		),
 	),
 
 	// Default stylesheets to embed at page head
 	'stylesheets' => array(
 		'screen' => array(
-			'/assets/dist/admin-lte/dist/css/adminlte.min.css' . $jacat_ver,
-			'/assets/dist/admin-lte/plugins/fontawesome-free/css/all.min.css' . $jacat_ver,
-			'/assets/dist/admin-lte/plugins/icheck-bootstrap/icheck-bootstrap.min.css' . $jacat_ver,
-			'/assets/dist/admin-lte/plugins/datatables-bs4/css/dataTables.bootstrap4.css' . $jacat_ver,
-			'/assets/dist/ionicons/docs/css/ionicons.min.css' . $jacat_ver,
-			'/assets/dist/admin-lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' . $jacat_ver,
-			'/assets/dist/admin-lte/plugins/datatables-select/css/select.bootstrap4.min.css' . $jacat_ver,
-			'/assets/dist/admin-lte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' . $jacat_ver,
-			'/assets/dist/admin-lte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' . $jacat_ver
+			'assets/dist/admin-lte/dist/css/adminlte.min.css' . $jacat_ver,
+			'assets/dist/admin-lte/plugins/fontawesome-free/css/all.min.css' . $jacat_ver,
+			'assets/dist/admin-lte/plugins/icheck-bootstrap/icheck-bootstrap.min.css' . $jacat_ver,
+			'assets/dist/admin-lte/plugins/datatables-bs4/css/dataTables.bootstrap4.css' . $jacat_ver,
+			'assets/dist/ionicons/docs/css/ionicons.min.css' . $jacat_ver,
+			'assets/dist/admin-lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' . $jacat_ver,
+			'assets/dist/admin-lte/plugins/datatables-select/css/select.bootstrap4.min.css' . $jacat_ver,
+			'assets/dist/admin-lte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' . $jacat_ver,
+			'assets/dist/admin-lte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' . $jacat_ver
 		)
 	),
 

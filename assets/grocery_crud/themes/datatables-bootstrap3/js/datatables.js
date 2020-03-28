@@ -205,25 +205,39 @@ function datatables_get_chosen_table(table_as_object) {
 }
 
 function delete_row(delete_url, row_id) {
-    if (confirm(message_alert_delete)) {
-        $.ajax({
-            url: delete_url,
-            dataType: 'json',
-            success: function (data) {
-                if (data.success) {
-                    chosen_table = datatables_get_chosen_table($('tr#row-' + row_id).closest('.groceryCrudTable'));
-
-                    $('tr#row-' + row_id).addClass('row_selected');
-                    var anSelected = fnGetSelected(chosen_table);
-                    chosen_table.fnDeleteRow(anSelected[0]);
-                    $(".refresh-data").trigger("click");
-                } else {
-                    error_message(data.error_message);
-                }
+    bootbox.confirm({
+        message: message_alert_delete,
+        buttons: {
+            confirm: {
+                label:  list_delete + ' <i class="fas fa-trash-alt"></i>',
+                className: 'btn-danger'
+            },
+            cancel: {
+                label: list_cancel + ' <i class="fas fa-times"></i>', 
+                className: 'btn-default'
             }
-        });
-    }
+        },
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    url: delete_url,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.success) {
+                            chosen_table = datatables_get_chosen_table($('tr#row-' + row_id).closest('.groceryCrudTable'));
 
+                            $('tr#row-' + row_id).addClass('row_selected');
+                            var anSelected = fnGetSelected(chosen_table);
+                            chosen_table.fnDeleteRow(anSelected[0]);
+                            $(".refresh-data").trigger("click");
+                        } else {
+                            error_message(data.error_message);
+                        }
+                    }
+                });
+            }
+        }
+    });
     return false;
 }
 

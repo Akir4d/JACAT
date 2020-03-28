@@ -46,7 +46,7 @@ class Admin_Controller extends MY_Controller {
 		$this->load->library('Grocery_CRUD');
 		$crud = new grocery_CRUD();
 		$crud->set_table($table);
-        $crud->set_language($this->config->item('language'));
+        $crud->set_language($this->get_idiom());
 		// auto-generate subject
 		if ( empty($subject) )
 		{

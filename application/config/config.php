@@ -516,17 +516,19 @@ $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
 
 /*
-| This enables Automatic language switch by directory listed on application/language
-| if it not works, be sure you have php-intl enabled in your php.ini file
+| This enables Automatic, allowed language are determinated by directory listed 
+| on application/language.
 |
-*/
+| If it not works, be sure you have php-intl enabled in your php.ini file
+|
+
 if ($config['language'] === 'auto') {
     try {
         $config['language']  = strtolower(Locale::getDisplayLanguage(explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE'])[0]));
         $path_search = APPPATH.'language/';
-        $alanguages = glob($path_search.'*', GLOB_ONLYDIR);
-        foreach ($alanguages as $key => $value){
-            $alanguages[$key] = str_replace($path_search,'', $value);
+        $all_languages_in_path = glob($path_search.'*', GLOB_ONLYDIR);
+        foreach ($all_languages_in_path  as $key => $value){
+            $all_languages_in_path [$key] = str_replace($path_search,'', $value);
         }
         if (!empty($alanguages) && !in_array($config['language'], $alanguages)) {
             $config['language'] = "english";
@@ -535,3 +537,4 @@ if ($config['language'] === 'auto') {
         $config['language'] = "english";
     }
 }
+*/

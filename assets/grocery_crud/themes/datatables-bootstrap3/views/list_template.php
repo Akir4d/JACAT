@@ -4,7 +4,7 @@ if ($success_message !== null) {
 	echo  "<script> var loc = location.href + '/../..'; location.replace(loc.replace('/index', ''));</script>";
 }
 
-$this->set_css($this->default_theme_path . '/datatables-bootstrap3/css/datatables.css?v=0.21');
+$this->set_css($this->default_theme_path . '/datatables-bootstrap3/css/datatables.css?v=0.22');
 
 
 
@@ -13,7 +13,7 @@ if ($dialog_forms) {
 
 $this->set_js_lib($this->default_javascript_path . '/common/list.js');
 
-$this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/datatables.js?v=0.3.31');
+$this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/datatables.js?v=0.3.34');
 //$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/dataTables.responsive.min.js');
 //$this->set_js($this->default_theme_path.'/datatables-bootstrap3/js/dataTables.searchPanes.min.js');
 
@@ -48,7 +48,9 @@ $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/datatables.
 	var export_text = '<?php echo $this->l('list_export'); ?>';
 	var print_text = '<?php echo $this->l('list_print'); ?>';
 	var export_url = '<?php echo $export_url; ?>'
-
+	var list_delete = '<?php echo $this->l('list_delete'); ?>';
+	var list_cancel = '<?php echo $this->l('form_cancel'); ?>';
+	//bootbox.setLocale(moment.locale(navigator.language));
 	function ciBsOnHandler(el) {
 		console.log($(el).closest('tr').attr('id'))
 	};

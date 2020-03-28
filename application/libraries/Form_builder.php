@@ -232,8 +232,9 @@ class Form {
 		return $this->btn_submit($label, $extra);
 	}
 	
-	private function lplaceholder ($placeholder, $input) {
-		return str_replace('>', 'placeholder="'.$placeholder.'">', $input);
+	private function lplaceholder ($placeholder, $input, $addother ="") {
+
+		return str_replace('>', 'placeholder="'.$placeholder.'" '.$addother.'>', $input);
 	}
 
 	/**
@@ -252,7 +253,7 @@ class Form {
 				</div>';
 	}
 
-	public function bs4_email($label, $name = 'email', $value = NULL, $extra = array(), $icon = 'fas fa-envelope')
+	public function bs4_email($label, $name = 'email', $value = NULL, $extra = array(), $icon = 'fas fa-at')
 	{
 		$extra['class'] = empty($extra['class']) ? 'form-control' : $extra['class'];
 		return '<div class="input-group mb-3">'.$this->lplaceholder($label, $this->field_email($name, $value, $extra))
@@ -268,7 +269,7 @@ class Form {
 	public function bs4_password($label, $name = 'password', $value = NULL, $extra = array(), $icon = 'fas fa-lock')
 	{
 		$extra['class'] = empty($extra['class']) ? 'form-control' : $extra['class'];
-		return '<div class="input-group mb-3">'.$this->lplaceholder($label, $this->field_password($name, $value, $extra))
+		return '<div class="input-group mb-3" >'.$this->lplaceholder($label, $this->field_password($name, $value, $extra), 'autocomplete="new-password"')
 			  .'<div class="input-group-append">
 					<div class="input-group-text">
 					<span class="'.$icon.'">

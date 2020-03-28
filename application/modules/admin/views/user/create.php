@@ -10,10 +10,10 @@
 			<div class="card-body">
 				<?php echo $form->open(); ?>
 
-				<?php echo $form->bs4_text(lang('index_fname_th'), 'first_name'); ?>
-				<?php echo $form->bs4_text(lang('index_lname_th'), 'last_name'); ?>
+				<?php echo $form->bs4_text(lang('index_fname_th'), 'first_name', '', array(), 'fas fa-user-tie'); ?>
+				<?php echo $form->bs4_text(lang('index_lname_th'), 'last_name', '', array(), 'fas fa-user-tie'); ?>
 				<?php echo $form->bs4_text(lang('forgot_password_username_identity_label'), 'username'); ?>
-				<?php echo $form->bs4_text('Email', 'email'); ?>
+				<?php echo $form->bs4_email('Email', 'email'); ?>
 
 				<?php echo $form->bs4_password(lang('edit_user_validation_password_label'), 'password'); ?>
 				<?php echo $form->bs4_password(lang('edit_user_validation_password_confirm_label'), 'retype_password'); ?>

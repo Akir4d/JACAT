@@ -46,10 +46,11 @@ class CI extends CI_Controller
 		/* assign the application instance */
 		self::$APP = $this;
 		
+		//global $LANG, $CFG;
 		global $LANG, $CFG;
 		
 		/* re-assign language and config for modules */
-		if ( ! $LANG instanceof MX_Lang) $LANG = new MX_Lang;
+		//if ( ! $LANG instanceof MX_Lang) $LANG = new MX_Lang;
 		if ( ! $CFG instanceof MX_Config) $CFG = new MX_Config;
 		
 		parent::__construct();

@@ -1,6 +1,6 @@
 <?php
 $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/jquery.form.min.js');
-$this->set_js_config($this->default_theme_path . '/datatables-bootstrap3/js/datatables-edit.js?v0.8');
+$this->set_js_config($this->default_theme_path . '/datatables-bootstrap3/js/datatables-edit.js?v0.9');
 $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/jquery.noty.min.js');
 $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/spectrum.min.js');
 $this->set_js_lib($this->default_javascript_path . '/jquery_plugins/config/jquery.noty.config.js');
@@ -57,7 +57,7 @@ $this->set_js_lib($this->default_javascript_path . '/jquery_plugins/config/jquer
     <?php echo $this->l('form_update_and_go_back'); ?>
                 </button>
                 <button class="btn btn-default cancel-button b10" type="button" id="cancel-button">
-                    <i class="fa fa-warning"></i>
+                    <i class="fas fa-exclamation-triangle"></i>
                 <?php echo $this->l('form_cancel'); ?>
                 </button>
 <?php } ?>
@@ -71,9 +71,11 @@ $this->set_js_lib($this->default_javascript_path . '/jquery_plugins/config/jquer
     <script>
         var validation_url = '<?php echo $validation_url ?>';
         var list_url = '<?php echo $list_url ?>';
-
+        var back_to_list = '<?php echo $this->l('form_back_to_list'); ?>';
+	    var edit_cancel = '<?php echo $this->l('form_cancel'); ?>';
         var message_alert_edit_form = "<?php echo $this->l('alert_edit_form') ?>";
         var message_update_error = "<?php echo $this->l('update_error') ?>";
+        var modified = false;
         function ciBsOnHandler(el) {
             console.log($(el).closest('form').attr('action'))
         }

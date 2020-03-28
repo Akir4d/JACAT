@@ -6,8 +6,9 @@
  * 	- Admin_Controller: for Admin Panel (require login), extends from MY_Controller
  * 	- API_Controller: for API Site, extends from REST_Controller
  */
-class MY_Controller extends MX_Controller {
-	
+class MY_Controller extends MX_Controller
+{
+
 	// Values to be obtained automatically from router
 	protected $mModule = '';			// module name (empty = Frontend Website)
 	protected $mCtrler = 'home';		// current controller
@@ -25,13 +26,13 @@ class MY_Controller extends MX_Controller {
 	// Values and objects to be overrided or accessible from child controllers
 	protected $mPageTitlePrefix = '';
 	protected $mPageTitle = '';
-        protected $mInjectAfterPageTitle = '';
-        protected $mInjectBeforeFooter = '';
+	protected $mInjectAfterPageTitle = '';
+	protected $mInjectBeforeFooter = '';
 	protected $mBodyClass = '';
 	protected $mNavbarClass = '';
 	protected $mNavmenuBg = '';
 	protected $mSideClass = '';
-	protected $mAsideClass= '';
+	protected $mAsideClass = '';
 	protected $mFooterClass = '';
 	protected $mMenu = array();
 	protected $mBreadcrumb = array();
@@ -60,18 +61,38 @@ class MY_Controller extends MX_Controller {
 		$this->mCtrler = $this->router->fetch_class();
 		$this->mAction = $this->router->fetch_method();
 		$this->mMethod = $this->input->server('REQUEST_METHOD');
-		
+
 		// initial setup
 		$this->_setup();
+	}
+
+	public function get_idiom() {
+		$config = &get_config();
+		if ($config['language'] === 'auto') {
+			try {
+				$config['language']  = strtolower(Locale::getDisplayLanguage(explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE'])[0]));
+				$path_search = APPPATH.'language/';
+				$all_languages_in_path = glob($path_search.'*', GLOB_ONLYDIR);
+				foreach ($all_languages_in_path  as $key => $value){
+					$all_languages_in_path [$key] = str_replace($path_search,'', $value);
+				}
+				if (!empty($all_languages_in_path) && !in_array($config['language'], $all_languages_in_path)) {
+					$config['language'] = "english";
+				}
+			} catch (\Throwable $e) {
+				$config['language'] = "english";
+			}
+		}
+		return $config['language'];
 	}
 
 	// Setup values from file: config/jacat.php
 	private function _setup()
 	{
 		$config = $this->config->item('jacat');
-		
+
 		// load default values
-		$this->mBaseUrl = empty($this->mModule) ? base_url() : base_url($this->mModule).'/';
+		$this->mBaseUrl = empty($this->mModule) ? base_url() : base_url($this->mModule) . '/';
 		$this->mSiteName = empty($config['site_name']) ? '' : $config['site_name'];
 		$this->mPageTitlePrefix = empty($config['page_title_prefix']) ? '' : $config['page_title_prefix'];
 		$this->mPageTitle = empty($config['page_title']) ? '' : $config['page_title'];
@@ -89,17 +110,15 @@ class MY_Controller extends MX_Controller {
 
 		// multilingual setup
 		$lang_config = empty($config['languages']) ? array() : $config['languages'];
-		
 
-		if ( !empty($lang_config) )
-		{
+
+		if (!empty($lang_config)) {
 			$this->mMultilingual = TRUE;
 			$this->load->helper('language');
 
 			// redirect to Home page in default language
-			if ( empty($this->uri->segment(1)) )
-			{
-				$home_url = base_url($lang_config['default']).'/';
+			if (empty($this->uri->segment(1))) {
+				$home_url = base_url($lang_config['default']) . '/';
 				redirect($home_url);
 			}
 
@@ -108,43 +127,42 @@ class MY_Controller extends MX_Controller {
 			$language = array_key_exists($this->uri->segment(1), $this->mAvailableLanguages) ? $this->uri->segment(1) : $lang_config['default'];
 
 			// append to base URL
-			$this->mBaseUrl.= $language.'/';
+			$this->mBaseUrl .= $language . '/';
 
 			// autoload language files
-			$this->lang->load($config['language_files'], $this->mAvailableLanguages[$language]['value']);
+			foreach ($config['language_files'] as $file)
+				$this->lang->load($file, $this->mAvailableLanguages[$language]['value']);
 
 			$this->mLanguage = $language;
 		} else {
 			// autoload language files (autoswitch)
-			$this->lang->load($config['language_files']);
+			foreach ($config['language_files'] as $file) {
+				$this->lang->load($file);
+			}
 		}
-		
+
 		// restrict pages
-		$uri = ($this->mAction=='index') ? $this->mCtrler : $this->mCtrler.'/'.$this->mAction;
-		if ( !empty($this->mPageAuth[$uri]) && !$this->ion_auth->in_group($this->mPageAuth[$uri]) )
-		{
+		$uri = ($this->mAction == 'index') ? $this->mCtrler : $this->mCtrler . '/' . $this->mAction;
+		if (!empty($this->mPageAuth[$uri]) && !$this->ion_auth->in_group($this->mPageAuth[$uri])) {
 			$page_404 = $this->router->routes['404_override'];
-			$redirect_url = empty($this->mModule) ? $page_404 : $this->mModule.'/'.$page_404;
+			$redirect_url = empty($this->mModule) ? $page_404 : $this->mModule . '/' . $page_404;
 			redirect($redirect_url);
 		}
 
 		// push first entry to breadcrumb
-		if ($this->mCtrler!='home')
-		{
+		if ($this->mCtrler != 'home') {
 			$page = $this->mMultilingual ? lang('home') : 'Home';
 			$this->push_breadcrumb($page, '');
 		}
 
 		// get user data if logged in
-		if ( $this->ion_auth->logged_in() )
-		{
+		if ($this->ion_auth->logged_in()) {
 			$this->mUser = $this->ion_auth->user()->row();
-			if ( !empty($this->mUser) )
-			{
+			if (!empty($this->mUser)) {
 				$this->mUserGroups = $this->ion_auth->get_users_groups($this->mUser->id)->result();
 
 				// TODO: get group with most permissions (instead of getting first group)
-				$this->mUserMainGroup = $this->mUserGroups[0]->name;	
+				$this->mUserMainGroup = $this->mUserGroups[0]->name;
 			}
 		}
 
@@ -154,9 +172,8 @@ class MY_Controller extends MX_Controller {
 	// Verify user login (regardless of user group)
 	protected function verify_login($redirect_url = NULL)
 	{
-		if ( !$this->ion_auth->logged_in() )
-		{
-			if ( $redirect_url==NULL )
+		if (!$this->ion_auth->logged_in()) {
+			if ($redirect_url == NULL)
 				$redirect_url = $this->mConfig['login_url'];
 
 			redirect($redirect_url);
@@ -168,11 +185,10 @@ class MY_Controller extends MX_Controller {
 	// Reference: http://benedmunds.com/ion_auth/#in_group
 	protected function verify_auth($group = 'members', $redirect_url = NULL)
 	{
-		if ( !$this->ion_auth->logged_in() || !$this->ion_auth->in_group($group) )
-		{
-			if ( $redirect_url==NULL )
+		if (!$this->ion_auth->logged_in() || !$this->ion_auth->in_group($group)) {
+			if ($redirect_url == NULL)
 				$redirect_url = $this->mConfig['login_url'];
-			
+
 			redirect($redirect_url);
 		}
 	}
@@ -182,7 +198,7 @@ class MY_Controller extends MX_Controller {
 	protected function add_script($files, $append = TRUE, $position = 'foot')
 	{
 		$files = is_string($files) ? array($files) : $files;
-		$position = ($position==='head' || $position==='foot') ? $position : 'foot';
+		$position = ($position === 'head' || $position === 'foot') ? $position : 'foot';
 
 		if ($append)
 			$this->mScripts[$position] = array_merge($this->mScripts[$position], $files);
@@ -206,9 +222,8 @@ class MY_Controller extends MX_Controller {
 	protected function render($view_file, $layout = 'default')
 	{
 		// automatically generate page title
-		if ( empty($this->mPageTitle) )
-		{
-			if ($this->mAction=='index')
+		if (empty($this->mPageTitle)) {
+			if ($this->mAction == 'index')
 				$this->mPageTitle = humanize($this->mCtrler);
 			else
 				$this->mPageTitle = humanize($this->mAction);
@@ -219,12 +234,12 @@ class MY_Controller extends MX_Controller {
 		$this->mViewData['action'] = $this->mAction;
 
 		$this->mViewData['site_name'] = $this->mSiteName;
-		$this->mViewData['page_title'] = $this->mPageTitlePrefix.$this->mPageTitle;
-                // Usefull to add your custom html
-                $this->mViewData['inject_after_page_title'] = $this->mInjectAfterPageTitle;
-                $this->mViewData['inject_before_footer'] = $this->mInjectBeforeFooter;
-                
-		$this->mViewData['current_uri'] = empty($this->mModule) ? uri_string(): str_replace($this->mModule.'/', '', uri_string());
+		$this->mViewData['page_title'] = $this->mPageTitlePrefix . $this->mPageTitle;
+		// Usefull to add your custom html
+		$this->mViewData['inject_after_page_title'] = $this->mInjectAfterPageTitle;
+		$this->mViewData['inject_before_footer'] = $this->mInjectBeforeFooter;
+
+		$this->mViewData['current_uri'] = empty($this->mModule) ? uri_string() : str_replace($this->mModule . '/', '', uri_string());
 		$this->mViewData['meta_data'] = $this->mMetaData;
 		$this->mViewData['scripts'] = $this->mScripts;
 		$this->mViewData['stylesheets'] = $this->mStylesheets;
@@ -246,27 +261,24 @@ class MY_Controller extends MX_Controller {
 
 		// multilingual
 		$this->mViewData['multilingual'] = $this->mMultilingual;
-		if ($this->mMultilingual)
-		{
+		if ($this->mMultilingual) {
 			$this->mViewData['available_languages'] = $this->mAvailableLanguages;
 			$this->mViewData['language'] = $this->mLanguage;
 		}
 
 		// debug tools - CodeIgniter profiler
 		$debug_config = $this->mConfig['debug'];
-		if (ENVIRONMENT==='development' && !empty($debug_config))
-		{
+		if (ENVIRONMENT === 'development' && !empty($debug_config)) {
 			$this->output->enable_profiler($debug_config['profiler']);
 		}
 
 		$this->mViewData['inner_view'] = $view_file;
 		$this->load->view('_base/head', $this->mViewData);
-		$this->load->view('_layouts/'.$layout, $this->mViewData);
+		$this->load->view('_layouts/' . $layout, $this->mViewData);
 
 		// debug tools - display view data
-		if (ENVIRONMENT==='development' && !empty($debug_config) && !empty($debug_config['view_data']))
-		{
-			$this->output->append_output('<hr/>'.print_r($this->mViewData, TRUE));
+		if (ENVIRONMENT === 'development' && !empty($debug_config) && !empty($debug_config['view_data'])) {
+			$this->output->append_output('<hr/>' . print_r($this->mViewData, TRUE));
 		}
 
 		$this->load->view('_base/foot', $this->mViewData);
@@ -279,7 +291,7 @@ class MY_Controller extends MX_Controller {
 			->set_status_header($code)
 			->set_content_type('application/json')
 			->set_output(json_encode($data));
-			
+
 		// force output immediately and interrupt other scripts
 		global $OUT;
 		$OUT->_display();
@@ -300,5 +312,5 @@ class MY_Controller extends MX_Controller {
 }
 
 // include base controllers
-require APPPATH."core/controllers/Admin_Controller.php";
-require APPPATH."core/controllers/Api_Controller.php";
+require APPPATH . "core/controllers/Admin_Controller.php";
+require APPPATH . "core/controllers/Api_Controller.php";
