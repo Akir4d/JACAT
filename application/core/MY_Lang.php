@@ -94,7 +94,7 @@ class MY_Lang extends CI_Lang
 	 *
 	 * @return	void|string[]	Array containing translations, if $return is set to TRUE
 	 */
-	public function load($langfile, $idiom = '', $return = FALSE, $add_suffix = TRUE, $alt_path = '')
+	public function load($langfile, $idiom = '', $return = FALSE, $add_suffix = TRUE, $alt_path = '', $tryagain = TRUE)
 	{
 		if (is_array($langfile)) {
 			foreach ($langfile as $value) {
@@ -169,8 +169,10 @@ class MY_Lang extends CI_Lang
 		}
 
 		if ($found !== TRUE) {
-			if (!$this->load($langfile, $this->base_language, $return, $add_suffix, $alt_path)) {
+			if (!$tryagain) {
 				show_error('Unable to load the requested language file: language/' . $idiom . '/' . $langfile);
+			} else {
+				$this->load($langfile, $this->base_language, $return, $add_suffix, $alt_path, FALSE);
 			}
 		}
 
