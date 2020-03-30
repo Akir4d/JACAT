@@ -13,7 +13,7 @@ This repository is developed upon the following tools:
 * [codeigniter-base-model](https://github.com/jamierumbelow/codeigniter-base-model) - more advanced CRUD functions for models by [jamierumbelow](https://github.com/jamierumbelow)
 * [codeigniter-restserver](https://github.com/chriskacerguis/codeigniter-restserver) - base setup for API module
 * [Ion Auth](http://benedmunds.com/ion_auth) - (3.0) authentication library for CodeIgniter by [Ben Edmunds](http://benedmunds.com/)
-* [Bootstrap](http://getbootstrap.com/) (3.4.1) - popular frontend framework
+* [Bootstrap](http://getbootstrap.com/) (4.4.1) - popular frontend framework
 * [Grocery CRUD](http://www.grocerycrud.com/) (custom based on v1.6.3) - feature-rich library to build CRUD tables
 * [Image CRUD](http://www.grocerycrud.com/image-crud) (v0.8) - CRUD library for image management
 * [AdminLTE](https://github.com/almasaeed2010/AdminLTE) (3.0.2) - bootstrap theme for Admin Panel
@@ -25,7 +25,7 @@ This repository contains setup for rapid development:
 * Multi-tenant (e.g. Frontend Website, Admin Panel, API) website in single application
 * Modular design by CodeIgniter HMVC extension
 * Custom config files (sites.php, locale.php) for easy configuration of website behavior
-* Admin Panel with AdminLTE v2 theme, and Grocery CRUD integration
+* Admin Panel with AdminLTE v3 theme, and Grocery CRUD integration
 * Admin Panel includes usage of [Sortable](http://rubaxa.github.io/Sortable/) library
 * API Site with [Swagger](http://swagger.io/) UI integrated, via annotations supported by [swagger-php](https://github.com/zircote/swagger-php) library
 * API Site to handle RESTful endpoints, with shortcut functions to grab parameters and display results
@@ -64,8 +64,6 @@ Below configuration are preferred; other environments are not well-tested, but s
 3. Inside /application/config/ copy "database.model.php" as "database.php" and make sure that database config is set correctly
 4. You should be able to access Frontend Website, Admin Panel and API Site (with Swagger Doc) respectively
 5. Visit the Demo Controllers (exist in both Frontend / Admin Panel / API) for sample usage
-
-**Note** After release the v1.0 version, I will try to keep the upgrade procedure more developer friendly. 
 
 
 ### Admin Users (and default login accounts)
@@ -173,11 +171,3 @@ Frontend - Home:
 
 More screenshots can be viewed from the [screenshots folder](https://github.com/Akir4d/JACAT/blob/master/screenshots/) under this repository.
 
-
-### TODO
-
-* Changelog file
-* Better documentation (e.g. on [Gitbook](http://gitbook.com/))
-* Enhance Form Builder library to support more field types
-* Grocery CRUD / Image CRUD file upload - add Amazon S3 integration
-* Grocery CRUD / Image CRUD image upload - add cropping feature
