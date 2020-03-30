@@ -63,11 +63,6 @@ $config = array(
 			'label'		=> 'New Password',
 			'rules'		=> 'required',
 		),
-                array(
-			'field'		=> 'email',
-			'label'		=> 'Email',
-			'rules'		=> 'required|valid_email|is_unique[users.email]',
-		),
 		array(
 			'field'		=> 'retype_password',
 			'label'		=> 'Retype Password',
@@ -87,12 +82,11 @@ $config = array(
 			'label'		=> 'First Name',
 			'rules'		=> 'required',
 		),
-		/* Admin User can have no email
 		array(
 			'field'		=> 'email',
 			'label'		=> 'Email',
 			'rules'		=> 'valid_email|is_unique[users.email]',
-		),*/
+		),
 		array(
 			'field'		=> 'password',
 			'label'		=> 'Password',
