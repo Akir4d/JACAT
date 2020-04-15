@@ -478,6 +478,10 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 		$ci->load->model('Grocery_crud_model');
 
 		$this->basic_model = new Grocery_crud_model();
+
+		if($this->basic_db !== null) {
+			$this->basic_model->set_db($this->basic_db);
+		}
 	}
 
 	protected function get_total_results()
@@ -552,6 +556,9 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 		}
 
 		$this->basic_model = $ci->$real_model_name;
+		if($this->basic_db !== null) {
+			$this->basic_model->set_db($this->basic_db);
+		}
 	}
 
 	protected function set_ajax_list_queries($state_info = null)
@@ -3603,6 +3610,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 	protected $edit_hidden_fields 	= array();
 	protected $field_types 			= null;
 	protected $basic_db_table 		= null;
+	protected $basic_db				= null;
 	protected $theme_config 		= array();
 	protected $subject 				= null;
 	protected $subject_plural 		= null;
@@ -5268,6 +5276,31 @@ class Grocery_CRUD extends grocery_CRUD_States
 		}
 
 		$this->_unique_fields = $args;
+
+		return $this;
+	}
+
+/**
+	 *
+	 * Sets the basic database  that we will get our data.
+	 * @param string $db_config
+	 * @return grocery_CRUD
+	 */
+	public function set_db($db_config)
+	{
+		if(!empty($db_config) && $this->basic_db === null)
+		{
+			$this->basic_db = $db_config;
+		}
+		elseif(!empty($db_config))
+		{
+			throw new Exception('You have already insert a db name once...', 1);
+		}
+		else
+		{
+			throw new Exception('The db name cannot be empty.', 2);
+			die();
+		}
 
 		return $this;
 	}

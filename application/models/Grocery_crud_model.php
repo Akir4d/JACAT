@@ -34,15 +34,23 @@ class Grocery_crud_model  extends CI_Model  {
 	protected $relation = array();
 	protected $relation_n_n = array();
 	protected $primary_keys = array();
-
+	protected $dbint = null;
+	
 	function __construct()
     {
-        parent::__construct();
-    }
+		parent::__construct();
+		if ($this->dbint === null) {
+			$this->dbint = $this->db;
+		}
+	}
+	
+	function set_db ($other_db){
+		$this->dbint = $this->load->database($other_db, TRUE);
+	}
 
     function db_table_exists($table_name = null)
     {
-    	return $this->db->table_exists($table_name);
+    	return  $this->dbint->table_exists($table_name);
     }
 
     function get_list()
@@ -82,9 +90,9 @@ class Grocery_crud_model  extends CI_Model  {
 			$select = $this->relation_n_n_queries($select);
     	}
 
-    	$this->db->select($select, false);
+    	 $this->dbint->select($select, false);
 
-    	$results = $this->db->get($this->table_name)->result();
+    	$results =  $this->dbint->get($this->table_name)->result();
 
     	return $results;
     }
@@ -93,7 +101,7 @@ class Grocery_crud_model  extends CI_Model  {
     {
     	$table_name = $table_name === null ? $this->table_name : $table_name;
 
-    	return $this->db->get($table_name)->row();
+    	return  $this->dbint->get($table_name)->row();
     }
 
     public function set_primary_key($field_name, $table_name = null)
@@ -137,42 +145,42 @@ class Grocery_crud_model  extends CI_Model  {
 
     function order_by($order_by , $direction)
     {
-    	$this->db->order_by( $order_by , $direction );
+    	 $this->dbint->order_by( $order_by , $direction );
     }
 
     function where($key, $value = NULL, $escape = TRUE)
     {
-    	$this->db->where( $key, $value, $escape);
+    	 $this->dbint->where( $key, $value, $escape);
     }
 
     function or_where($key, $value = NULL, $escape = TRUE)
     {
-    	$this->db->or_where( $key, $value, $escape);
+    	 $this->dbint->or_where( $key, $value, $escape);
     }
 
     function having($key, $value = NULL, $escape = TRUE)
     {
-    	$this->db->having( $key, $value, $escape);
+    	 $this->dbint->having( $key, $value, $escape);
     }
 
     function or_having($key, $value = NULL, $escape = TRUE)
     {
-    	$this->db->or_having( $key, $value, $escape);
+    	 $this->dbint->or_having( $key, $value, $escape);
     }
 
     function like($field, $match = '', $side = 'both')
     {
-    	$this->db->like($field, $match, $side);
+    	 $this->dbint->like($field, $match, $side);
     }
 
     function or_like($field, $match = '', $side = 'both')
     {
-    	$this->db->or_like($field, $match, $side);
+    	 $this->dbint->or_like($field, $match, $side);
     }
 
     function limit($value, $offset = '')
     {
-    	$this->db->limit( $value , $offset );
+    	 $this->dbint->limit( $value , $offset );
     }
 
     function get_total_results()
@@ -186,17 +194,17 @@ class Grocery_crud_model  extends CI_Model  {
     		$select = "{$this->table_name}." . $key;
     		$select = $this->relation_n_n_queries($select);
 
-    		$this->db->select($select,false);
+    		 $this->dbint->select($select,false);
     	} else {
-            $this->db->select($this->table_name . '.' . $key);
+             $this->dbint->select($this->table_name . '.' . $key);
         }
         
-        return $this->db->get($this->table_name)->num_rows();
+        return  $this->dbint->get($this->table_name)->num_rows();
     }
 
     function set_basic_table($table_name = null)
     {
-    	if( !($this->db->table_exists($table_name)) )
+    	if( !( $this->dbint->table_exists($table_name)) )
     		return false;
 
     	$this->table_name = $table_name;
@@ -207,8 +215,8 @@ class Grocery_crud_model  extends CI_Model  {
     function get_edit_values($primary_key_value)
     {
     	$primary_key_field = $this->get_primary_key();
-    	$this->db->where($primary_key_field,$primary_key_value);
-    	$result = $this->db->get($this->table_name)->row();
+    	 $this->dbint->where($primary_key_field,$primary_key_value);
+    	$result =  $this->dbint->get($this->table_name)->row();
     	return $result;
     }
 
@@ -219,7 +227,7 @@ class Grocery_crud_model  extends CI_Model  {
 		if($related_primary_key !== false)
 		{
 			$unique_name = $this->_unique_join_name($field_name);
-			$this->db->join( $related_table.' as '.$unique_name , "$unique_name.$related_primary_key = {$this->table_name}.$field_name",'left');
+			 $this->dbint->join( $related_table.' as '.$unique_name , "$unique_name.$related_primary_key = {$this->table_name}.$field_name",'left');
 
 			$this->relation[$field_name] = array($field_name , $related_table , $related_field_title);
 
@@ -263,24 +271,24 @@ class Grocery_crud_model  extends CI_Model  {
 	    	$select .= "$related_table.$related_field_title as $field_name_hash";
     	}
 
-    	$this->db->select($select,false);
+    	 $this->dbint->select($select,false);
     	if($where_clause !== null)
-    		$this->db->where($where_clause);
+    		 $this->dbint->where($where_clause);
 
     	if($where_clause !== null)
-    		$this->db->where($where_clause);
+    		 $this->dbint->where($where_clause);
 
     	if($limit !== null)
-    		$this->db->limit($limit);
+    		 $this->dbint->limit($limit);
 
     	if($search_like !== null)
-    		$this->db->having("$field_name_hash LIKE '%".$this->db->escape_like_str($search_like)."%'");
+    		 $this->dbint->having("$field_name_hash LIKE '%". $this->dbint->escape_like_str($search_like)."%'");
 
     	$order_by !== null
-    		? $this->db->order_by($order_by)
-    		: $this->db->order_by($field_name_hash);
+    		?  $this->dbint->order_by($order_by)
+    		:  $this->dbint->order_by($field_name_hash);
 
-    	$results = $this->db->get($related_table)->result();
+    	$results =  $this->dbint->get($related_table)->result();
 
     	foreach($results as $row)
     	{
@@ -298,9 +306,9 @@ class Grocery_crud_model  extends CI_Model  {
     function get_relation_total_rows($field_name , $related_table , $related_field_title, $where_clause)
     {
     	if($where_clause !== null)
-    		$this->db->where($where_clause);
+    		 $this->dbint->where($where_clause);
 
-    	return $this->db->count_all_results($related_table);
+    	return  $this->dbint->count_all_results($related_table);
     }
 
     function get_relation_n_n_selection_array($primary_key_value, $field_info)
@@ -318,26 +326,26 @@ class Grocery_crud_model  extends CI_Model  {
     	{
     		$select .= "$related_field_title as $field_name_hash";
     	}
-    	$this->db->select('*, '.$select,false);
+    	 $this->dbint->select('*, '.$select,false);
 
     	$selection_primary_key = $this->get_primary_key($field_info->selection_table);
 
     	if(empty($field_info->priority_field_relation_table))
     	{
     		if(!$use_template){
-    			$this->db->order_by("{$field_info->selection_table}.{$field_info->title_field_selection_table}");
+    			 $this->dbint->order_by("{$field_info->selection_table}.{$field_info->title_field_selection_table}");
     		}
     	}
     	else
     	{
-    		$this->db->order_by("{$field_info->relation_table}.{$field_info->priority_field_relation_table}");
+    		 $this->dbint->order_by("{$field_info->relation_table}.{$field_info->priority_field_relation_table}");
     	}
-    	$this->db->where($field_info->primary_key_alias_to_this_table, $primary_key_value);
-    	$this->db->join(
+    	 $this->dbint->where($field_info->primary_key_alias_to_this_table, $primary_key_value);
+    	 $this->dbint->join(
     			$field_info->selection_table,
     			"{$field_info->relation_table}.{$field_info->primary_key_alias_to_selection_table} = {$field_info->selection_table}.{$selection_primary_key}"
     		);
-    	$results = $this->db->get($field_info->relation_table)->result();
+    	$results =  $this->dbint->get($field_info->relation_table)->result();
 
     	$results_array = array();
     	foreach($results as $row)
@@ -366,16 +374,16 @@ class Grocery_crud_model  extends CI_Model  {
     	{
     		$select .= "$related_field_title as $field_name_hash";
     	}
-    	$this->db->select('*, '.$select,false);
+    	 $this->dbint->select('*, '.$select,false);
 
     	if($use_where_clause){
-    		$this->db->where($field_info->where_clause);
+    		 $this->dbint->where($field_info->where_clause);
     	}
 
     	$selection_primary_key = $this->get_primary_key($field_info->selection_table);
         if(!$use_template)
-        	$this->db->order_by("{$field_info->selection_table}.{$field_info->title_field_selection_table}");
-        $results = $this->db->get($field_info->selection_table)->result();
+        	 $this->dbint->order_by("{$field_info->selection_table}.{$field_info->title_field_selection_table}");
+        $results =  $this->dbint->get($field_info->selection_table)->result();
 
         $results_array = array();
         foreach($results as $row)
@@ -389,10 +397,10 @@ class Grocery_crud_model  extends CI_Model  {
 
     function db_relation_n_n_update($field_info, $post_data ,$main_primary_key)
     {
-    	$this->db->where($field_info->primary_key_alias_to_this_table, $main_primary_key);
+    	 $this->dbint->where($field_info->primary_key_alias_to_this_table, $main_primary_key);
     	if(!empty($post_data))
-    		$this->db->where_not_in($field_info->primary_key_alias_to_selection_table , $post_data);
-    	$this->db->delete($field_info->relation_table);
+    		 $this->dbint->where_not_in($field_info->primary_key_alias_to_selection_table , $post_data);
+    	 $this->dbint->delete($field_info->relation_table);
 
     	$counter = 0;
     	if(!empty($post_data))
@@ -404,19 +412,19 @@ class Grocery_crud_model  extends CI_Model  {
 	    			$field_info->primary_key_alias_to_selection_table => $primary_key_value,
 	    		);
 
-	    		$this->db->where($where_array);
-				$count = $this->db->from($field_info->relation_table)->count_all_results();
+	    		 $this->dbint->where($where_array);
+				$count =  $this->dbint->from($field_info->relation_table)->count_all_results();
 
 				if($count == 0)
 				{
 					if(!empty($field_info->priority_field_relation_table))
 						$where_array[$field_info->priority_field_relation_table] = $counter;
 
-					$this->db->insert($field_info->relation_table, $where_array);
+					 $this->dbint->insert($field_info->relation_table, $where_array);
 
 				}elseif($count >= 1 && !empty($field_info->priority_field_relation_table))
 				{
-					$this->db->update( $field_info->relation_table, array($field_info->priority_field_relation_table => $counter) , $where_array);
+					 $this->dbint->update( $field_info->relation_table, array($field_info->priority_field_relation_table => $counter) , $where_array);
 				}
 
 				$counter++;
@@ -426,14 +434,14 @@ class Grocery_crud_model  extends CI_Model  {
 
     function db_relation_n_n_delete($field_info, $main_primary_key)
     {
-    	$this->db->where($field_info->primary_key_alias_to_this_table, $main_primary_key);
-    	$this->db->delete($field_info->relation_table);
+    	 $this->dbint->where($field_info->primary_key_alias_to_this_table, $main_primary_key);
+    	 $this->dbint->delete($field_info->relation_table);
     }
 
     function get_field_types_basic_table()
     {
     	$db_field_types = array();
-    	foreach($this->db->query("SHOW COLUMNS FROM `{$this->table_name}`")->result() as $db_field_type)
+    	foreach( $this->dbint->query("SHOW COLUMNS FROM `{$this->table_name}`")->result() as $db_field_type)
     	{
     		$type = explode("(",$db_field_type->Type);
     		$db_type = $type[0];
@@ -460,7 +468,7 @@ class Grocery_crud_model  extends CI_Model  {
     		$db_field_types[$db_field_type->Field]['db_extra'] = $db_field_type->Extra;
     	}
 
-    	$results = $this->db->field_data($this->table_name);
+    	$results =  $this->dbint->field_data($this->table_name);
     	foreach($results as $num => $row)
     	{
     		$row = (array)$row;
@@ -472,7 +480,7 @@ class Grocery_crud_model  extends CI_Model  {
 
     function get_field_types($table_name)
     {
-    	$results = $this->db->field_data($table_name);
+    	$results =  $this->dbint->field_data($table_name);
 
     	return $results;
     }
@@ -480,15 +488,15 @@ class Grocery_crud_model  extends CI_Model  {
     function db_update($post_array, $primary_key_value)
     {
     	$primary_key_field = $this->get_primary_key();
-    	return $this->db->update($this->table_name,$post_array, array( $primary_key_field => $primary_key_value));
+    	return  $this->dbint->update($this->table_name,$post_array, array( $primary_key_field => $primary_key_value));
     }
 
     function db_insert($post_array)
     {
-    	$insert = $this->db->insert($this->table_name,$post_array);
+    	$insert =  $this->dbint->insert($this->table_name,$post_array);
     	if($insert)
     	{
-    		return $this->db->insert_id();
+    		return  $this->dbint->insert_id();
     	}
     	return false;
     }
@@ -500,9 +508,9 @@ class Grocery_crud_model  extends CI_Model  {
     	if($primary_key_field === false)
     		return false;
 
-    	$this->db->limit(1);
-    	$this->db->delete($this->table_name,array( $primary_key_field => $primary_key_value));
-    	if( $this->db->affected_rows() != 1)
+    	 $this->dbint->limit(1);
+    	 $this->dbint->delete($this->table_name,array( $primary_key_field => $primary_key_value));
+    	if(  $this->dbint->affected_rows() != 1)
     		return false;
     	else
     		return true;
@@ -510,7 +518,7 @@ class Grocery_crud_model  extends CI_Model  {
 
     function db_file_delete($field_name, $filename)
     {
-    	if( $this->db->update($this->table_name,array($field_name => ''),array($field_name => $filename)) )
+    	if(  $this->dbint->update($this->table_name,array($field_name => ''),array($field_name => $filename)) )
     	{
     		return true;
     	}
@@ -526,7 +534,7 @@ class Grocery_crud_model  extends CI_Model  {
     	{
     		$table_name = $this->table_name;
     	}
-    	return $this->db->field_exists($field,$table_name);
+    	return  $this->dbint->field_exists($field,$table_name);
     }
 
     function get_primary_key($table_name = null)
@@ -581,7 +589,7 @@ class Grocery_crud_model  extends CI_Model  {
 
     function escape_str($value)
     {
-    	return $this->db->escape_str($value);
+    	return  $this->dbint->escape_str($value);
     }
 
 }
