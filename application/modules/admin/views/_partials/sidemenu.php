@@ -2,7 +2,7 @@
 
 <nav class="mt-2">
 	
-	<ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
+	<ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="true">
 	<li class="nav-header">MAIN NAVIGATION</li>
 		<?php foreach ($menu as $parent => $parent_params) : ?>
 
@@ -21,7 +21,7 @@
 				<?php else : ?>
 
 					<?php $parent_active = ($ctrler == $parent); ?>
-					<li class="nav-item has-treeview">
+					<li class="nav-item has-treeview <?php if ($parent_active) echo 'menu-open'; ?>">
 						<a href='#' class="nav-link <?php if ($parent_active) echo 'active'; ?>">
 							<i class="nav-icon <?php echo $parent_params['icon']; ?>"></i>
 							<p><?php echo $parent_params['name']; ?>

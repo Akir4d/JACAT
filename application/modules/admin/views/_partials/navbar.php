@@ -1,7 +1,7 @@
 <nav class="main-header navbar navbar-expand <?php echo $navbar_class; ?>">
 	<ul class="navbar-nav">
 		<li class="nav-item">
-			<a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+			<a class="nav-link" data-widget="pushmenu" data-auto-collapse-size="768" data-enable-remember="true" href="#"><i class="fas fa-bars"></i></a>
 		</li>
 	</ul>
 	<ul class="navbar-nav ml-auto">
