@@ -1,9 +1,35 @@
+<?php
+
+ //Start counting the buttons that we have:
+ $buttons_counter = 0;
+
+ if (!$unset_edit) {
+     $buttons_counter++;
+ }
+
+ if (!$unset_read) {
+     $buttons_counter++;
+ }
+
+ if (!$unset_delete) {
+     $buttons_counter++;
+ }
+
+ if (!$unset_clone) {
+     $buttons_counter++;
+ }
+
+ if (!empty($list[0]) && !empty($list[0]->action_urls)) {
+     $buttons_counter += count($list[0]->action_urls);
+ }
+?>
+
 <table cellpadding="0" cellspacing="0" border="0" class="groceryCrudTable table invisible" id="<?php echo uniqid(); ?>">
     <thead>
         <tr id="multiSearchToggle" hidden>
 
             <?php if (!$unset_delete || !$unset_edit || !$unset_read || !empty($actions)) { ?>
-                <th>
+                <th style="width: 50px;">
 
                     <input type="text" class="form-control dt-ci-input search_hidden invisible" />
                    			
@@ -32,7 +58,7 @@
         </tr>
         <tr>
             <?php if (!$unset_delete || !$unset_edit || !$unset_read || !empty($actions)) { ?>
-                <th class='actions'><?php echo $this->l('list_actions'); ?></th>
+                <th class='actions' style="width: <?php echo (20 + ($buttons_counter * 10));?>px;"><?php echo $this->l('list_actions'); ?></th>
             <?php } ?>
             <?php
             foreach ($columns as $column) {

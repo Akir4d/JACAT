@@ -4,6 +4,7 @@ var oTableArray = [];
 var oTableMapping = [];
 var examSS;
 var oSpecial = null;
+var oResizeLauched = false;
 function supports_html5_storage() {
     try {
         JSON.parse("{}");
@@ -212,11 +213,11 @@ function delete_row(delete_url, row_id) {
         message: message_alert_delete,
         buttons: {
             confirm: {
-                label:  list_delete + ' <i class="fas fa-trash-alt"></i>',
+                label: list_delete + ' <i class="fas fa-trash-alt"></i>',
                 className: 'btn-danger'
             },
             cancel: {
-                label: list_cancel + ' <i class="fas fa-times"></i>', 
+                label: list_cancel + ' <i class="fas fa-times"></i>',
                 className: 'btn-default'
             }
         },
@@ -325,17 +326,25 @@ function after_draw_callback() {
     $('td>div.invisible').remove();
 
     add_edit_button_listener();
-    $(".nav-link[data-widget=pushmenu]").click(function () {
-        fix_table_size();
-    });
+
+
     if (!$('.more-searchOption').length) {
         $('.dataTables_filter').addClass('d-inline').parent().append(' <a class="more-searchOption btn btn-default d-inline"><i class="fas fa-search-plus"></i></a>');
-        $('.more-searchOption').click(function () { if ($('#multiSearchToggle').prop('hidden')) { $('#multiSearchToggle').prop('hidden', null) } else { $('#multiSearchToggle').prop('hidden', true) } });
+        $('.more-searchOption').click(function () {
+            if ($('#multiSearchToggle').prop('hidden')) {
+                $('#multiSearchToggle').prop('hidden', null);
+                fix_table_size();
+            } else {
+                $('#multiSearchToggle').prop('hidden', true);
+                fix_table_size();
+            }
+        });
         $('.dataTables_length').addClass('d-inline').append('&emsp;&emsp;');
         $('.dataTables_info').addClass('d-inline').append('&emsp;');
         $('table.groceryCrudTable').removeClass('invisible');
     }
 }
+
 $(document).ready(function (l) {
     $('.ci_btOn').html(function (e) {
         $(this).parent().html('<span class="fas fa-check ci_btOn" style="color:#00a65a"><b class="invisible">' +
@@ -409,14 +418,18 @@ $.extend(RotateImage.prototype, {
 });
 
 function fix_table_size() {
-    // $('.groceryCrudTable').attr('style', 'width: 100%');
-    // oTable.fnAdjustColumnSizing();
-    // $('.groceryCrudTable').attr('style', 'width: ' + parseInt($(document).outerWidth() - $('aside').width()) + 'px'); 
-    setTimeout(function () {
-        $('table.groceryCrudTable').first().attr('style', 'width: ' + parseInt($('div.dataTablesContainer').first().width() * 0.98) + 'px');
-        oTable.fnAdjustColumnSizing(oTable);
-        //oTable.fnDraw(oTable);
-    }, 300);
+    if (!oResizeLauched) {
+        oResizeLauched = true;
+        setTimeout(function () {
+            // put table in oversize
+            $('table.groceryCrudTable').first().attr('style', 'width: ' + parseInt($('div.dataTablesContainer').first().width() * 0.98) + 'px');
+            // fit table
+            oTable.fnAdjustColumnSizing();
+            // redraw table
+            oTable.fnDraw();
+            oResizeLauched = false;
+        }, 310);
+    }
 }
 
 $(document).on('onInit.fb', function (e, instance) {
@@ -425,3 +438,5 @@ $(document).on('onInit.fb', function (e, instance) {
     }
 });
 
+$(document).on('collapsed.lte.pushmenu', fix_table_size);
+$(document).on('shown.lte.pushmenu', fix_table_size);
