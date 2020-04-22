@@ -218,6 +218,10 @@ class MY_Controller extends MX_Controller
 			$this->mStylesheets[$media] = array_merge($files, $this->mStylesheets[$media]);
 	}
 
+	protected function load_inject ($inject, $settings) {
+		return $this->load->view('inject/'.$inject, $settings, true);
+	}
+
 	// Render template
 	protected function render($view_file, $layout = 'default')
 	{
