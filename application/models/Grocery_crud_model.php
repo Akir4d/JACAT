@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP grocery CRUD
  *
@@ -27,7 +28,8 @@
  * @version    	1.5.6
  * @link		http://www.grocerycrud.com/documentation
  */
-class Grocery_crud_model  extends CI_Model  {
+class Grocery_crud_model  extends CI_Model
+{
 
 	protected $primary_key = null;
 	protected $table_name = null;
@@ -35,561 +37,530 @@ class Grocery_crud_model  extends CI_Model  {
 	protected $relation_n_n = array();
 	protected $primary_keys = array();
 	protected $dbint = null;
-	
+	protected $custom_query = null;
+
 	function __construct()
-    {
+	{
 		parent::__construct();
 		if ($this->dbint === null) {
 			$this->dbint = $this->db;
 		}
 	}
-	
-	function set_db ($other_db){
+
+	function set_db($other_db)
+	{
 		$this->dbint = $this->load->database($other_db, TRUE);
 	}
 
-    function db_table_exists($table_name = null)
-    {
-    	return  $this->dbint->table_exists($table_name);
-    }
+	function set_custom_query($query)
+	{
+		$this->custom_query = $query;
+	}
 
-    function get_list()
-    {
-    	if($this->table_name === null)
-    		return false;
+	function db_table_exists($table_name = null)
+	{
+		return  $this->dbint->table_exists($table_name);
+	}
 
-    	$select = "`{$this->table_name}`.*";
+	function get_list()
+	{
+		if ($this->table_name === null)
+			return false;
 
-    	//set_relation special queries
-    	if(!empty($this->relation))
-    	{
-    		foreach($this->relation as $relation)
-    		{
-    			list($field_name , $related_table , $related_field_title) = $relation;
-    			$unique_join_name = $this->_unique_join_name($field_name);
-    			$unique_field_name = $this->_unique_field_name($field_name);
+		$select = "`{$this->table_name}`.*";
 
-				if(strstr($related_field_title,'{'))
-				{
-					$related_field_title = str_replace(" ","&nbsp;",$related_field_title);
-    				$select .= ", CONCAT('".str_replace(array('{','}'),array("',COALESCE({$unique_join_name}.",", ''),'"),str_replace("'","\\'",$related_field_title))."') as $unique_field_name";
+		//set_relation special queries
+		if (!empty($this->relation)) {
+			foreach ($this->relation as $relation) {
+				list($field_name, $related_table, $related_field_title) = $relation;
+				$unique_join_name = $this->_unique_join_name($field_name);
+				$unique_field_name = $this->_unique_field_name($field_name);
+
+				if (strstr($related_field_title, '{')) {
+					$related_field_title = str_replace(" ", "&nbsp;", $related_field_title);
+					$select .= ", CONCAT('" . str_replace(array('{', '}'), array("',COALESCE({$unique_join_name}.", ", ''),'"), str_replace("'", "\\'", $related_field_title)) . "') as $unique_field_name";
+				} else {
+					$select .= ", $unique_join_name.$related_field_title AS $unique_field_name";
 				}
-    			else
-    			{
-    				$select .= ", $unique_join_name.$related_field_title AS $unique_field_name";
-    			}
 
-    			if($this->field_exists($related_field_title))
-    				$select .= ", `{$this->table_name}`.$related_field_title AS '{$this->table_name}.$related_field_title'";
-    		}
-    	}
+				if ($this->field_exists($related_field_title))
+					$select .= ", `{$this->table_name}`.$related_field_title AS '{$this->table_name}.$related_field_title'";
+			}
+		}
 
-    	//set_relation_n_n special queries. We prefer sub queries from a simple join for the relation_n_n as it is faster and more stable on big tables.
-    	if(!empty($this->relation_n_n))
-    	{
+		//set_relation_n_n special queries. We prefer sub queries from a simple join for the relation_n_n as it is faster and more stable on big tables.
+		if (!empty($this->relation_n_n)) {
 			$select = $this->relation_n_n_queries($select);
-    	}
+		}
 
-    	 $this->dbint->select($select, false);
+		if ($this->custom_query !== null) {
+			$results =  $this->dbint->query($this->custom_query)->result();
+			return $results;
+		}
 
-    	$results =  $this->dbint->get($this->table_name)->result();
+		$this->dbint->select($select, false);
 
-    	return $results;
-    }
+		$results =  $this->dbint->get($this->table_name)->result();
 
-    public function get_row($table_name = null)
-    {
-    	$table_name = $table_name === null ? $this->table_name : $table_name;
+		return $results;
+	}
 
-    	return  $this->dbint->get($table_name)->row();
-    }
+	public function get_row($table_name = null)
+	{
+		$table_name = $table_name === null ? $this->table_name : $table_name;
 
-    public function set_primary_key($field_name, $table_name = null)
-    {
-    	$table_name = $table_name === null ? $this->table_name : $table_name;
+		return  $this->dbint->get($table_name)->row();
+	}
 
-    	$this->primary_keys[$table_name] = $field_name;
-    }
+	public function set_primary_key($field_name, $table_name = null)
+	{
+		$table_name = $table_name === null ? $this->table_name : $table_name;
 
-    protected function relation_n_n_queries($select)
-    {
-    	$this_table_primary_key = $this->get_primary_key();
-    	foreach($this->relation_n_n as $relation_n_n)
-    	{
-    		list($field_name, $relation_table, $selection_table, $primary_key_alias_to_this_table,
-    					$primary_key_alias_to_selection_table, $title_field_selection_table, $priority_field_relation_table) = array_values((array)$relation_n_n);
+		$this->primary_keys[$table_name] = $field_name;
+	}
 
-    		$primary_key_selection_table = $this->get_primary_key($selection_table);
+	protected function relation_n_n_queries($select)
+	{
+		$this_table_primary_key = $this->get_primary_key();
+		foreach ($this->relation_n_n as $relation_n_n) {
+			list(
+				$field_name, $relation_table, $selection_table, $primary_key_alias_to_this_table,
+				$primary_key_alias_to_selection_table, $title_field_selection_table, $priority_field_relation_table
+			) = array_values((array) $relation_n_n);
 
-	    	$field = "";
-	    	$use_template = strpos($title_field_selection_table,'{') !== false;
-	    	$field_name_hash = $this->_unique_field_name($title_field_selection_table);
-	    	if($use_template)
-	    	{
-	    		$title_field_selection_table = str_replace(" ", "&nbsp;", $title_field_selection_table);
-	    		$field .= "CONCAT('".str_replace(array('{','}'),array("',COALESCE(",", ''),'"),str_replace("'","\\'",$title_field_selection_table))."')";
-	    	}
-	    	else
-	    	{
-	    		$field .= "$selection_table.$title_field_selection_table";
-	    	}
+			$primary_key_selection_table = $this->get_primary_key($selection_table);
 
-    		//Sorry Codeigniter but you cannot help me with the subquery!
-    		$select .= ", (SELECT GROUP_CONCAT(DISTINCT $field) FROM $selection_table "
-    			."LEFT JOIN $relation_table ON $relation_table.$primary_key_alias_to_selection_table = $selection_table.$primary_key_selection_table "
-    			."WHERE $relation_table.$primary_key_alias_to_this_table = `{$this->table_name}`.$this_table_primary_key GROUP BY $relation_table.$primary_key_alias_to_this_table) AS $field_name";
-    	}
+			$field = "";
+			$use_template = strpos($title_field_selection_table, '{') !== false;
+			$field_name_hash = $this->_unique_field_name($title_field_selection_table);
+			if ($use_template) {
+				$title_field_selection_table = str_replace(" ", "&nbsp;", $title_field_selection_table);
+				$field .= "CONCAT('" . str_replace(array('{', '}'), array("',COALESCE(", ", ''),'"), str_replace("'", "\\'", $title_field_selection_table)) . "')";
+			} else {
+				$field .= "$selection_table.$title_field_selection_table";
+			}
 
-    	return $select;
-    }
+			//Sorry Codeigniter but you cannot help me with the subquery!
+			$select .= ", (SELECT GROUP_CONCAT(DISTINCT $field) FROM $selection_table "
+				. "LEFT JOIN $relation_table ON $relation_table.$primary_key_alias_to_selection_table = $selection_table.$primary_key_selection_table "
+				. "WHERE $relation_table.$primary_key_alias_to_this_table = `{$this->table_name}`.$this_table_primary_key GROUP BY $relation_table.$primary_key_alias_to_this_table) AS $field_name";
+		}
 
-    function order_by($order_by , $direction)
-    {
-    	 $this->dbint->order_by( $order_by , $direction );
-    }
+		return $select;
+	}
 
-    function where($key, $value = NULL, $escape = TRUE)
-    {
-    	 $this->dbint->where( $key, $value, $escape);
-    }
+	function order_by($order_by, $direction)
+	{
+		$this->dbint->order_by($order_by, $direction);
+	}
 
-    function or_where($key, $value = NULL, $escape = TRUE)
-    {
-    	 $this->dbint->or_where( $key, $value, $escape);
-    }
+	function where($key, $value = NULL, $escape = TRUE)
+	{
+		$this->dbint->where($key, $value, $escape);
+	}
 
-    function having($key, $value = NULL, $escape = TRUE)
-    {
-    	 $this->dbint->having( $key, $value, $escape);
-    }
+	function or_where($key, $value = NULL, $escape = TRUE)
+	{
+		$this->dbint->or_where($key, $value, $escape);
+	}
 
-    function or_having($key, $value = NULL, $escape = TRUE)
-    {
-    	 $this->dbint->or_having( $key, $value, $escape);
-    }
+	function having($key, $value = NULL, $escape = TRUE)
+	{
+		$this->dbint->having($key, $value, $escape);
+	}
 
-    function like($field, $match = '', $side = 'both')
-    {
-    	 $this->dbint->like($field, $match, $side);
-    }
+	function or_having($key, $value = NULL, $escape = TRUE)
+	{
+		$this->dbint->or_having($key, $value, $escape);
+	}
 
-    function or_like($field, $match = '', $side = 'both')
-    {
-    	 $this->dbint->or_like($field, $match, $side);
-    }
+	function like($field, $match = '', $side = 'both')
+	{
+		$this->dbint->like($field, $match, $side);
+	}
 
-    function limit($value, $offset = '')
-    {
-    	 $this->dbint->limit( $value , $offset );
-    }
+	function or_like($field, $match = '', $side = 'both')
+	{
+		$this->dbint->or_like($field, $match, $side);
+	}
 
-    function get_total_results()
-    {
-        // A fast way to calculate the total results
-        $key = $this->get_primary_key();
+	function limit($value, $offset = '')
+	{
+		$this->dbint->limit($value, $offset);
+	}
 
-    	//set_relation_n_n special queries. We prefer sub queries from a simple join for the relation_n_n as it is faster and more stable on big tables.
-    	if(!empty($this->relation_n_n))
-    	{
-    		$select = "{$this->table_name}." . $key;
-    		$select = $this->relation_n_n_queries($select);
+	function get_total_results()
+	{
+		// A fast way to calculate the total results
+		$key = $this->get_primary_key();
 
-    		 $this->dbint->select($select,false);
-    	} else {
-             $this->dbint->select($this->table_name . '.' . $key);
-        }
-        
-        return  $this->dbint->get($this->table_name)->num_rows();
-    }
+		//set_relation_n_n special queries. We prefer sub queries from a simple join for the relation_n_n as it is faster and more stable on big tables.
+		if (!empty($this->relation_n_n)) {
+			$select = "{$this->table_name}." . $key;
+			$select = $this->relation_n_n_queries($select);
 
-    function set_basic_table($table_name = null)
-    {
-    	if( !( $this->dbint->table_exists($table_name)) )
-    		return false;
+			$this->dbint->select($select, false);
+		} else {
+			$this->dbint->select($this->table_name . '.' . $key);
+		}
 
-    	$this->table_name = $table_name;
+		return  $this->dbint->get($this->table_name)->num_rows();
+	}
 
-    	return true;
-    }
+	function set_basic_table($table_name = null)
+	{
+		if (!($this->dbint->table_exists($table_name)))
+			return false;
 
-    function get_edit_values($primary_key_value)
-    {
-    	$primary_key_field = $this->get_primary_key();
-    	 $this->dbint->where($primary_key_field,$primary_key_value);
-    	$result =  $this->dbint->get($this->table_name)->row();
-    	return $result;
-    }
+		$this->table_name = $table_name;
 
-    function join_relation($field_name , $related_table , $related_field_title)
-    {
+		return true;
+	}
+
+	function get_edit_values($primary_key_value)
+	{
+		$primary_key_field = $this->get_primary_key();
+		$this->dbint->where($primary_key_field, $primary_key_value);
+		$result =  $this->dbint->get($this->table_name)->row();
+		return $result;
+	}
+
+	function join_relation($field_name, $related_table, $related_field_title)
+	{
 		$related_primary_key = $this->get_primary_key($related_table);
 
-		if($related_primary_key !== false)
-		{
+		if ($related_primary_key !== false) {
 			$unique_name = $this->_unique_join_name($field_name);
-			 $this->dbint->join( $related_table.' as '.$unique_name , "$unique_name.$related_primary_key = {$this->table_name}.$field_name",'left');
+			$this->dbint->join($related_table . ' as ' . $unique_name, "$unique_name.$related_primary_key = {$this->table_name}.$field_name", 'left');
 
-			$this->relation[$field_name] = array($field_name , $related_table , $related_field_title);
+			$this->relation[$field_name] = array($field_name, $related_table, $related_field_title);
 
 			return true;
 		}
 
-    	return false;
-    }
+		return false;
+	}
 
-    function set_relation_n_n_field($field_info)
-    {
+	function set_relation_n_n_field($field_info)
+	{
 		$this->relation_n_n[$field_info->field_name] = $field_info;
-    }
+	}
 
-    protected function _unique_join_name($field_name)
-    {
-    	return 'j'.substr(md5($field_name),0,8); //This j is because is better for a string to begin with a letter and not with a number
-    }
+	protected function _unique_join_name($field_name)
+	{
+		return 'j' . substr(md5($field_name), 0, 8); //This j is because is better for a string to begin with a letter and not with a number
+	}
 
-    protected function _unique_field_name($field_name)
-    {
-    	return 's'.substr(md5($field_name),0,8); //This s is because is better for a string to begin with a letter and not with a number
-    }
+	protected function _unique_field_name($field_name)
+	{
+		return 's' . substr(md5($field_name), 0, 8); //This s is because is better for a string to begin with a letter and not with a number
+	}
 
-    function get_relation_array($field_name , $related_table , $related_field_title, $where_clause, $order_by, $limit = null, $search_like = null)
-    {
-    	$relation_array = array();
-    	$field_name_hash = $this->_unique_field_name($field_name);
+	function get_relation_array($field_name, $related_table, $related_field_title, $where_clause, $order_by, $limit = null, $search_like = null)
+	{
+		$relation_array = array();
+		$field_name_hash = $this->_unique_field_name($field_name);
 
-    	$related_primary_key = $this->get_primary_key($related_table);
+		$related_primary_key = $this->get_primary_key($related_table);
 
-    	$select = "$related_table.$related_primary_key, ";
+		$select = "$related_table.$related_primary_key, ";
 
-    	if(strstr($related_field_title,'{'))
-    	{
-    		$related_field_title = str_replace(" ", "&nbsp;", $related_field_title);
-    		$select .= "CONCAT('".str_replace(array('{','}'),array("',COALESCE(",", ''),'"),str_replace("'","\\'",$related_field_title))."') as $field_name_hash";
-    	}
-    	else
-    	{
-	    	$select .= "$related_table.$related_field_title as $field_name_hash";
-    	}
+		if (strstr($related_field_title, '{')) {
+			$related_field_title = str_replace(" ", "&nbsp;", $related_field_title);
+			$select .= "CONCAT('" . str_replace(array('{', '}'), array("',COALESCE(", ", ''),'"), str_replace("'", "\\'", $related_field_title)) . "') as $field_name_hash";
+		} else {
+			$select .= "$related_table.$related_field_title as $field_name_hash";
+		}
 
-    	 $this->dbint->select($select,false);
-    	if($where_clause !== null)
-    		 $this->dbint->where($where_clause);
+		$this->dbint->select($select, false);
+		if ($where_clause !== null)
+			$this->dbint->where($where_clause);
 
-    	if($where_clause !== null)
-    		 $this->dbint->where($where_clause);
+		if ($where_clause !== null)
+			$this->dbint->where($where_clause);
 
-    	if($limit !== null)
-    		 $this->dbint->limit($limit);
+		if ($limit !== null)
+			$this->dbint->limit($limit);
 
-    	if($search_like !== null)
-    		 $this->dbint->having("$field_name_hash LIKE '%". $this->dbint->escape_like_str($search_like)."%'");
+		if ($search_like !== null)
+			$this->dbint->having("$field_name_hash LIKE '%" . $this->dbint->escape_like_str($search_like) . "%'");
 
-    	$order_by !== null
-    		?  $this->dbint->order_by($order_by)
-    		:  $this->dbint->order_by($field_name_hash);
+		$order_by !== null
+			?  $this->dbint->order_by($order_by)
+			:  $this->dbint->order_by($field_name_hash);
 
-    	$results =  $this->dbint->get($related_table)->result();
+		$results =  $this->dbint->get($related_table)->result();
 
-    	foreach($results as $row)
-    	{
-    		$relation_array[$row->$related_primary_key] = $row->$field_name_hash;
-    	}
+		foreach ($results as $row) {
+			$relation_array[$row->$related_primary_key] = $row->$field_name_hash;
+		}
 
-    	return $relation_array;
-    }
+		return $relation_array;
+	}
 
-    function get_ajax_relation_array($search, $field_name , $related_table , $related_field_title, $where_clause, $order_by)
-    {
-    	return $this->get_relation_array($field_name , $related_table , $related_field_title, $where_clause, $order_by, 10 , $search);
-    }
+	function get_ajax_relation_array($search, $field_name, $related_table, $related_field_title, $where_clause, $order_by)
+	{
+		return $this->get_relation_array($field_name, $related_table, $related_field_title, $where_clause, $order_by, 10, $search);
+	}
 
-    function get_relation_total_rows($field_name , $related_table , $related_field_title, $where_clause)
-    {
-    	if($where_clause !== null)
-    		 $this->dbint->where($where_clause);
+	function get_relation_total_rows($field_name, $related_table, $related_field_title, $where_clause)
+	{
+		if ($where_clause !== null)
+			$this->dbint->where($where_clause);
 
-    	return  $this->dbint->count_all_results($related_table);
-    }
+		return  $this->dbint->count_all_results($related_table);
+	}
 
-    function get_relation_n_n_selection_array($primary_key_value, $field_info)
-    {
-    	$select = "";
-    	$related_field_title = $field_info->title_field_selection_table;
-    	$use_template = strpos($related_field_title,'{') !== false;;
-    	$field_name_hash = $this->_unique_field_name($related_field_title);
-    	if($use_template)
-    	{
-    		$related_field_title = str_replace(" ", "&nbsp;", $related_field_title);
-    		$select .= "CONCAT('".str_replace(array('{','}'),array("',COALESCE(",", ''),'"),str_replace("'","\\'",$related_field_title))."') as $field_name_hash";
-    	}
-    	else
-    	{
-    		$select .= "$related_field_title as $field_name_hash";
-    	}
-    	 $this->dbint->select('*, '.$select,false);
+	function get_relation_n_n_selection_array($primary_key_value, $field_info)
+	{
+		$select = "";
+		$related_field_title = $field_info->title_field_selection_table;
+		$use_template = strpos($related_field_title, '{') !== false;;
+		$field_name_hash = $this->_unique_field_name($related_field_title);
+		if ($use_template) {
+			$related_field_title = str_replace(" ", "&nbsp;", $related_field_title);
+			$select .= "CONCAT('" . str_replace(array('{', '}'), array("',COALESCE(", ", ''),'"), str_replace("'", "\\'", $related_field_title)) . "') as $field_name_hash";
+		} else {
+			$select .= "$related_field_title as $field_name_hash";
+		}
+		$this->dbint->select('*, ' . $select, false);
 
-    	$selection_primary_key = $this->get_primary_key($field_info->selection_table);
+		$selection_primary_key = $this->get_primary_key($field_info->selection_table);
 
-    	if(empty($field_info->priority_field_relation_table))
-    	{
-    		if(!$use_template){
-    			 $this->dbint->order_by("{$field_info->selection_table}.{$field_info->title_field_selection_table}");
-    		}
-    	}
-    	else
-    	{
-    		 $this->dbint->order_by("{$field_info->relation_table}.{$field_info->priority_field_relation_table}");
-    	}
-    	 $this->dbint->where($field_info->primary_key_alias_to_this_table, $primary_key_value);
-    	 $this->dbint->join(
-    			$field_info->selection_table,
-    			"{$field_info->relation_table}.{$field_info->primary_key_alias_to_selection_table} = {$field_info->selection_table}.{$selection_primary_key}"
-    		);
-    	$results =  $this->dbint->get($field_info->relation_table)->result();
+		if (empty($field_info->priority_field_relation_table)) {
+			if (!$use_template) {
+				$this->dbint->order_by("{$field_info->selection_table}.{$field_info->title_field_selection_table}");
+			}
+		} else {
+			$this->dbint->order_by("{$field_info->relation_table}.{$field_info->priority_field_relation_table}");
+		}
+		$this->dbint->where($field_info->primary_key_alias_to_this_table, $primary_key_value);
+		$this->dbint->join(
+			$field_info->selection_table,
+			"{$field_info->relation_table}.{$field_info->primary_key_alias_to_selection_table} = {$field_info->selection_table}.{$selection_primary_key}"
+		);
+		$results =  $this->dbint->get($field_info->relation_table)->result();
 
-    	$results_array = array();
-    	foreach($results as $row)
-    	{
-    		$results_array[$row->{$field_info->primary_key_alias_to_selection_table}] = $row->{$field_name_hash};
-    	}
+		$results_array = array();
+		foreach ($results as $row) {
+			$results_array[$row->{$field_info->primary_key_alias_to_selection_table}] = $row->{$field_name_hash};
+		}
 
-    	return $results_array;
-    }
+		return $results_array;
+	}
 
-    function get_relation_n_n_unselected_array($field_info, $selected_values)
-    {
-    	$use_where_clause = !empty($field_info->where_clause);
+	function get_relation_n_n_unselected_array($field_info, $selected_values)
+	{
+		$use_where_clause = !empty($field_info->where_clause);
 
-    	$select = "";
-    	$related_field_title = $field_info->title_field_selection_table;
-    	$use_template = strpos($related_field_title,'{') !== false;
-    	$field_name_hash = $this->_unique_field_name($related_field_title);
+		$select = "";
+		$related_field_title = $field_info->title_field_selection_table;
+		$use_template = strpos($related_field_title, '{') !== false;
+		$field_name_hash = $this->_unique_field_name($related_field_title);
 
-    	if($use_template)
-    	{
-    		$related_field_title = str_replace(" ", "&nbsp;", $related_field_title);
-    		$select .= "CONCAT('".str_replace(array('{','}'),array("',COALESCE(",", ''),'"),str_replace("'","\\'",$related_field_title))."') as $field_name_hash";
-    	}
-    	else
-    	{
-    		$select .= "$related_field_title as $field_name_hash";
-    	}
-    	 $this->dbint->select('*, '.$select,false);
+		if ($use_template) {
+			$related_field_title = str_replace(" ", "&nbsp;", $related_field_title);
+			$select .= "CONCAT('" . str_replace(array('{', '}'), array("',COALESCE(", ", ''),'"), str_replace("'", "\\'", $related_field_title)) . "') as $field_name_hash";
+		} else {
+			$select .= "$related_field_title as $field_name_hash";
+		}
+		$this->dbint->select('*, ' . $select, false);
 
-    	if($use_where_clause){
-    		 $this->dbint->where($field_info->where_clause);
-    	}
+		if ($use_where_clause) {
+			$this->dbint->where($field_info->where_clause);
+		}
 
-    	$selection_primary_key = $this->get_primary_key($field_info->selection_table);
-        if(!$use_template)
-        	 $this->dbint->order_by("{$field_info->selection_table}.{$field_info->title_field_selection_table}");
-        $results =  $this->dbint->get($field_info->selection_table)->result();
+		$selection_primary_key = $this->get_primary_key($field_info->selection_table);
+		if (!$use_template)
+			$this->dbint->order_by("{$field_info->selection_table}.{$field_info->title_field_selection_table}");
+		$results =  $this->dbint->get($field_info->selection_table)->result();
 
-        $results_array = array();
-        foreach($results as $row)
-        {
-            if(!isset($selected_values[$row->$selection_primary_key]))
-                $results_array[$row->$selection_primary_key] = $row->{$field_name_hash};
-        }
+		$results_array = array();
+		foreach ($results as $row) {
+			if (!isset($selected_values[$row->$selection_primary_key]))
+				$results_array[$row->$selection_primary_key] = $row->{$field_name_hash};
+		}
 
-        return $results_array;
-    }
+		return $results_array;
+	}
 
-    function db_relation_n_n_update($field_info, $post_data ,$main_primary_key)
-    {
-    	 $this->dbint->where($field_info->primary_key_alias_to_this_table, $main_primary_key);
-    	if(!empty($post_data))
-    		 $this->dbint->where_not_in($field_info->primary_key_alias_to_selection_table , $post_data);
-    	 $this->dbint->delete($field_info->relation_table);
+	function db_relation_n_n_update($field_info, $post_data, $main_primary_key)
+	{
+		$this->dbint->where($field_info->primary_key_alias_to_this_table, $main_primary_key);
+		if (!empty($post_data))
+			$this->dbint->where_not_in($field_info->primary_key_alias_to_selection_table, $post_data);
+		$this->dbint->delete($field_info->relation_table);
 
-    	$counter = 0;
-    	if(!empty($post_data))
-    	{
-    		foreach($post_data as $primary_key_value)
-	    	{
+		$counter = 0;
+		if (!empty($post_data)) {
+			foreach ($post_data as $primary_key_value) {
 				$where_array = array(
-	    			$field_info->primary_key_alias_to_this_table => $main_primary_key,
-	    			$field_info->primary_key_alias_to_selection_table => $primary_key_value,
-	    		);
+					$field_info->primary_key_alias_to_this_table => $main_primary_key,
+					$field_info->primary_key_alias_to_selection_table => $primary_key_value,
+				);
 
-	    		 $this->dbint->where($where_array);
+				$this->dbint->where($where_array);
 				$count =  $this->dbint->from($field_info->relation_table)->count_all_results();
 
-				if($count == 0)
-				{
-					if(!empty($field_info->priority_field_relation_table))
+				if ($count == 0) {
+					if (!empty($field_info->priority_field_relation_table))
 						$where_array[$field_info->priority_field_relation_table] = $counter;
 
-					 $this->dbint->insert($field_info->relation_table, $where_array);
-
-				}elseif($count >= 1 && !empty($field_info->priority_field_relation_table))
-				{
-					 $this->dbint->update( $field_info->relation_table, array($field_info->priority_field_relation_table => $counter) , $where_array);
+					$this->dbint->insert($field_info->relation_table, $where_array);
+				} elseif ($count >= 1 && !empty($field_info->priority_field_relation_table)) {
+					$this->dbint->update($field_info->relation_table, array($field_info->priority_field_relation_table => $counter), $where_array);
 				}
 
 				$counter++;
-	    	}
-    	}
-    }
+			}
+		}
+	}
 
-    function db_relation_n_n_delete($field_info, $main_primary_key)
-    {
-    	 $this->dbint->where($field_info->primary_key_alias_to_this_table, $main_primary_key);
-    	 $this->dbint->delete($field_info->relation_table);
-    }
+	function db_relation_n_n_delete($field_info, $main_primary_key)
+	{
+		$this->dbint->where($field_info->primary_key_alias_to_this_table, $main_primary_key);
+		$this->dbint->delete($field_info->relation_table);
+	}
 
-    function get_field_types_basic_table()
-    {
-    	$db_field_types = array();
-    	foreach( $this->dbint->query("SHOW COLUMNS FROM `{$this->table_name}`")->result() as $db_field_type)
-    	{
-    		$type = explode("(",$db_field_type->Type);
-    		$db_type = $type[0];
+	function get_field_types_basic_table()
+	{
+		$db_field_types = array();
+		$query = "SHOW COLUMNS FROM `{$this->table_name}`";
+		$randomView = 'j' . bin2hex(random_bytes(10));
+		if ($this->custom_query !== null) {
+			$limit = ' LIMIT 0';
+			if (stripos($this->custom_query, 'limit') !== false) {
+				$limit = '';
+			}
+			$this->dbint->query('CREATE VIEW ' . $randomView . ' AS ' . $this->custom_query . $limit);
+			$query =  "SHOW COLUMNS FROM " . $randomView;
+		}
+		foreach ($this->dbint->query($query)->result() as $db_field_type) {
+			$type = explode("(", $db_field_type->Type);
+			$db_type = $type[0];
 
-    		if(isset($type[1]))
-    		{
-    			if(substr($type[1],-1) == ')')
-    			{
-    				$length = substr($type[1],0,-1);
-    			}
-    			else
-    			{
-    				list($length) = explode(" ",$type[1]);
-    				$length = substr($length,0,-1);
-    			}
-    		}
-    		else
-    		{
-    			$length = '';
-    		}
-    		$db_field_types[$db_field_type->Field]['db_max_length'] = $length;
-    		$db_field_types[$db_field_type->Field]['db_type'] = $db_type;
-    		$db_field_types[$db_field_type->Field]['db_null'] = $db_field_type->Null == 'YES' ? true : false;
-    		$db_field_types[$db_field_type->Field]['db_extra'] = $db_field_type->Extra;
-    	}
+			if (isset($type[1])) {
+				if (substr($type[1], -1) == ')') {
+					$length = substr($type[1], 0, -1);
+				} else {
+					list($length) = explode(" ", $type[1]);
+					$length = substr($length, 0, -1);
+				}
+			} else {
+				$length = '';
+			}
+			$db_field_types[$db_field_type->Field]['db_max_length'] = $length;
+			$db_field_types[$db_field_type->Field]['db_type'] = $db_type;
+			$db_field_types[$db_field_type->Field]['db_null'] = $db_field_type->Null == 'YES' ? true : false;
+			$db_field_types[$db_field_type->Field]['db_extra'] = $db_field_type->Extra;
+		}
 
-    	$results =  $this->dbint->field_data($this->table_name);
-    	foreach($results as $num => $row)
-    	{
-    		$row = (array)$row;
-    		$results[$num] = (object)( array_merge($row, $db_field_types[$row['name']])  );
-    	}
+		$results =  $this->dbint->field_data($this->table_name);
+		if ($this->custom_query !== null) {
+			$results =  $this->dbint->field_data($randomView);
+			$this->dbint->query('DROP VIEW ' . $randomView);
+		} 
+		foreach ($results as $num => $row) {
+			$row = (array) $row;
+			$results[$num] = (object) (array_merge($row, $db_field_types[$row['name']]));
+		}
 
-    	return $results;
-    }
+		return $results;
+	}
 
-    function get_field_types($table_name)
-    {
-    	$results =  $this->dbint->field_data($table_name);
+	function get_field_types($table_name)
+	{
+		$results =  $this->dbint->field_data($table_name);
 
-    	return $results;
-    }
+		return $results;
+	}
 
-    function db_update($post_array, $primary_key_value)
-    {
-    	$primary_key_field = $this->get_primary_key();
-    	return  $this->dbint->update($this->table_name,$post_array, array( $primary_key_field => $primary_key_value));
-    }
+	function db_update($post_array, $primary_key_value)
+	{
+		$primary_key_field = $this->get_primary_key();
+		return  $this->dbint->update($this->table_name, $post_array, array($primary_key_field => $primary_key_value));
+	}
 
-    function db_insert($post_array)
-    {
-    	$insert =  $this->dbint->insert($this->table_name,$post_array);
-    	if($insert)
-    	{
-    		return  $this->dbint->insert_id();
-    	}
-    	return false;
-    }
+	function db_insert($post_array)
+	{
+		$insert =  $this->dbint->insert($this->table_name, $post_array);
+		if ($insert) {
+			return  $this->dbint->insert_id();
+		}
+		return false;
+	}
 
-    function db_delete($primary_key_value)
-    {
-    	$primary_key_field = $this->get_primary_key();
+	function db_delete($primary_key_value)
+	{
+		$primary_key_field = $this->get_primary_key();
 
-    	if($primary_key_field === false)
-    		return false;
+		if ($primary_key_field === false)
+			return false;
 
-    	 $this->dbint->limit(1);
-    	 $this->dbint->delete($this->table_name,array( $primary_key_field => $primary_key_value));
-    	if(  $this->dbint->affected_rows() != 1)
-    		return false;
-    	else
-    		return true;
-    }
+		$this->dbint->limit(1);
+		$this->dbint->delete($this->table_name, array($primary_key_field => $primary_key_value));
+		if ($this->dbint->affected_rows() != 1)
+			return false;
+		else
+			return true;
+	}
 
-    function db_file_delete($field_name, $filename)
-    {
-    	if(  $this->dbint->update($this->table_name,array($field_name => ''),array($field_name => $filename)) )
-    	{
-    		return true;
-    	}
-    	else
-    	{
-    		return false;
-    	}
-    }
+	function db_file_delete($field_name, $filename)
+	{
+		if ($this->dbint->update($this->table_name, array($field_name => ''), array($field_name => $filename))) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
-    function field_exists($field,$table_name = null)
-    {
-    	if(empty($table_name))
-    	{
-    		$table_name = $this->table_name;
-    	}
-    	return  $this->dbint->field_exists($field,$table_name);
-    }
+	function field_exists($field, $table_name = null)
+	{
+		if (empty($table_name)) {
+			$table_name = $this->table_name;
+		}
+		return  $this->dbint->field_exists($field, $table_name);
+	}
 
-    function get_primary_key($table_name = null)
-    {
-    	if($table_name == null)
-    	{
-    		if(isset($this->primary_keys[$this->table_name]))
-    		{
-    			return $this->primary_keys[$this->table_name];
-    		}
+	function get_primary_key($table_name = null)
+	{
+		if ($table_name == null) {
+			if (isset($this->primary_keys[$this->table_name])) {
+				return $this->primary_keys[$this->table_name];
+			}
 
-	    	if(empty($this->primary_key))
-	    	{
-		    	$fields = $this->get_field_types_basic_table();
+			if (empty($this->primary_key)) {
+				$fields = $this->get_field_types_basic_table();
 
-		    	foreach($fields as $field)
-		    	{
-		    		if($field->primary_key == 1)
-		    		{
-		    			return $field->name;
-		    		}
-		    	}
+				foreach ($fields as $field) {
+					if ($field->primary_key == 1) {
+						return $field->name;
+					}
+				}
 
-		    	return false;
-	    	}
-	    	else
-	    	{
-	    		return $this->primary_key;
-	    	}
-    	}
-    	else
-    	{
-    		if(isset($this->primary_keys[$table_name]))
-    		{
-    			return $this->primary_keys[$table_name];
-    		}
+				return false;
+			} else {
+				return $this->primary_key;
+			}
+		} else {
+			if (isset($this->primary_keys[$table_name])) {
+				return $this->primary_keys[$table_name];
+			}
 
-	    	$fields = $this->get_field_types($table_name);
+			$fields = $this->get_field_types($table_name);
 
-	    	foreach($fields as $field)
-	    	{
-	    		if($field->primary_key == 1)
-	    		{
-	    			return $field->name;
-	    		}
-	    	}
+			foreach ($fields as $field) {
+				if ($field->primary_key == 1) {
+					return $field->name;
+				}
+			}
 
-	    	return false;
-    	}
+			return false;
+		}
+	}
 
-    }
-
-    function escape_str($value)
-    {
-    	return  $this->dbint->escape_str($value);
-    }
-
+	function escape_str($value)
+	{
+		return  $this->dbint->escape_str($value);
+	}
 }

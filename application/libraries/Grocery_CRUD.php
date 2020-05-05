@@ -482,6 +482,12 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 		if($this->basic_db !== null) {
 			$this->basic_model->set_db($this->basic_db);
 		}
+
+		if($this->custom_query !== null)
+		{
+			$this->basic_model->set_custom_query($this->custom_query);
+		}
+
 	}
 
 	protected function get_total_results()
@@ -3611,6 +3617,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 	protected $field_types 			= null;
 	protected $basic_db_table 		= null;
 	protected $basic_db				= null;
+	protected $custom_query			= null;
 	protected $theme_config 		= array();
 	protected $subject 				= null;
 	protected $subject_plural 		= null;
@@ -4680,7 +4687,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 					throw new Exception('You don\'t have permissions for this operation', 14);
 					die();
 				}
-
+				
 				if($this->theme === null)
 					$this->set_theme($this->default_theme);
 				$this->setThemeBasics();
@@ -5318,6 +5325,32 @@ class Grocery_CRUD extends grocery_CRUD_States
 			$this->basic_db_table = $table_name;
 		}
 		elseif(!empty($table_name))
+		{
+			throw new Exception('You have already insert a table name once...', 1);
+		}
+		else
+		{
+			throw new Exception('The table name cannot be empty.', 2);
+			die();
+		}
+
+		return $this;
+	}
+
+	/**
+	 *
+	 * Sets the custom query table.
+	 * @param string $cquery
+	 * @return grocery_CRUD
+	 */
+	public function set_custom_query($cquery, $pkey, $tb_name = null)
+	{
+		if($this->custom_query === null)
+		{
+			$this->custom_query = $cquery;
+			$this->primary_keys[] = array('field_name' => $pkey, 'table_name' => $tb_name);
+		}
+		elseif(!empty($cquery))
 		{
 			throw new Exception('You have already insert a table name once...', 1);
 		}
