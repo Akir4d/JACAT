@@ -52,7 +52,7 @@ This repository contains setup for rapid development:
 
 Below configuration are preferred; other environments are not well-tested, but still feel free to report and issues. 
 
-* **PHP 5.6+**
+* **PHP 7.0+**
 * **Apache 2.2+** with rewrite mod enabled
 * **MySQL 5.5+** (not tested on MariaDB)
 
@@ -60,10 +60,14 @@ Below configuration are preferred; other environments are not well-tested, but s
 ### Setup Guide
 
 1. git clone this repo
-2. Create a database (e.g. named "jacat"), then import /sql/latest.sql into MySQL server
+2. Create a database (e.g. named "jacat"), into MySQL server
 3. Inside /application/config/ copy "database.model.php" as "database.php" and make sure that database config is set correctly
-4. You should be able to access Frontend Website, Admin Panel and API Site (with Swagger Doc) respectively
-5. Visit the Demo Controllers (exist in both Frontend / Admin Panel / API) for sample usage
+4. go to your-new-site/upgrade to install database with new tables and default configuration datas.
+5. You should be able to access Frontend Website, Admin Panel and API Site (with Swagger Doc) respectively
+6. Visit the Demo Controllers (exist in both Frontend / Admin Panel / API) for sample usage
+
+### Upgrade database from prevoius version
+1. go to your-new-site/upgrade to upgrade database tables
 
 
 ### Admin Users (and default login accounts)
