@@ -150,11 +150,11 @@ class Migration extends MY_Model
     //this makes a bare login for ion_auth
     if (!$this->db->table_exists($dbprefix . 'groups')) {
       $this->db->query("CREATE TABLE `" . $dbprefix . "groups` (
-            `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+            `id` mediumint(8) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
             `name` varchar(20) NOT NULL,
             `description` varchar(100) NOT NULL,
             PRIMARY KEY (`id`)
-          ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;");
+          ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
       if (!empty($fake_users)) {
         $this->db->insert_batch($dbprefix . 'groups', $fake_users['groups']);
       } else {
@@ -174,7 +174,7 @@ class Migration extends MY_Model
 
     if (!$this->db->table_exists($dbprefix . 'users')) {
       $this->db->query("CREATE TABLE `" . $dbprefix . "users` (
-            `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+            `id` int(11) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
             `ip_address` varchar(45) NOT NULL,
             `username` varchar(100) NULL,
             `password` varchar(255) NOT NULL,
@@ -199,7 +199,7 @@ class Migration extends MY_Model
             CONSTRAINT `uc_activation_selector` UNIQUE (`activation_selector`),
             CONSTRAINT `uc_forgotten_password_selector` UNIQUE (`forgotten_password_selector`),
             CONSTRAINT `uc_remember_selector` UNIQUE (`remember_selector`)
-          ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;");
+          ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;");
       if (!empty($fake_users)) {
         $this->db->insert_batch($dbprefix . 'users', $fake_users['users']);
       } else {
@@ -209,7 +209,7 @@ class Migration extends MY_Model
 
     if (!$this->db->table_exists($dbprefix . 'users_groups')) {
       $this->db->query("CREATE TABLE `" . $dbprefix . "users_groups` (
-            `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+            `id` int(11) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
            `user_id` int(11) unsigned NOT NULL,
            `group_id` mediumint(8) unsigned NOT NULL,
            PRIMARY KEY (`id`),
@@ -218,7 +218,7 @@ class Migration extends MY_Model
            CONSTRAINT `uc_" . $dbprefix . "users_groups` UNIQUE (`user_id`, `group_id`),
            CONSTRAINT `fk_" . $dbprefix . "users_groups_users1` FOREIGN KEY (`user_id`) REFERENCES `" . $dbprefix . "users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
            CONSTRAINT `fk_" . $dbprefix . "users_groups_groups1` FOREIGN KEY (`group_id`) REFERENCES `" . $dbprefix . "groups` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-         ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;");
+         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
       if (!empty($fake_users)) {
         $this->db->insert_batch($dbprefix . 'users_groups', $fake_users['relations']);
       } else {
