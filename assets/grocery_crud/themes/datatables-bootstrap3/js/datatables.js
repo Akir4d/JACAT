@@ -259,12 +259,9 @@ function fnGetSelected(oTableLocal) {
 
 
 
-var dtBsWidth = $(window).width();
 $(window).on('resize', function () {
-    if ($(this).width() != dtBsWidth) {
-        dtBsWidth = $(this).width();
-        fix_table_size();
-    }
+    //ok, I will wait all animations end
+    $(window).one("webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend", fix_table_size);
 });
 
 function on_create_process(row, data) {
@@ -319,11 +316,11 @@ function after_draw_callback() {
     }
     $('.add-menu-class').each(function (e) {
         var sID = $(this).attr('data-row');
-        var tmod = $('#row-' + sID + ' div.invisible a.black-text').text($(this).text());
-        var timpH = $('#row-' + sID + ' div.invisible').html();
+        var tmod = $('#row-' + sID + ' div.d-none a.black-text').text($(this).text());
+        var timpH = $('#row-' + sID + ' div.d-none').html();
         $(this).html(timpH).attr('class', 'dropdown').removeAttr('data-row');
     });
-   // $('td>div.invisible').remove();
+    // $('td>div.invisible').remove();
 
     add_edit_button_listener();
 
@@ -422,18 +419,20 @@ $.extend(RotateImage.prototype, {
 });
 
 function fix_table_size_real() {
-    // put table in oversize
-    $('table.groceryCrudTable').first().attr('style', 'width: ' + parseInt($('div.dataTablesContainer').first().width() * 0.98) + 'px');
-    // fit table
-    oTable.fnAdjustColumnSizing();
-    // redraw table
-    oTable.fnDraw();
+   
+        // put table in oversize
+        $('table.groceryCrudTable').first().attr('style', 'width: ' + parseInt($('div.dataTablesContainer').first().width() - 40) + 'px');
+        // fit table
+        oTable.fnAdjustColumnSizing();
+        // redraw table
+        oTable.fnDraw();
 }
 
-function fix_table_size(force = false, timeout = 00) {
+function fix_table_size(force = false, timeout = 0) {
     if (!oResizeLauched || force) {
         if (!force) oResizeLauched = true;
         setTimeout(function () {
+            $(window).one("webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend", fix_table_size_real);
             fix_table_size_real();
             if (!force) oResizeLauched = false;
         }, timeout);

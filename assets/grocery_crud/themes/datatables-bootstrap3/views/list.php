@@ -118,8 +118,8 @@ if (!empty($list[0]) && !empty($list[0]->action_urls)) {
                                 </a>
                             <?php } ?>
                         </div>
-                        <div class="dropdown invisible">
-                            <a type="button" class="black-text" data-toggle="dropdown" aria-expanded="false">
+                        <div class="dropdown d-none">
+                            <a type="button" class="black-text" style="min-width: 50px; min-height: 20px" data-toggle="dropdown" aria-expanded="false">
                             </a>
                             <ul class="dropdown-menu">
 

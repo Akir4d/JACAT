@@ -61,9 +61,14 @@ $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/datatables.
 	$(document).ready(function() {
 		$('#multiSearchToggle input').each(function(e) {
 			let index = $(this).attr('data-index');
+			let rname = $(this).attr('name');
 			let name = $('.th' + index + 'Nu').text();
-			if (index !== undefined && name !== 'JobStatus') {
+			if (index !== undefined && rname !== 'jobStatus') {
 				if (parseInt(getCookieDT(name)) == 0) {
+					$(document).ready(function() {
+						showColumns(index, name, 0, true);
+					});
+				} else if (++numTemp > 12) {
 					$(document).ready(function() {
 						showColumns(index, name, 0, true);
 					});
@@ -150,7 +155,7 @@ $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/datatables.
 				}
 			});
 		} else {
-			window.location.href = link;
+			window.open(link);
 		}
 	}
 	//bootbox.setLocale(moment.locale(navigator.language));
