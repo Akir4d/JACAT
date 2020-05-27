@@ -1,7 +1,6 @@
 $(function(){
 
 	var fmdate = js_date_format.toUpperCase().replace('YY', 'YYYY') + ' ' + 'HH:mm:ss';
-	console.log(fmdate)
     $('.datetime-input').datetimepicker({
 		format: fmdate,
 		locale: grocery_crud_language,
@@ -19,13 +18,13 @@ $(function(){
 		sideBySide: true
     });
     
-	$('.datetime-input-clear').button();
+	//$('.datetime-input-clear').button();
 	
 	$('.datetime-input-clear').click(function(){
-		$(this).parent().find('.datetime-input').val("");
+		$(this).parent().parent().find('.datePicker').val("");
 		return false;
 	});	
 
-	$('.datetime-input-clear').removeClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only").addClass('btn btn-default');
+	//$('.datetime-input-clear').removeClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only").addClass('btn btn-default');
 });
 

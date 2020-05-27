@@ -2443,9 +2443,10 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		{
 			$datetime = '';
 		}
-		$input = "<input id='field-{$field_info->name}' autocomplete='new-password' name='{$field_info->name}' type='text' data-toggle='datetimepicker' data-target='#field-{$field_info->name}' value='$datetime' maxlength='19' class='datetime-input form-control' />
-		<a class='datetime-input-clear' tabindex='-1'>".$this->l('form_button_clear')."</a>
-		({$this->ui_date_format}) hh:mm:ss";
+		$input = "<div class='input-group datetime-input' id='field-{$field_info->name}' data-target-input='nearest'>"
+				."<div class='input-group-prepend' data-target='#field-{$field_info->name}' data-toggle='datetimepicker'><div class='input-group-text'><i class='fas fa-calendar'></i></div></div>"
+				."<input id='field-{$field_info->name}' autocomplete='new-password' name='{$field_info->name}' type='text' data-target='#field-{$field_info->name}' placeholder='{$this->ui_date_format} hh:mm:ss' value='$datetime' maxlength='19' class='form-control datePicker' />
+		<div class='input-group-append'><a class='datetime-input-clear btn btn-default' tabindex='-1'>".$this->l('form_button_clear')."</a></div></div>";
 		return $input;
 	}
 
@@ -2486,8 +2487,17 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 			$date = '';
 		}
 
-		$input = "<input id='field-{$field_info->name}' autocomplete='new-password' name='{$field_info->name}' type='text' value='$date' data-toggle='datetimepicker' data-target='#field-{$field_info->name}' maxlength='10' class='datepicker-input form-control' />
-		<a class='datepicker-input-clear' tabindex='-1'>".$this->l('form_button_clear')."</a> (".$this->ui_date_format.")";
+		/*
+		<div class='input-group date'>
+		 <div class='input-group-prepend' data-target='#field-{$field_info->name}' data-toggle='datetimepicker'><div class="input-group-text"><i class="fa fa-calendar"></i></div></div>
+                <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker12"/>
+		
+		*/
+
+		$input = "<div class='input-group datepicker-input' id='field-{$field_info->name}' data-target-input='nearest'>"
+				."<div class='input-group-prepend' data-target='#field-{$field_info->name}' data-toggle='datetimepicker'><div class='input-group-text'><i class='fas fa-calendar'></i></div></div>"
+				."<input  autocomplete='new-password' name='{$field_info->name}' type='text' placeholder='{$this->ui_date_format}' value='$date' data-target='#field-{$field_info->name}' maxlength='10' class='form-control datePicker' />
+		<div class='input-group-append'><a class='datepicker-input-clear btn btn-default' tabindex='-1'>".$this->l('form_button_clear')."</a></div></div>";
 		return $input;
 	}
 

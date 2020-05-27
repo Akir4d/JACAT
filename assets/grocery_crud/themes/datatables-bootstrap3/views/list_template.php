@@ -68,11 +68,11 @@ $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/datatables.
 					$(document).ready(function() {
 						showColumns(index, name, 0, true);
 					});
-				} else if (++numTemp > 12) {
+				} /* else if (++numTemp > 12) { //<-- limit number of visible columns
 					$(document).ready(function() {
 						showColumns(index, name, 0, true);
 					});
-				}
+				}*/
 				DTSearch += '<div onclick="showColumns(' + index + ', \'' + name + '\', !$(\'[name=vscolunm' + index + ']\').prop(\'checked\'));" class="dropdown-item"><input type="checkbox"';
 				DTSearch += ' name="vscolunm' + index + '" checked><label  for="vscolunm' + index + '">&nbsp;&nbsp;'
 				DTSearch += '' + name + '</label></div>';

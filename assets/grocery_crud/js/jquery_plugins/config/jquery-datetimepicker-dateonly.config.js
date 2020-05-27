@@ -16,11 +16,10 @@ $(function(){
             }
 	});
 	
-	$('.datepicker-input-clear').button();
-	
 	$('.datepicker-input-clear').click(function(){
-		$(this).parent().find('.datepicker-input').val("");
+		$(this).parent().parent().find('.datePicker').val("");
 		return false;
 	});
-	$('.datepicker-input-clear').removeClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only").addClass('btn btn-default');
+
+	//$('.datepicker-input-clear').removeClass("ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only").addClass('btn btn-default');
 });
