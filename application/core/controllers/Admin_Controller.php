@@ -3,7 +3,8 @@
 /**
  * Base Controller for Admin module
  */
-class Admin_Controller extends MY_Controller {
+class Admin_Controller extends MY_Controller
+{
 
 	protected $mUsefulLinks = array();
 
@@ -46,10 +47,9 @@ class Admin_Controller extends MY_Controller {
 		$this->load->library('Grocery_CRUD');
 		$crud = new grocery_CRUD();
 		$crud->set_table($table);
-        $crud->set_language($this->get_idiom());
+		$crud->set_language($this->get_idiom());
 		// auto-generate subject
-		if ( empty($subject) )
-		{
+		if (empty($subject)) {
 			$crud->set_subject(humanize(singular($table)));
 		}
 
@@ -79,17 +79,15 @@ class Admin_Controller extends MY_Controller {
 		$this->mCrud = $crud;
 		return $crud;
 	}
-	
+
 	// Set field(s) to color picker
 	protected function set_crud_color_picker()
 	{
 		$args = func_get_args();
-		if(isset($args[0]) && is_array($args[0]))
-		{
+		if (isset($args[0]) && is_array($args[0])) {
 			$args = $args[0];
 		}
-		foreach ($args as $field)
-		{
+		foreach ($args as $field) {
 			$this->mCrud->callback_field($field, array($this, 'callback_color_picker'));
 		}
 	}
@@ -104,8 +102,7 @@ class Admin_Controller extends MY_Controller {
 	protected function unset_crud_fields()
 	{
 		$args = func_get_args();
-		if(isset($args[0]) && is_array($args[0]))
-		{
+		if (isset($args[0]) && is_array($args[0])) {
 			$args = $args[0];
 		}
 		$this->mCrudUnsetFields = array_merge($this->mCrudUnsetFields, $args);
@@ -121,16 +118,14 @@ class Admin_Controller extends MY_Controller {
 		$crud->set_table($table);
 		$crud->set_url_field($url_field);
 		$crud->set_image_path($upload_path);
-		
+
 		// [Optional] field name of image order (e.g. "pos")
-		if ( !empty($order_field) )
-		{
+		if (!empty($order_field)) {
 			$crud->set_ordering_field($order_field);
 		}
 
 		// [Optional] field name of image caption (e.g. "caption")
-		if ( !empty($title_field) )
-		{
+		if (!empty($title_field)) {
 			$crud->set_title_field($title_field);
 		}
 
@@ -140,17 +135,16 @@ class Admin_Controller extends MY_Controller {
 	}
 
 	// Render CRUD
-	protected function render_crud()
+	protected function render_crud($layout = 'default')
 	{
 		// logic specific for Grocery CRUD only
 		$crud_obj_name = strtolower(get_class($this->mCrud));
-		if ($crud_obj_name==='grocery_crud')
-		{
-			$this->mCrud->unset_fields($this->mCrudUnsetFields);	
+		if ($crud_obj_name === 'grocery_crud') {
+			$this->mCrud->unset_fields($this->mCrudUnsetFields);
 		}
 
 		// render CRUD
-		
+
 		$crud_data = $this->mCrud->render();
 
 		// append scripts
@@ -159,6 +153,34 @@ class Admin_Controller extends MY_Controller {
 
 		// display view
 		$this->mViewData['crud_output'] = $crud_data->output;
-		$this->render('crud');
+		$this->render('crud', $layout);
+	}
+
+	protected function render_crud_modal($layout = 'default')
+	{
+		// logic specific for Grocery CRUD only
+		$crud_obj_name = strtolower(get_class($this->mCrud));
+		if ($crud_obj_name === 'grocery_crud') {
+			$this->mCrud->unset_fields($this->mCrudUnsetFields);
+		}
+
+		// render CRUD
+
+		$crud_data = $this->mCrud->render();
+		$css = is_array($crud_data->css_files) ? $crud_data->css_files : (array) $crud_data->css_files;
+		foreach ($css as $file) {
+			$url = starts_with($file, 'http') ? $file : base_url($file);
+			echo "<link href='$url' rel='stylesheet' media='screen'>" . PHP_EOL;
+		}
+
+		
+		$js = is_array($crud_data->js_files) ? $crud_data->js_files : (array) $crud_data->js_files;
+		foreach ($js as $file) {
+			$url = starts_with($file, 'http') ? $file : base_url($file);
+			echo "<script src='$url'></script>" . PHP_EOL;
+		}
+		echo $crud_data->output;
+		// display view
+
 	}
 }

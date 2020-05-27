@@ -68,7 +68,7 @@ $(document).ready(function () {
 
     //For mutliplegrids disable bStateSave as it is causing many problems
     if ($('.groceryCrudTable').length > 1) {
-        use_storage = false;
+        use_storage = true;
     }
 
     $('.groceryCrudTable').each(function (index) {
@@ -323,7 +323,7 @@ function after_draw_callback() {
         var timpH = $('#row-' + sID + ' div.invisible').html();
         $(this).html(timpH).attr('class', 'dropdown').removeAttr('data-row');
     });
-    $('td>div.invisible').remove();
+   // $('td>div.invisible').remove();
 
     add_edit_button_listener();
 
@@ -341,7 +341,11 @@ function after_draw_callback() {
         });
         $('.dataTables_length').addClass('d-inline').append('&emsp;&emsp;');
         $('.dataTables_info').addClass('d-inline').append('&emsp;');
-        $('table.groceryCrudTable').removeClass('invisible');
+        setTimeout(function () {
+            $(document).ready(function () {
+                $('table.groceryCrudTable').removeClass('invisible');
+            });
+        }, 200);
     }
 }
 
@@ -417,18 +421,22 @@ $.extend(RotateImage.prototype, {
 
 });
 
-function fix_table_size() {
-    if (!oResizeLauched) {
-        oResizeLauched = true;
+function fix_table_size_real() {
+    // put table in oversize
+    $('table.groceryCrudTable').first().attr('style', 'width: ' + parseInt($('div.dataTablesContainer').first().width() * 0.98) + 'px');
+    // fit table
+    oTable.fnAdjustColumnSizing();
+    // redraw table
+    oTable.fnDraw();
+}
+
+function fix_table_size(force = false, timeout = 00) {
+    if (!oResizeLauched || force) {
+        if (!force) oResizeLauched = true;
         setTimeout(function () {
-            // put table in oversize
-            $('table.groceryCrudTable').first().attr('style', 'width: ' + parseInt($('div.dataTablesContainer').first().width() * 0.98) + 'px');
-            // fit table
-            oTable.fnAdjustColumnSizing();
-            // redraw table
-            oTable.fnDraw();
-            oResizeLauched = false;
-        }, 310);
+            fix_table_size_real();
+            if (!force) oResizeLauched = false;
+        }, timeout);
     }
 }
 

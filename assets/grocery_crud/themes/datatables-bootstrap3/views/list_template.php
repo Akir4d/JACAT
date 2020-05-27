@@ -50,6 +50,109 @@ $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/datatables.
 	var export_url = '<?php echo $export_url; ?>'
 	var list_delete = '<?php echo $this->l('list_delete'); ?>';
 	var list_cancel = '<?php echo $this->l('form_cancel'); ?>';
+	var list_action = '<?php echo $this->l('list_actions') ?>';
+	var numTemp = 0;
+	var DTSearch = '&nbsp;&nbsp;<div class="dropdown d-inline">';
+	DTSearch += '<button class="btn btn-secondary dropdown-toggle" type="button" id="DTdropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+	DTSearch += '<?php echo $this->l('show_columns'); ?></button><div class="dropdown-menu text-sm" aria-labelledby="DTdropdownMenuButton" style="">';
+	DTSearch += '<div onclick="showColumns(0, \'action\', !$(\'[name=vscolunm0]\').prop(\'checked\'));" class="dropdown-item"><input type="checkbox"';
+	DTSearch += ' name="vscolunm0" ><label  for="vscolunm0" checked>&nbsp;&nbsp;'
+	DTSearch += list_action + '</label></div>';
+	$(document).ready(function() {
+		$('#multiSearchToggle input').each(function(e) {
+			let index = $(this).attr('data-index');
+			let name = $('.th' + index + 'Nu').text();
+			if (index !== undefined && name !== 'JobStatus') {
+				if (parseInt(getCookieDT(name)) == 0) {
+					$(document).ready(function() {
+						showColumns(index, name, 0, true);
+					});
+				}
+				DTSearch += '<div onclick="showColumns(' + index + ', \'' + name + '\', !$(\'[name=vscolunm' + index + ']\').prop(\'checked\'));" class="dropdown-item"><input type="checkbox"';
+				DTSearch += ' name="vscolunm' + index + '" checked><label  for="vscolunm' + index + '">&nbsp;&nbsp;'
+				DTSearch += '' + name + '</label></div>';
+			}
+		});
+		DTSearch += '</div></div>';
+		$('.dt-buttons').after(DTSearch);
+		showColumns(0, 'action', <?php echo ($action_button)?'true':'false'; ?>, false, 400);
+	});
+
+	function setCookieDT(cname, cvalue, hour) {
+		let d = new Date();
+		let value = (cvalue == false || cvalue == 0) ? 0 : 1;
+		d.setTime(d.getTime() + (hour * 60 * 60 * 1000));
+		let expires = "expires=" + d.toUTCString();
+		document.cookie = 'DT' + cname.replace(/[^A-Z0-9]/ig, "_") + "=" + value + ";" + expires + ";path=/";
+	}
+
+	function getCookieDT(cname) {
+		let name = 'DT' + cname.replace(/[^A-Z0-9]/ig, "_") + "=";
+		let decodedCookie = decodeURIComponent(document.cookie);
+		let ca = decodedCookie.split(';');
+		for (var i = 0; i < ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return 1;
+	}
+
+	function getCookie(cname) {
+		let name = cname + "=";
+		let decodedCookie = decodeURIComponent(document.cookie);
+		let ca = decodedCookie.split(';');
+		for (var i = 0; i < ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length, c.length);
+			}
+		}
+		return '';
+	}
+
+	function showColumns(index, name, onOff, nofix = false, timeout = 310) {
+		$('[name=vscolunm' + index + ']').prop('checked', onOff);
+		target = '.th' + index + 'Nu';
+		$(target).removeClass('printable');
+		setCookieDT(name, onOff, 2);
+		oTable.fnSetColumnVis(index, onOff);
+		if (onOff == true) {
+			$(target).addClass('printable');
+		}
+		if (!nofix) fix_table_size(true, timeout);
+	}
+
+	function dtOpen(link, modal = <?php echo ($use_modal) ? 'true' : 'false'; ?>) {
+		if (modal) {
+			let fix = "<script> setTimeout(function(){$('.chosen-container').css('width', '100%');}, 500); <\/script>";
+			$.ajax({
+				type: 'get',
+				url: link,
+				success: function(data) {
+					bootbox.dialog({
+						message: data + fix,
+						size: 'xl',
+						onHide: function() {
+							window.location.reload();
+						}
+					});
+				},
+				error: function(xhr, textStatus, errorThrown) {
+					bootbox.alert(xhr.responseText);
+				}
+			});
+		} else {
+			window.location.href = link;
+		}
+	}
 	//bootbox.setLocale(moment.locale(navigator.language));
 	function ciBsOnHandler(el) {
 		console.log($(el).closest('tr').attr('id'))
@@ -80,7 +183,7 @@ $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/datatables.
 <div class="grocerycrud-container card">
 	<div class="card-header" <?php echo $unset_add ? 'hidden' : ''; ?>>
 		<?php if (!$unset_add) { ?>
-			<a role="button" class="btn btn-default" href="<?php echo $add_url ?>">
+			<a role="button" class="btn btn-default" onclick='dtOpen("<?php echo $add_url ?>")'>
 				<i class="fa fa-plus"></i>
 				<?php echo $this->l('list_add'); ?> <?php echo $subject ?>
 			</a>
@@ -88,11 +191,10 @@ $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/datatables.
 	</div>
 	<div class="dataTablesContainer dt-bootstrap4">
 		<div id='list-report-error' class='report-div error report-list'></div>
-		<div id='list-report-success' class='report-div success report-list' <?php if ($success_message !== null) { ?>style="display:block" <?php } ?>>
-			<?php if ($success_message !== null) { ?>
-				<p><?php echo $success_message; ?></p>
-			<?php } ?>
-		</div>
+		<div id='list-report-success' class='report-div success report-list' <?php if ($success_message !== null) { ?>style="display:block" <?php } ?>></div>
+		<?php if ($success_message !== null) : ?>
+			<p><?php echo $success_message; ?></p>
+		<?php endif; ?>
 		<?php echo $list_view ?>
 	</div>
 </div>

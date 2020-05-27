@@ -274,7 +274,11 @@ class grocery_CRUD_Field_Types
 				$value = $this->character_limiter($value,$this->character_limiter,"...");
 			break;
 			case 'text':
-				$value = $this->character_limiter(strip_tags($value),$this->character_limiter,"...");
+				$value = serialize(array(
+					'text' => $this->character_limiter(strip_tags($value),$this->character_limiter,"..."),
+					'alt' => strip_tags($value)
+					)
+				);
 			break;
 			case 'date':
 				if(!empty($value) && $value != '0000-00-00' && $value != '1970-01-01')
@@ -1669,6 +1673,8 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$data->unset_delete			= $this->unset_delete;
 		$data->unset_export			= $this->unset_export;
 		$data->unset_print			= $this->unset_print;
+		$data->use_modal			= $this->use_modal;
+		$data->action_button		= $this->action_button;
 
 		$default_per_page = $this->config->default_per_page;
 		$data->paging_options = $this->config->paging_options;
@@ -3654,6 +3660,8 @@ class Grocery_CRUD extends grocery_CRUD_States
 	protected $unset_list			= false;
 	protected $unset_export			= false;
 	protected $unset_print			= false;
+	protected $action_button		= true;
+	protected $use_modal			= false;
 	protected $unset_back_to_list	= false;
     protected $unset_clone			= false;
 	protected $unset_columns		= null;
@@ -3951,6 +3959,39 @@ class Grocery_CRUD extends grocery_CRUD_States
 	public function unset_print()
 	{
 		$this->unset_print = true;
+
+		return $this;
+	}
+
+	
+
+	/**
+	 * Use modal instead page view for all actions
+	 * to use normal grocery crud action you have to use:
+	 *  $state = $crud->getState();
+	 * 	if ($state == 'list') {
+	 *		$this->render_crud();
+	 *	} else {
+	 *		$this->render_crud_modal();
+	 *	}
+	 * @return	void
+	 */
+	public function use_modal()
+	{
+		$this->use_modal = true;
+
+		return $this;
+	}
+
+
+	/**
+	 * disable action button display
+	 * 
+	 * @return	void
+	 */
+	public function hide_action_buttons()
+	{
+		$this->action_button = false;
 
 		return $this;
 	}

@@ -95,3 +95,8 @@ $lang['alert_delete_multiple_one'] = 'Ar esate tikri, kad norite ištrinti šį 
 /* Added in version 1.6.1 */
 $lang['list_clone'] = 'Klonuoti';
 
+
+
+	/* Added in Jacat */
+	$lang['show_columns'] = 'Show Columns';
+

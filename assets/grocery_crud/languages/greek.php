@@ -95,3 +95,8 @@
 	/* Added in version 1.6.1 */
 	$lang['list_clone'] = 'Αντιγραφή';
 
+
+
+	/* Added in Jacat */
+	$lang['show_columns'] = 'Show Columns';
+
