@@ -81,6 +81,7 @@ $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/datatables.
 		DTSearch += '</div></div>';
 		$('.dt-buttons').after(DTSearch);
 		showColumns(0, 'action', <?php echo ($action_button)?'true':'false'; ?>, false, 400);
+		
 	});
 
 	function setCookieDT(cname, cvalue, hour) {
@@ -133,6 +134,7 @@ $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/datatables.
 			$(target).addClass('printable');
 		}
 		if (!nofix) fix_table_size(true, timeout);
+		if(!nofix) setTimeout(function(){$('tbody td[tabindex]').removeAttr('tabindex');}, timeout);
 	}
 
 	function dtOpen(link, modal = <?php echo ($use_modal) ? 'true' : 'false'; ?>) {
@@ -146,7 +148,7 @@ $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/datatables.
 						message: data + fix,
 						size: 'xl',
 						onHide: function() {
-							window.location.reload();
+							if(!$('.viewOnlyButton').length)window.location.reload();
 						}
 					});
 				},

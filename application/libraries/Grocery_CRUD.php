@@ -2014,7 +2014,6 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 		$data 				= $this->get_common_data();
 		$data->types 		= $this->get_field_types();
-
 		$data->field_values = $this->get_edit_values($state_info->primary_key);
 
 		$data->add_url		= $this->getAddUrl();
@@ -3672,6 +3671,10 @@ class Grocery_CRUD extends grocery_CRUD_States
 	protected $unset_print			= false;
 	protected $action_button		= true;
 	protected $use_modal			= false;
+	protected $columns_num			= 1;
+	protected $columns_inline		= 'noInline';
+	protected $columns_exclude		= 'noExclude';
+
 	protected $unset_back_to_list	= false;
     protected $unset_clone			= false;
 	protected $unset_columns		= null;
@@ -3990,6 +3993,20 @@ class Grocery_CRUD extends grocery_CRUD_States
 	{
 		$this->use_modal = true;
 
+		return $this;
+	}
+
+
+	/**
+	 * Number of columns in read/add/edit and also object to exclude or/and to put to same line
+	 *	ex: $crud->set_edit_columns(2, 'texteditor', 'radio')
+	 * @return	void
+	 */
+	public function set_edit_columns($number, $exclude = "", $inline = "")
+	{
+		$this->columns_num = ($number > 0)?$number:$this->columns_num;
+		$this->columns_inline = (strlen($inline) > 4)?$inline:$this->columns_inline;
+		$this->columns_exclude = (strlen($exclude) > 4)?$exclude:$this->columns_exclude;
 		return $this;
 	}
 
@@ -5016,7 +5033,9 @@ class Grocery_CRUD extends grocery_CRUD_States
 
 		$data->subject 				= $this->subject;
 		$data->subject_plural 		= $this->subject_plural;
-
+		$data->columns 				= $this->columns_num;
+		$data->exclude				= $this->columns_exclude;
+		$data->sameline				= $this->columns_inline;
 		return $data;
 	}
 

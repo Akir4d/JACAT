@@ -165,7 +165,7 @@ function loadDataTable(this_datatables) {
             return JSON.parse(localStorage.getItem('DataTables_' + unique_hash));
         },
         "iDisplayLength": default_per_page,
-        "aaSorting": datatables_aaSorting,
+        "aaSorting": [],
         "fnInitComplete": function () {
             if (oSpecial !== 0) {
                 this.fnSetColumnVis(oSpecial, false);
