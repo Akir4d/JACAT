@@ -37,7 +37,7 @@
                                 $endline .=  '</label><div id="' . $field->field_name . '_field_box">' . $input_fields[$field->field_name]->input;
                                 $endline .=  '</div></div>';
                             else :
-                                if ((intval($counter % ($cut / $columns)) === 0) and $counter < ($cut - ($cut%$columns)) and $counter !== 0) {
+                                if ((intval($counter % ($cut / $columns)) === 0) and $counter < ($cut - ($cut % $columns)) and $counter !== 0) {
                                     echo ' </div><div class="col">';
                                 }
                         ?>
@@ -73,26 +73,28 @@
                     <div id='report-error' class='report-div error callout callout-danger' style="display:none"></div>
                     <div id='report-success' class='report-div success callout callout-success' style="display:none"></div>
                 </div>
-                <div class='box-footer'>
-
-                    <button class="btn btn-success b10" type="submit" id="form-button-save">
-                        <i class="fas fa-check"></i>
-                        <?php echo $this->l('form_save'); ?>
-                    </button>
-                    <?php if (!$this->unset_back_to_list) { ?>
-                        <button class="btn btn-info b10" type="button" id="save-and-go-back-button">
-                            <i class="fas fa-rotate-left"></i>
-                            <?php echo $this->l('form_save_and_go_back'); ?>
-                        </button>
-                        <button class="btn btn-default cancel-button b10" type="button" id="cancel-button">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <?php echo $this->l('form_cancel'); ?>
-                        </button>
-                    <?php } ?>
-                </div>
-                <?php echo form_close(); ?>
-
             </div>
         </div>
+        <div class='card-footer'>
+
+            <button class="btn btn-success b10" type="submit" id="form-button-save">
+                <i class="fas fa-check"></i>
+                <?php echo $this->l('form_save'); ?>
+            </button>
+            <?php if (!$this->unset_back_to_list) { ?>
+                <button class="btn btn-info b10" type="button" id="save-and-go-back-button">
+                    <i class="fas fa-rotate-left"></i>
+                    <?php echo $this->l('form_save_and_go_back'); ?>
+                </button>
+                <button class="btn btn-default cancel-button b10" type="button" id="cancel-button">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <?php echo $this->l('form_cancel'); ?>
+                </button>
+            <?php } ?>
+        </div>
+
+        <?php echo form_close(); ?>
+
+
     </div>
 </div>

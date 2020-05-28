@@ -52,14 +52,14 @@
                                 $samelineobj .=  ($input_fields[$field->field_name]->required) ? "<span class='required'>*</span> " : "";
                                 $samelineobj .=  '</label><div id="' . $field->field_name . '_field_box">' . $input_fields[$field->field_name]->input;
                                 $samelineobj .=  '</div></div></div>';
-                            elseif ((strpos($fi, "class=" . $exclude) !== false) or (strpos($fi, "class=mini-" . $exclude) !== false)):
+                            elseif ((strpos($fi, "class=" . $exclude) !== false) or (strpos($fi, "class=mini-" . $exclude) !== false)) :
                                 $endline .= ' <div class="form-group"><label for="' . $field->field_name . '" class="control-label">';
                                 $endline .=  strip_tags($input_fields[$field->field_name]->display_as);
                                 $endline .=  ($input_fields[$field->field_name]->required) ? "<span class='required'>*</span> " : "";
                                 $endline .=  '</label><div id="' . $field->field_name . '_field_box">' . $input_fields[$field->field_name]->input;
                                 $endline .=  '</div></div>';
                             else :
-                                if ((intval($counter % ($cut / $columns)) === 0) and $counter < ($cut - ($cut%$columns)) and $counter !== 0) {
+                                if ((intval($counter % ($cut / $columns)) === 0) and $counter < ($cut - ($cut % $columns)) and $counter !== 0) {
                                     echo ' </div><div class="col">';
                                 }
                         ?>
@@ -96,26 +96,24 @@
                     <div id='report-success' class='report-div success callout callout-success' style="display:none"></div>
                 </div>
             </div>
-
-            <div class='card-footer'>
-                <button class="btn btn-success b10" type="submit" id="form-button-save">
-                    <i class="fas fa-check"></i>
-                    <?php echo $this->l('form_update_changes'); ?>
+        </div>
+        <div class='card-footer'>
+            <button class="btn btn-success b10" type="submit" id="form-button-save">
+                <i class="fas fa-check"></i>
+                <?php echo $this->l('form_update_changes'); ?>
+            </button>
+            <?php if (!$this->unset_back_to_list) { ?>
+                <button class="btn btn-info b10" type="button" id="save-and-go-back-button">
+                    <i class="fas fa-arrow-alt-circle-left"></i>
+                    <?php echo $this->l('form_update_and_go_back'); ?>
                 </button>
-                <?php if (!$this->unset_back_to_list) { ?>
-                    <button class="btn btn-info b10" type="button" id="save-and-go-back-button">
-                        <i class="fas fa-arrow-alt-circle-left"></i>
-                        <?php echo $this->l('form_update_and_go_back'); ?>
-                    </button>
-                    <button class="btn btn-default cancel-button b10" type="button" id="cancel-button">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <?php echo $this->l('form_cancel'); ?>
-                    </button>
-                <?php } ?>
-
-            </div>
-            </form>
+                <button class="btn btn-default cancel-button b10" type="button" id="cancel-button">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <?php echo $this->l('form_cancel'); ?>
+                </button>
+            <?php } ?>
 
         </div>
+        </form>
     </div>
 </div>
