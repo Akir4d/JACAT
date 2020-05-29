@@ -106,8 +106,6 @@ $(document).ready(function () {
             $(this).val('');
             oTable.fnFilter('', parseInt($(this).attr('data-index')));
         });
-
-
     });
 
     loadListenersForDatatables();
@@ -130,7 +128,7 @@ function loadListenersForDatatables() {
     $('.refresh-data').click(function () {
 
         location.reload();
-        /*var this_container = $(this).closest('.dataTablesContainer');
+     /*  var this_container = $(this).closest('.dataTablesContainer');
 
         var new_container = $("<div/>").addClass('dataTablesContainer');
 
@@ -152,20 +150,24 @@ function loadListenersForDatatables() {
     });
 }
 
+
+
 function loadDataTable(this_datatables) {
     return oTable = $(this_datatables).dataTable({
+        "iDisplayLength": default_per_page,
         "responsive": true,
+        "stateSave": true,
         //"sPaginationType": "full_numbers",
-        "bStateSave": use_storage,
+        //"bStateSave": true,
         ///"scrollX": true,
-        "fnStateSave": function (oSettings, oData) {
-            localStorage.setItem('DataTables_' + unique_hash, JSON.stringify(oData));
+        "stateSaveCallback": function (oSettings, oData) {
+            localStorage.setItem('DataTables_' + unique_hash, JSON.stringify(oData).replace('columns', 'colunms_disable'));
         },
-        "fnStateLoad": function (oSettings) {
+        "stateLoadCallback": function (oSettings) {
             return JSON.parse(localStorage.getItem('DataTables_' + unique_hash));
         },
-        "iDisplayLength": default_per_page,
-        "aaSorting": [],
+        
+       // "aaSorting": [],
         "fnInitComplete": function () {
             if (oSpecial !== 0) {
                 this.fnSetColumnVis(oSpecial, false);
@@ -206,6 +208,11 @@ function loadDataTable(this_datatables) {
 function datatables_get_chosen_table(table_as_object) {
     //chosen_table_index = oTableMapping[table_as_object.attr('id')];
     return oTable;//Array[chosen_table_index];
+}
+
+function reset_dataTable_filters(){
+    
+
 }
 
 function delete_row(delete_url, row_id) {
