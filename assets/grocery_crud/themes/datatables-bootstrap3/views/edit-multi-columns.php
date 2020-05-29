@@ -6,7 +6,6 @@
 
         <?php echo form_open($update_url, 'method="post" id="crudForm" enctype="multipart/form-data" class="form-horizontal"'); ?>
         <div class="card-body">
-            <div class="container">
                 <div class="row">
                     <div class="col">
                         <?php
@@ -95,7 +94,6 @@
                     <div id='report-error' class='report-div error callout callout-danger' style="display:none"></div>
                     <div id='report-success' class='report-div success callout callout-success' style="display:none"></div>
                 </div>
-            </div>
         </div>
         <div class='card-footer'>
             <button class="btn btn-success b10" type="submit" id="form-button-save">
