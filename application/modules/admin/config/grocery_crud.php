@@ -8,13 +8,13 @@
 	// The default per page when a user firstly see a list page
 	$config['grocery_crud_default_per_page']	= 10;
 
-	$config['grocery_crud_file_upload_allow_file_types'] 		= 'gif|jpeg|jpg|png|tiff|doc|docx|txt|odt|xls|xlsx|pdf|ppt|pptx|pps|ppsx|mp3|m4a|ogg|wav|mp4|m4v|mov|wmv|flv|avi|mpg|ogv|3gp|3g2';
-	$config['grocery_crud_file_upload_max_file_size'] 			= '20MB'; //ex. '10MB' (Mega Bytes), '1067KB' (Kilo Bytes), '5000B' (Bytes)
+	$config['grocery_crud_file_upload_allow_file_types'] 		= 'apng|bmp|gif|ico|cur|jpg|jpeg|jfif|pjpeg|pjp|png|svg|tif|tiff|webp|zip|7z|rar|doc|docx|txt|odt|odf|odp|ods|xls|xlsx|pdf|ppt|pptx|pps|ppsx|mp3|wav|ogg|flac|adts|m4a|ogg|wav|mp4|mp5|m4v|mov|wmv|flv|avi|mpg|mpeg|ogv|webm|3gp|3g2';
+	$config['grocery_crud_file_upload_max_file_size'] 			= '200MB'; //ex. '10MB' (Mega Bytes), '1067KB' (Kilo Bytes), '5000B' (Bytes)
 
 	//You can choose 'ckeditor4', 'ckeditor', 'summernote', 'trumbowyg', 'tinymce' or 'markitup'
 	$config['grocery_crud_default_text_editor'] = 'ckeditor';
 	//You can choose 'minimal' or 'full' (only effective for 'ckeditor')
-	$config['grocery_crud_text_editor_type'] 	= 'full';
+	$config['grocery_crud_text_editor_type'] 	= 'minimal';
 
 	//The character limiter at the list page, zero(0) value if you don't want character limiter at your list page
 	$config['grocery_crud_character_limiter'] 	= 30;
