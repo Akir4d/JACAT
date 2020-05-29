@@ -324,7 +324,7 @@ class grocery_CRUD_Field_Types
 					if ($is_image or $is_video or $is_audio) {
 						$file_url_anchor .= ' class="image-thumbnail"><' . $type . ' src="' . $file_url . '" height="100px">';
 					} else {
-						$file_url_anchor .= ' target="_blank">' . $this->character_limiter($value, $this->character_limiter, '...', true);
+						$file_url_anchor .= ' class="btn btn-outline-secondary btn-flat" target="_blank">' . $this->character_limiter($value, $this->character_limiter, '...', true);
 					}
 					$file_url_anchor .= '</a>';
 
@@ -2409,7 +2409,6 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		if ($is_video) $type = 'video controls  height="400px"';
 		if ($is_audio) $type = 'audio controls';
 
-		$image_class = $is_image ? 'image-thumbnail' : '';
 		if ($is_image or $is_video or $is_audio) {
 			$value = '<a href="' . $file_url . '" class="open-file image-thumbnail"';
 			$value .= '><'.$type.' src="' . $file_url . '">';
@@ -2558,7 +2557,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$input .= "<div id='uploader_$unique' rel='$unique' class='grocery-crud-uploader' style='$uploader_display_none'></div>";
 		$input .= "<div id='success_$unique' class='upload-success-url' style='$file_display_none padding-top:7px;'>";
 		$input .= "<a href='" . $file_url . "' id='file_$unique' class='";
-		$input .= ($is_image or $is_video or $is_audio) ? " $image_class'><".$type." src='" . $file_url . "'>" : "' target='_blank'>$value";
+		$input .= ($is_image or $is_video or $is_audio) ? " $image_class'><".$type." src='" . $file_url . "'>" : $image_class."' target='_blank'>$value";
 		$input .= "</a> ";
 		$input .= "<a href='javascript:void(0)' id='delete_$unique' class='btn btn-danger'>" . $this->l('form_upload_delete') . "</a> ";
 		$input .= "</div><div style='clear:both'></div>";
