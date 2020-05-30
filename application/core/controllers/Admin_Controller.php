@@ -179,7 +179,7 @@ class Admin_Controller extends MY_Controller
 			$url = starts_with($file, 'http') ? $file : base_url($file);
 			echo "<script src='$url'></script>" . PHP_EOL;
 		}
-		echo $crud_data->output;
+		echo $crud_data->output . "<script>setTimeout(function(){\$('.viewOnlyButton').off('click').on('click', function(){bootbox.hideAll();})}, 200);</script>";
 		// display view
 
 	}
