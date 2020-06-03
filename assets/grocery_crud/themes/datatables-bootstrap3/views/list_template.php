@@ -148,7 +148,9 @@ $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/datatables.
 						message: data + fix,
 						size: 'xl',
 						onHide: function() {
-							if(!$('.viewOnlyButton').length)window.location.reload();
+							if(!$('.viewOnlyButton').length) {
+								$('.cardType').remove();
+							}
 						}
 					});
 				},
@@ -157,7 +159,7 @@ $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/datatables.
 				}
 			});
 		} else {
-			window.open(link);
+			window.location.href = link;
 		}
 	}
 	//bootbox.setLocale(moment.locale(navigator.language));
@@ -188,7 +190,7 @@ $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/datatables.
 	];
 </script>
 <div class="grocerycrud-container card">
-	<div class="card-header" <?php echo $unset_add ? 'hidden' : ''; ?>>
+	<div class="card-header">
 		<?php if (!$unset_add) { ?>
 			<a role="button" class="btn btn-default" onclick='dtOpen("<?php echo $add_url ?>")'>
 				<i class="fa fa-plus"></i>

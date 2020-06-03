@@ -86,7 +86,6 @@ if (!empty($list[0]) && !empty($list[0]->action_urls)) {
                                 foreach ($row->action_urls as $action_unique_id => $action_url) {
                                     $action = $actions[$action_unique_id];
                             ?>
-
                                     <a onclick='dtOpen("<?php echo $action_url; ?>")' class="btn btn-default margin-stop">
                                         <i class="<?php echo $action->css_class; ?>"></i>
                                     </a>
@@ -175,8 +174,8 @@ if (!empty($list[0]) && !empty($list[0]->action_urls)) {
                         if ($wild == 'a') {
                             $arr = @unserialize($row->{$column->field_name});
                             if (is_array($arr)) {
-                                $alt = $arr['alt'];
-                                $row->{$column->field_name} = $arr['text'];
+                                $alt =  (strlen($arr['alt'])>640)?substr($arr['alt'], 0, 640) . '[...]':$arr['alt'];
+                                $row->{$column->field_name} = ($show_whole_text)?$arr['alt']:$arr['text'];
                             }
                         }
                         if (($column->field_name !== 'jobStatus') && ($wild !== '<') && (!$unset_delete || !$unset_edit || !$unset_read || !empty($actions))) {

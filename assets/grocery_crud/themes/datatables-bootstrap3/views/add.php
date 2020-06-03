@@ -6,7 +6,7 @@ $this->set_js_lib($this->default_javascript_path . '/jquery_plugins/config/jquer
 $this->set_js_config($this->default_theme_path . '/datatables-bootstrap3/js/datatables-add.js?v0.11');
 
 
-if ($columns > 1) :
+if ($columns_num > 1) :
     include('add-multi-columns.php');
 else :
 ?>

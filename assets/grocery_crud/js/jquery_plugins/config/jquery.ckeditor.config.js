@@ -1,5 +1,5 @@
 $(function(){
-	$( 'textarea.texteditor' ).ckeditor({toolbar:'Full',width: '100%'});
+	$( 'textarea.texteditor' ).ckeditor({toolbar:'Full',startupMode: 'source',  width: '100%'});
 	$( 'textarea.mini-texteditor' ).ckeditor({toolbarGroups: [
 		{ name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
 		{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
@@ -15,6 +15,7 @@ $(function(){
 		{ name: 'others', groups: [ 'others' ] },
 		{ name: 'about', groups: [ 'about' ] }
 	],
+	startupMode: 'source',
 	removeButtons: 'Flash,Table,HorizontalRule,Language,Save,NewPage,Print,Templates,Form,Checkbox,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,Preview,PasteFromWord,PasteText,Paste,Iframe,Image,CreateDiv,Anchor,Undo,Redo,SelectAll,Replace,Find,SpecialChar,PageBreak,CopyFormatting,About,Font,ShowBlocks,BidiRtl,BidiLtr,Superscript,Subscript,Format,Styles,Unlink,Link'
 	,width: '100%'});
 });

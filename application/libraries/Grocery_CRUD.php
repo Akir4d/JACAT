@@ -1223,7 +1223,9 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 
 	protected function get_edit_values($primary_key_value)
 	{
-		$values = $this->basic_model->get_edit_values($primary_key_value);
+		$where = null;
+		if (!empty($this->where)) $where = $this->where;
+		$values = $this->basic_model->get_edit_values($primary_key_value, $where);
 
 		if (!empty($this->relation_n_n)) {
 			foreach ($this->relation_n_n as $field_name => $field_info) {
@@ -1355,7 +1357,7 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 		if (isset($state_info->field_name) && isset($this->upload_fields[$state_info->field_name])) {
 			$upload_info = $this->upload_fields[$state_info->field_name];
 
-			if (file_exists("{$upload_info->upload_path}/{$state_info->file_name}")) {
+			if (file_exists("{$upload_info->upload_path}/{$state_info->file_name}") and substr($state_info->file_name,0,4) !== 'logo') {
 				if (unlink("{$upload_info->upload_path}/{$state_info->file_name}")) {
 					$this->basic_model->db_file_delete($state_info->field_name, $state_info->file_name);
 
@@ -1734,7 +1736,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$data->types 		= $this->get_field_types();
 
 		$data->field_values = $this->get_edit_values($state_info->primary_key);
-
+		if (empty($data->field_values)) die ('<h1>Forbidden</h1>');
 		$data->add_url		= $this->getAddUrl();
 		$data->list_url 	= $this->getListUrl();
 		$data->update_url	= $this->getInsertUrl();
@@ -1770,7 +1772,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$data->types 		= $this->get_field_types();
 
 		$data->field_values = $this->get_edit_values($state_info->primary_key);
-
+		if (empty($data->field_values)) die ('<h1>Forbidden</h1>');
 		$data->add_url		= $this->getAddUrl();
 		$data->list_url 	= $this->getListUrl();
 		$data->update_url	= $this->getUpdateUrl($state_info);
@@ -1804,7 +1806,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$data 				= $this->get_common_data();
 		$data->types 		= $this->get_field_types();
 		$data->field_values = $this->get_edit_values($state_info->primary_key);
-
+		if (empty($data->field_values)) die ('<h1>Forbidden</h1>');
 		$data->add_url		= $this->getAddUrl();
 
 		$data->list_url 	= $this->getListUrl();
@@ -2200,7 +2202,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		}
 		$input = "<div class='input-group datetime-input' id='field-{$field_info->name}' data-target-input='nearest'>"
 			. "<div class='input-group-prepend' data-target='#field-{$field_info->name}' data-toggle='datetimepicker'><div class='input-group-text'><i class='fas fa-calendar'></i></div></div>"
-			. "<input id='field-{$field_info->name}' autocomplete='new-password' name='{$field_info->name}' type='text' data-target='#field-{$field_info->name}' placeholder='{$this->ui_date_format} hh:mm:ss' value='$datetime' maxlength='19' class='form-control datePicker' />
+			. "<input  autocomplete='new-password' name='{$field_info->name}' type='text' data-target='#field-{$field_info->name}' placeholder='{$this->ui_date_format} hh:mm:ss' value='$datetime' maxlength='19' class='form-control datePicker' />
 		<div class='input-group-append'><a class='datetime-input-clear btn btn-default' tabindex='-1'>" . $this->l('form_button_clear') . "</a></div></div>";
 		return $input;
 	}
@@ -2503,7 +2505,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 		$unique = mt_rand();
 
-		$allowed_files = $this->config->file_upload_allow_file_types;
+		$allowed_files = (!empty($this->allowed_files_types))?$this->allowed_files_types:$this->config->file_upload_allow_file_types;
 		$allowed_files_ui = '.' . str_replace('|', ',.', $allowed_files);
 		$max_file_size_ui = $this->config->file_upload_max_file_size;
 		$max_file_size_bytes = $this->_convert_bytes_ui_to_bytes($max_file_size_ui);
@@ -3337,6 +3339,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 	protected $edit_hidden_fields 	= array();
 	protected $field_types 			= null;
 	protected $basic_db_table 		= null;
+	protected $allowed_files_type	= null;
 	protected $basic_db				= null;
 	protected $custom_query			= null;
 	protected $theme_config 		= array();
@@ -3378,6 +3381,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 	protected $action_button		= true;
 	protected $use_modal			= false;
 	protected $columns_num			= 1;
+	protected $show_whole_text		= false;
 	protected $columns_inline		= 'noInline';
 	protected $columns_exclude		= 'noExclude';
 
@@ -3730,6 +3734,17 @@ class Grocery_CRUD extends grocery_CRUD_States
 		$this->columns_exclude = (strlen($exclude) > 4) ? $exclude : $this->columns_exclude;
 		return $this;
 	}
+
+	/**
+	 * Show whole text in table
+	 * @return	void
+	 */
+	public function set_show_whole_text($status)
+	{
+		$this->show_whole_text = $status;
+		return $this;
+	}
+
 
 
 	/**
@@ -4683,7 +4698,8 @@ class Grocery_CRUD extends grocery_CRUD_States
 
 		$data->subject 				= $this->subject;
 		$data->subject_plural 		= $this->subject_plural;
-		$data->columns 				= $this->columns_num;
+		$data->columns_num 			= $this->columns_num;
+		$data->show_whole_text		= $this->show_whole_text;
 		$data->exclude				= $this->columns_exclude;
 		$data->sameline				= $this->columns_inline;
 		return $data;
@@ -5197,6 +5213,8 @@ class Grocery_CRUD extends grocery_CRUD_States
 			throw new Exception("It seems that the folder \"" . FCPATH . $upload_dir . "\" for the field name
 					\"" . $field_name . "\" doesn't exists. Please create the folder and try again.");
 		}
+
+		if(strlen($allowed_file_types) > 0) $this->allowed_files_types = $allowed_file_types;
 
 		$this->upload_fields[$field_name] = (object) array(
 			'field_name' => $field_name,

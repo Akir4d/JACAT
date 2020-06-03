@@ -58,7 +58,7 @@
                                 $endline .=  '</label><div id="' . $field->field_name . '_field_box">' . $input_fields[$field->field_name]->input;
                                 $endline .=  '</div></div>';
                             else :
-                                if ((intval($counter % ($cut / $columns)) === 0) and $counter < ($cut - ($cut % $columns)) and $counter !== 0) {
+                                if ((intval($counter % ($cut / $columns_num)) === 0) and $counter < ($cut - ($cut % $columns_num)) and $counter !== 0) {
                                     echo ' </div><div class="col">';
                                 }
                         ?>

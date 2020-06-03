@@ -6,7 +6,7 @@ $this->set_js($this->default_theme_path . '/datatables-bootstrap3/js/spectrum.mi
 $this->set_js_lib($this->default_javascript_path . '/jquery_plugins/config/jquery.noty.config.js');
 
 //$this->set_js_config($this->default_theme_path.'/datatables-bootstrap3/js/dataTables.bootstrap.min.js');
-if ($columns > 1) :
+if ($columns_num > 1) :
     include('edit-multi-columns.php');
 else :
 ?>

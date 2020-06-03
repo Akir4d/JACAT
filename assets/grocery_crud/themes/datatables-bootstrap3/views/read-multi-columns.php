@@ -34,7 +34,7 @@
                             }
                             echo '<script>$(".cardType").addClass("' . $stat . '");</script>';
                         else :
-                            if ((intval($counter % ($cut / $columns)) === 0) and $counter < ($cut - ($cut % $columns)) and $counter !== 0) {
+                            if ((intval($counter % ($cut / $columns_num)) === 0) and $counter < ($cut - ($cut % $columns_num)) and $counter !== 0) {
                                 echo ' </div><div class="col">';
                             }
                     ?>

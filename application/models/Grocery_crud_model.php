@@ -217,11 +217,15 @@ class Grocery_crud_model  extends CI_Model
 		return true;
 	}
 
-	function get_edit_values($primary_key_value)
+	function get_edit_values($primary_key_value, $where_clause = null)
 	{
 		$primary_key_field = $this->get_primary_key();
-		$this->dbint->where($primary_key_field, $primary_key_value);
-		$result =  $this->dbint->get($this->table_name)->row();
+		$query = $this->dbint;
+		if ($where_clause !== null)
+			foreach ($where_clause as $where)
+				$query->where($where[0], $where[1], $where[2]);
+		$query->where($primary_key_field, $primary_key_value);
+		$result =  $query->get($this->table_name)->row();
 		return $result;
 	}
 
