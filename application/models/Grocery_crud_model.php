@@ -100,7 +100,7 @@ class Grocery_crud_model  extends CI_Model
 
 		$this->dbint->select($select, false);
 
-		$results =  $this->dbint->get($this->table_name)->result();
+		$results = ($this->dbint->dbdriver !== 'mysqli') ? $this->dbint->query('SELECT * FROM public."' . $this->table_name . '";')->result() : $this->dbint->get($this->table_name)->result();
 
 		return $results;
 	}
@@ -204,7 +204,7 @@ class Grocery_crud_model  extends CI_Model
 			$this->dbint->select($this->table_name . '.' . $key);
 		}
 
-		return  $this->dbint->get($this->table_name)->num_rows();
+		return ($this->dbint->dbdriver !== 'mysqli') ? $this->dbint->query('SELECT * FROM public."' . $this->table_name . '";')->num_rows() : $this->dbint->get($this->table_name)->num_rows();
 	}
 
 	function set_basic_table($table_name = null)
@@ -430,6 +430,10 @@ class Grocery_crud_model  extends CI_Model
 	{
 		$db_field_types = array();
 		$query = "SHOW COLUMNS FROM `{$this->table_name}`";
+		$pgon = ($this->dbint->dbdriver !== 'mysqli') ? TRUE : FALSE;
+		if ($pgon)
+			$query = "SELECT * FROM information_schema.COLUMNS WHERE table_name = '" . $this->table_name . "'";
+
 		$randomView = 'j' . bin2hex(random_bytes(10));
 		if ($this->custom_query !== null) {
 			$limit = ' LIMIT 0';
@@ -438,9 +442,15 @@ class Grocery_crud_model  extends CI_Model
 			}
 			$this->dbint->query('CREATE VIEW ' . $randomView . ' AS ' . $this->custom_query . $limit);
 			$query =  "SHOW COLUMNS FROM " . $randomView;
+			if ($pgon)
+				$query = "SELECT * FROM information_schema.COLUMNS WHERE table_name = '" . $randomView . "'";
 		}
-		foreach ($this->dbint->query($query)->result() as $db_field_type) {
-			$type = explode("(", $db_field_type->Type);
+		$list = $this->dbint->query($query)->result();
+
+		foreach ($list as $db_field_type) {
+			$type = $pgon ? "data_type" : "Type";
+
+			$type = explode("(", $db_field_type->$type);
 			$db_type = $type[0];
 
 			if (isset($type[1])) {
@@ -453,17 +463,19 @@ class Grocery_crud_model  extends CI_Model
 			} else {
 				$length = '';
 			}
-			$db_field_types[$db_field_type->Field]['db_max_length'] = $length;
-			$db_field_types[$db_field_type->Field]['db_type'] = $db_type;
-			$db_field_types[$db_field_type->Field]['db_null'] = $db_field_type->Null == 'YES' ? true : false;
-			$db_field_types[$db_field_type->Field]['db_extra'] = $db_field_type->Extra;
+			$field = $pgon ? "column_name" : "Field";
+			$null =  $pgon ? "is_nullable" : "Null";
+			$db_field_types[$db_field_type->$field]['db_max_length'] = $pgon ? $db_field_type->character_maximum_length : $length;
+			$db_field_types[$db_field_type->$field]['db_type'] = $db_type;
+			$db_field_types[$db_field_type->$field]['db_null'] = $db_field_type->$null == 'YES' ? true : false;
+			$db_field_types[$db_field_type->$field]['db_extra'] = $pgon ? $db_field_type->table_schema : $db_field_type->Extra;
 		}
 
 		$results =  $this->dbint->field_data($this->table_name);
 		if ($this->custom_query !== null) {
 			$results =  $this->dbint->field_data($randomView);
 			$this->dbint->query('DROP VIEW ' . $randomView);
-		} 
+		}
 		foreach ($results as $num => $row) {
 			$row = (array) $row;
 			$results[$num] = (object) (array_merge($row, $db_field_types[$row['name']]));
@@ -534,12 +546,22 @@ class Grocery_crud_model  extends CI_Model
 			}
 
 			if (empty($this->primary_key)) {
-				$fields = $this->get_field_types_basic_table();
+				if ($this->dbint->dbdriver == 'mysqli') {
+					$fields = $this->get_field_types_basic_table();
 
-				foreach ($fields as $field) {
-					if ($field->primary_key == 1) {
-						return $field->name;
+					foreach ($fields as $field) {
+						if ($field->primary_key == 1) {
+							return $field->name;
+						}
 					}
+				} else {
+					$field = $this->dbint->query('SELECT a.attname, format_type(a.atttypid, a.atttypmod) AS data_type
+		FROM   pg_index i
+		JOIN   pg_attribute a ON a.attrelid = i.indrelid
+							 AND a.attnum = ANY(i.indkey)
+		WHERE  i.indrelid = \'' . $this->table_name . '\'::regclass
+		AND    i.indisprimary;')->result();
+					return $field[0]->attname;
 				}
 
 				return false;

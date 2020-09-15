@@ -4,7 +4,7 @@
  *
  * A Codeigniter library that creates an instant photo gallery CRUD automatically with just few lines of code.
  *
- * Copyright (C) 2011 through 2012  John Skoumbourdis. 
+ * Copyright (C) 2011 through 2012  John Skoumbourdis.
  *
  * LICENSE
  *
@@ -34,7 +34,10 @@ class image_CRUD {
 	protected $views_as_string = '';
 	protected $css_files = array();
 	protected $js_files = array();
-	
+
+	protected $max_width = 1024;
+	protected $max_height = 768;
+
 	/* Unsetters */
 	protected $unset_delete = false;
 	protected $unset_upload = false;
@@ -42,6 +45,8 @@ class image_CRUD {
 	protected $language = null;
 	protected $lang_strings = array();
 	protected $default_language_path = 'assets/image_crud/languages';
+
+	protected $where = array();
 
 	/**
 	 *
@@ -57,6 +62,12 @@ class image_CRUD {
 	{
 		$this->table_name = $table_name;
 
+		return $this;
+	}
+
+	function where($key, $value = NULL, $escape = TRUE)
+	{
+		$this->where[] = array($key,$value,$escape);
 		return $this;
 	}
 
@@ -77,6 +88,8 @@ class image_CRUD {
 	function set_primary_key_field($field_name)
 	{
 		$this->primary_key = $field_name;
+
+		return $this;
 	}
 
 	function set_subject($subject)
@@ -107,13 +120,25 @@ class image_CRUD {
 		return $this;
 	}
 
+	function set_max_width($value)
+	{
+		$this->max_width = $value;
+		return $this;
+	}
+
+	function set_max_height($value)
+	{
+		$this->max_height = $value;
+		return $this;
+	}
+
 	function set_thumbnail_prefix($prefix)
 	{
 		$this->thumbnail_prefix = $prefix;
 
 		return $this;
 	}
-	
+
 	/**
 	 * Unsets the delete operation from the gallery
 	 *
@@ -122,10 +147,10 @@ class image_CRUD {
 	public function unset_delete()
 	{
 		$this->unset_delete = true;
-	
+
 		return $this;
-	}	
-	
+	}
+
 	/**
 	 * Unsets the upload functionality from the gallery
 	 *
@@ -134,10 +159,10 @@ class image_CRUD {
 	public function unset_upload()
 	{
 		$this->unset_upload = true;
-	
+
 		return $this;
-	}	
-	
+	}
+
 	public function set_css($css_file)
 	{
 		$this->css_files[sha1($css_file)] = base_url().$css_file;
@@ -261,9 +286,9 @@ class image_CRUD {
 	}
 
 	protected function _upload_file($upload_dir) {
-		
+
 		$reg_exp = '/(\\.|\\/)(gif|jpeg|jpg|png)$/i';
-		
+
 		$options = array(
 				'upload_dir' 		=> $upload_dir.'/',
 				'param_name'		=> 'qqfile',
@@ -272,7 +297,7 @@ class image_CRUD {
 		);
 		$upload_handler = new ImageUploadHandler($options);
 		$uploader_response = $upload_handler->post();
-		
+
 		if(is_array($uploader_response))
 		{
 			foreach($uploader_response as &$response)
@@ -280,34 +305,33 @@ class image_CRUD {
 				unset($response->delete_url);
 				unset($response->delete_type);
 			}
-			
+
 			$upload_response = $uploader_response[0];
 		} else {
 			$upload_response = false;
-		}	
-		
+		}
+
 		if (!empty($upload_response)) {
 			$ci = &get_instance();
 			$ci->load->library('image_moo');
-			
+
 			$filename = $upload_response->name;
 
 			$path = $upload_dir.'/'.$filename;
 
-			// hotfix to set max image size (configure from applicaiton/config/image_crud.php)
-			$max_width = $ci->config->item('image_crud_max_width');
-			$max_height = $ci->config->item('image_crud_max_height');
+			/* Resizing to 1024 x 768 if its required */
 			list($width, $height) = getimagesize($path);
-			if($width > $max_width || $height > $max_height)
+			if($width > $this->max_width || $height > $this->max_height)
 			{
-				$ci->image_moo->load($path)->resize($max_width,$max_height)->save($path,true);
+				$ci->image_moo->load($path)->resize($this->max_width,$this->max_height)->save($path,true);
 			}
+			/* ------------------------------------- */
 
 			return $filename;
 		} else {
 			return false;
 		}
-       
+
     }
 
     protected function _changing_priority($post_array)
@@ -347,7 +371,7 @@ class image_CRUD {
     protected function _get_delete_url($value)
     {
     	$rsegments_array = $this->ci->uri->rsegment_array();
-    	return ($rsegments_array[1].'/'.$rsegments_array[2].'/delete_file/'.$value);
+    	return site_url($rsegments_array[1].'/'.$rsegments_array[2].'/delete_file/'.$value);
     }
 
     protected function _get_photos($relation_value = null)
@@ -355,6 +379,11 @@ class image_CRUD {
     	if(!empty($this->priority_field))
     	{
     		$this->ci->db->order_by($this->priority_field);
+    	}
+    	if(!empty($this->where)) {
+			foreach($this->where as $where) {
+				$this->ci->db->where($where[0],$where[1],$where[2]);
+			}
     	}
     	if(!empty($relation_value))
     	{
@@ -364,22 +393,27 @@ class image_CRUD {
 
     	$thumbnail_url = !empty($this->thumbnail_path) ? $this->thumbnail_path : $this->image_path;
 
+    	$final_results = array();
     	foreach($results as $num => $row)
     	{
-			if (!file_exists($this->image_path.'/'.$this->thumbnail_prefix.$row->{$this->url_field})) {
-				$this->_create_thumbnail($this->image_path.'/'.$row->{$this->url_field}, $this->image_path.'/'.$this->thumbnail_prefix.$row->{$this->url_field});
+    		$image_filename = $row->{$this->url_field};
+
+    		if (empty($image_filename)) {
+    			continue;
+    		}
+
+			if (!file_exists($this->image_path . '/' . $this->thumbnail_prefix . $image_filename)) {
+				$this->_create_thumbnail($this->image_path.'/'.$image_filename, $this->image_path.'/'.$this->thumbnail_prefix . $image_filename);
 			}
 
-    		$results[$num]->image_url = base_url().$this->image_path.'/'.$row->{$this->url_field};
+    		$results[$num]->image_url = base_url() . $this->image_path . '/' . $image_filename;
+    		$results[$num]->thumbnail_url = base_url() . $this->image_path . '/' . $this->thumbnail_prefix . $image_filename;
     		$results[$num]->delete_url = $this->_get_delete_url($row->{$this->primary_key});
-    		
-    		/** hot-fix for thumbnail URL **/
-    		//$results[$num]->thumbnail_url = base_url().$this->image_path.'/'.$this->thumbnail_prefix.$row->{$this->url_field};
-    		$relative_url = str_replace(base_url().$this->image_path.'/', '', $row->{$this->url_field});
-    		$results[$num]->thumbnail_url = base_url().$this->image_path.'/'.$this->thumbnail_prefix.$relative_url;
+
+    		$final_results[] = $results[$num];
     	}
 
-    	return $results;
+    	return $final_results;
     }
 
 	protected function _convert_foreign_characters($str_i)
@@ -394,13 +428,9 @@ class image_CRUD {
 
 	protected function _create_thumbnail($image_path, $thumbnail_path)
 	{
-		// hotfix to set thumbnail size (configure from applicaiton/config/image_crud.php)
-		$width = $this->ci->config->item('image_crud_thumbnail_width');
-		$height = $this->ci->config->item('image_crud_thumbnail_height');
-
 		$this->image_moo
 			->load($image_path)
-			->resize_crop($width,$height)
+			->resize_crop(90,60)
 			->save($thumbnail_path,true);
 	}
 
@@ -410,10 +440,10 @@ class image_CRUD {
 
 		if(isset($rsegments_array[3]) && is_numeric($rsegments_array[3]))
 		{
-			$upload_url = ($rsegments_array[1].'/'.$rsegments_array[2].'/upload_file/'.$rsegments_array[3]);
-			$ajax_list_url  = ($rsegments_array[1].'/'.$rsegments_array[2].'/'.$rsegments_array[3].'/ajax_list');
-			$ordering_url  = ($rsegments_array[1].'/'.$rsegments_array[2].'/ordering');
-			$insert_title_url  = ($rsegments_array[1].'/'.$rsegments_array[2].'/insert_title');
+			$upload_url = site_url($rsegments_array[1].'/'.$rsegments_array[2].'/upload_file/'.$rsegments_array[3]);
+			$ajax_list_url  = site_url($rsegments_array[1].'/'.$rsegments_array[2].'/'.$rsegments_array[3].'/ajax_list');
+			$ordering_url  = site_url($rsegments_array[1].'/'.$rsegments_array[2].'/ordering');
+			$insert_title_url  = site_url($rsegments_array[1].'/'.$rsegments_array[2].'/insert_title');
 
 			$state = array( 'name' => 'list', 'upload_url' => $upload_url, 'relation_value' => $rsegments_array[3]);
 			$state['ajax'] = isset($rsegments_array[4]) && $rsegments_array[4] == 'ajax_list'  ? true : false;
@@ -426,10 +456,10 @@ class image_CRUD {
 		}
 		elseif( (empty($rsegments_array[3]) && empty($this->relation_field)) || (!empty($rsegments_array[3]) &&  $rsegments_array[3] == 'ajax_list'))
 		{
-			$upload_url = ($rsegments_array[1].'/'.$rsegments_array[2].'/upload_file');
-			$ajax_list_url  = ($rsegments_array[1].'/'.$rsegments_array[2].'/ajax_list');
-			$ordering_url  = ($rsegments_array[1].'/'.$rsegments_array[2].'/ordering');
-			$insert_title_url  = ($rsegments_array[1].'/'.$rsegments_array[2].'/insert_title');
+			$upload_url = site_url($rsegments_array[1].'/'.$rsegments_array[2].'/upload_file');
+			$ajax_list_url  = site_url($rsegments_array[1].'/'.$rsegments_array[2].'/ajax_list');
+			$ordering_url  = site_url($rsegments_array[1].'/'.$rsegments_array[2].'/ordering');
+			$insert_title_url  = site_url($rsegments_array[1].'/'.$rsegments_array[2].'/insert_title');
 
 			$state = array( 'name' => 'list', 'upload_url' => $upload_url);
 			$state['ajax'] = isset($rsegments_array[3]) && $rsegments_array[3] == 'ajax_list'  ? true : false;
@@ -527,22 +557,22 @@ class image_CRUD {
 					{
 						throw new Exception('This user is not allowed to do this operation', 1);
 						die();
-					}					
-					
+					}
+
 					$file_name = $this->_upload_file( $this->image_path);
-					
+
 					if ($file_name !== false) {
 						$this->_create_thumbnail( $this->image_path.'/'.$file_name , $this->image_path.'/'.$this->thumbnail_prefix.$file_name );
 						$this->_insert_table($file_name, $state_info->relation_value);
-						
+
 						$result = true;
 					} else {
 						$result = false;
-					} 
+					}
 
 					@ob_end_clean();
-					echo json_encode((object)array('success' => $result));					
-					
+					echo json_encode((object)array('success' => $result));
+
 					die();
 				break;
 
