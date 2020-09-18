@@ -1,4 +1,14 @@
-
+<?php
+$pactive = array();
+foreach ($menu as $parent => $parent_params){
+	if (!empty($parent_params['children'])){
+		foreach ($parent_params['children'] as $name => $urlin){
+			$url = explode(':', $urlin)[0];
+			if($current_uri == $url) $pactive[$parent] = true;
+		}
+	}
+}
+?>
 
 <nav class="mt-2">
 	
@@ -20,7 +30,7 @@
 
 				<?php else : ?>
 
-					<?php $parent_active = ($ctrler == $parent); ?>
+					<?php $parent_active = (array_key_exists($parent, $pactive)); ?>
 					<li class="nav-item has-treeview <?php if ($parent_active) echo 'menu-open'; ?>">
 						<a href='#' class="nav-link <?php if ($parent_active) echo 'active'; ?>">
 							<i class="nav-icon <?php echo $parent_params['icon']; ?>"></i>
