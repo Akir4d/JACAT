@@ -821,20 +821,24 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 								case 16:
 									$basetime = str_replace('T', ' ', substr($search,0,-3));
 									$enddt = $basetime . ':59:59';
-									$startdt = $basetime . ':00:00';
+									$startdt = $basetime . ':00:01';
 									break;
 								case 10:
 									$enddt = $search . ' 23:59:59';
-									$startdt = $search . ' 00:00:00';
+									$startdt = $search . ' 00:00:01';
 									break;
 								case 7:
 									$enddt = date("Y-m-t", strtotime($search . '-01')) . ' 23:59:59';
-									$startdt = $search . '-01 00:00:00';
+									$startdt = $search . '-01 00:00:01';
 									break;
 							}
 							if ($enddt !== null && $startdt !== null) {
+								if(!in_array($field_types[$search_field]->type, array('datetime', 'timestamp'))) {
+									$enddt = explode(' ', $enddt)[0];
+									$startdt = explode(' ', $startdt)[0];
+								}
 								if ($sign == '=') {
-									$this->where($search_field . ' < "' . $enddt . '" AND ' . $search_field . ' > "' . $startdt .'"', null, null);
+									$this->where($search_field . ' <= "' . $enddt . '" AND ' . $search_field . ' >= "' . $startdt .'"', null, null);
 								} elseif ($sign == '<') {
 									$this->where($search_field . ' ' . $sign, $enddt, null);
 								} else {
@@ -871,7 +875,7 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 				$this->where('(' . implode(' OR ', $temp_where_query_array) . ')', null);
 			}
 		}
-		//return $this->get_table();
+		return $field_types;
 	}
 
 	protected function table_exists($table_name = null)
