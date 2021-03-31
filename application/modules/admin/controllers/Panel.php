@@ -21,11 +21,11 @@ class Panel extends Admin_Controller {
 	{
 		$crud = $this->generate_crud('admin_users');
 		$crud->columns('groups', 'username', 'first_name', 'last_name', 'active');
-                $crud->fields('username', 'first_name', 'last_name', 'company', 'phone', 'email');
+        $crud->fields('username', 'first_name', 'last_name', 'company', 'phone', 'email');
 		$this->unset_crud_fields('ip_address', 'last_login');
-
+		$state = $crud->getState();
 		// cannot change Admin User groups once created
-		if ($crud->getState()=='list')
+		if ($state=='list' || $state=='ajax_list_info')
 		{
 			$crud->set_relation_n_n('groups', 'admin_users_groups', 'admin_groups', 'user_id', 'group_id', 'name');
 		}
