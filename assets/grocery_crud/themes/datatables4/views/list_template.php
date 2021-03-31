@@ -1031,7 +1031,7 @@ $this->set_js_lib($this->default_javascript_path . '/common/list.js');
 		setCookieDT(name, onOff, 2);
 		oTable.fnSetColumnVis(index, onOff);
 		if (onOff == true) {
-			if (!$(target).hasClass('action')) $(target).addClass('printable');
+			if (!$(target).hasClass('actions')) $(target).addClass('printable');
 		}
 		if (!nofix) fix_table_size(true, timeout);
 		if (!nofix) setTimeout(function() {
