@@ -1,11 +1,11 @@
 <?php
 
 /**
-				 * PHP grocery CRUD
-				 *
-				 * A Codeigniter library that creates a CRUD automatically with just few lines of code.
-				 *
-				 * Copyright (C) 2010 - 2014  John Skoumbourdis.
+ * PHP grocery CRUD
+ *
+ * A Codeigniter library that creates a CRUD automatically with just few lines of code.
+ *
+ * Copyright (C) 2010 - 2014  John Skoumbourdis.
  *
  * LICENSE
  *
@@ -129,7 +129,7 @@ class grocery_CRUD_Field_Types
 			foreach ($this->add_fields as $field_object) {
 				$field_name = isset($field_object->field_name) ? $field_object->field_name : $field_object;
 
-				if (!isset($types[$field_name]))//Doesn't exist in the database? Create it for the CRUD
+				if (!isset($types[$field_name])) //Doesn't exist in the database? Create it for the CRUD
 				{
 					$extras = false;
 					if ($this->change_field_type !== null && isset($this->change_field_type[$field_name])) {
@@ -157,7 +157,7 @@ class grocery_CRUD_Field_Types
 			foreach ($this->edit_fields as $field_object) {
 				$field_name = isset($field_object->field_name) ? $field_object->field_name : $field_object;
 
-				if (!isset($types[$field_name]))//Doesn't exist in the database? Create it for the CRUD
+				if (!isset($types[$field_name])) //Doesn't exist in the database? Create it for the CRUD
 				{
 					$extras = false;
 					if ($this->change_field_type !== null && isset($this->change_field_type[$field_name])) {
@@ -338,6 +338,106 @@ class grocery_CRUD_Field_Types
 		}
 
 		return $value;
+	}
+
+	protected function change_list_value_json($field_info, $value = null)
+	{
+		$result['v'] = $value;
+		$result['t'] = $field_info->crud_type;
+		switch ($result['t']) {
+			case 'hidden':
+			case 'invisible':
+			case 'integer':
+				break;
+			case 'true_false':
+				if (is_array($field_info->extras) && array_key_exists($value, $field_info->extras)) {
+					$result['v'] = $field_info->extras[$value];
+				} else if (isset($this->default_true_false_text[$value])) {
+					$result['v'] = $this->default_true_false_text[$value];
+				}
+				break;
+			case 'string':
+				$value = $this->character_limiter($value, $this->character_limiter, "...");
+				break;
+			case 'text':
+				$result['v'] =  $this->character_limiter(strip_tags($value), $this->character_limiter, "...");
+				$result['a'] = strip_tags($value);
+				break;
+			case 'date':
+				if (!empty($value) && $value != '0000-00-00' && $value != '1970-01-01') {
+					list($year, $month, $day) = explode("-", $value);
+
+					$result['v'] = date($this->php_date_format, mktime(0, 0, 0, (int) $month, (int) $day, (int) $year));
+				} else {
+					$result['v'] = '';
+				}
+				break;
+			case 'datetime':
+				if (!empty($value) && $value != '0000-00-00 00:00:00' && $value != '1970-01-01 00:00:00') {
+					list($year, $month, $day) = explode("-", $value);
+					list($hours, $minutes) = explode(":", substr($value, 11));
+
+					$result['v'] = date($this->php_date_format . " - H:i", mktime((int) $hours, (int) $minutes, 0, (int) $month, (int) $day, (int) $year));
+				} else {
+					$result['v'] = '';
+				}
+				break;
+			case 'enum':
+				$result['v'] = $this->character_limiter($value, $this->character_limiter, "...");
+				break;
+
+			case 'multiselect':
+				$value_as_array = array();
+				foreach (explode(",", $value) as $row_value) {
+					$value_as_array[] = array_key_exists($row_value, $field_info->extras) ? $field_info->extras[$row_value] : $row_value;
+				}
+				$result['v'] = implode(",", $value_as_array);
+				break;
+
+			case 'relation_n_n':
+				$result['v'] = $this->character_limiter(str_replace(',', ', ', $value), $this->character_limiter, "...");
+				break;
+
+			case 'password':
+				$result['v'] = '******';
+				break;
+
+			case 'dropdown':
+				$result['v'] = array_key_exists($value, $field_info->extras) ? $field_info->extras[$value] : $value;
+				break;
+
+			case 'upload_file':
+				if (empty($value)) {
+					$result['v'] = "";
+				} else {
+					$is_image = $this->_is_image_file($value);
+					$is_video = $this->_is_video_file($value);
+					$is_audio = $this->_is_audio_file($value);
+
+					$type = 'img';
+					if ($is_video) $type = 'video controls';
+					if ($is_audio) $type = 'audio controls';
+
+					$file_url = base_url() . $field_info->extras->upload_path . "/$value";
+
+					$file_url_anchor = '<a href="' . $file_url . '"';
+					if ($is_image or $is_video or $is_audio) {
+						$file_url_anchor .= ' class="image-thumbnail"><' . $type . ' src="' . $file_url . '" height="100px">';
+					} else {
+						$file_url_anchor .= ' class="btn btn-outline-secondary btn-flat" target="_blank">' . $this->character_limiter($value, $this->character_limiter, '...', true);
+					}
+					$file_url_anchor .= '</a>';
+
+					$result['v'] = $file_url_anchor;
+				}
+				break;
+
+			default:
+				$result['v'] = $this->character_limiter($value, $this->character_limiter, "...");
+				break;
+		}
+
+		return $result;
 	}
 
 	/**
@@ -641,6 +741,131 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 				}
 			}
 		}
+	}
+
+	protected function set_datatable_list_queries($request = null)
+	{
+
+		$field_types = $this->get_field_types();
+		if (!empty($this->relation)) {
+			foreach ($this->relation as $relation_name => $relation_values) {
+				$temp_relation[$this->_unique_field_name($relation_name)] = $this->_get_field_names_to_search($relation_values);
+			}
+		}
+		if (count($request) > 0) {
+			$columns = @$request['columns'];
+			$order = @$request['order'];
+			$start = @$request['start'];
+			$length = @$request['length'];
+			$global_search = @$request['search']['value'];
+			$basic_table = null;
+			$temp_where_query_array = [];
+			if (strlen($global_search) > 0) {
+				$basic_table = $this->get_table();
+			}
+			if ($length != -1 or $length != "-1") {
+				if ($start == 0) {
+					$this->limit($length);
+				} else {
+					$this->limit($length, $start);
+				}
+			} else {
+				$this->limit(10000000000);
+			}
+			if (count($order) > 0) {
+				foreach ($order as $o) {
+					$corder = $columns[$o['column']]['name'];
+					$orderable = $columns[$o['column']]['orderable'];
+					if ($orderable === "true" or $orderable === true) $this->order_by($corder, $o['dir']);
+				}
+			}
+			foreach ($columns as $c) {
+				if (($c['searchable'] === true || $c['searchable'] === 'true')) {
+					$search_text = $c['search']['value'];
+					$search_field = $c['name'];
+					if (strlen($search_text) > 0) {
+						if (substr($search_text, 1, 1) !== '^') {
+
+							if (isset($temp_relation[$search_field])) {
+								if (is_array($temp_relation[$search_field])) {
+									$temp_where_query_array = [];
+
+									foreach ($temp_relation[$search_field] as $relation_field) {
+										$escaped_text = $this->basic_model->escape_str($search_text);
+										$temp_where_query_array[] = $relation_field . ' LIKE \'%' . $escaped_text . '%\'';
+									}
+									if (!empty($temp_where_query_array)) {
+										$this->where('(' . implode(' OR ', $temp_where_query_array) . ')', null);
+									}
+								} else {
+									$this->like($temp_relation[$search_field], $search_text);
+								}
+							} elseif (isset($this->relation_n_n[$search_field])) {
+								$escaped_text = $this->basic_model->escape_str($search_text);
+								$this->having($search_field . " LIKE '%" . $escaped_text . "%'");
+							} else {
+								$this->like($search_field, $search_text);
+							}
+						} else {
+							$sign = substr($search_text, 0, 1);
+							$search = substr($search_text, 2);
+							$enddt = null;
+							$startdt = null;
+							switch (strlen($search)) {
+								case 16:
+									$basetime = str_replace('T', ' ', substr($search,0,-3));
+									$enddt = $basetime . ':59:59';
+									$startdt = $basetime . ':00:00';
+									break;
+								case 10:
+									$enddt = $search . ' 23:59:59';
+									$startdt = $search . ' 00:00:00';
+									break;
+								case 7:
+									$enddt = date("Y-m-t", strtotime($search . '-01')) . ' 23:59:59';
+									$startdt = $search . '-01 00:00:00';
+									break;
+							}
+							if ($enddt !== null && $startdt !== null) {
+								if ($sign == '=') {
+									$this->where($search_field . ' < "' . $enddt . '" AND ' . $search_field . ' > "' . $startdt .'"', null, null);
+								} elseif ($sign == '<') {
+									$this->where($search_field . ' ' . $sign, $enddt, null);
+								} else {
+									$this->where($search_field . ' ' . $sign, $startdt, null);
+								}
+							}
+						}
+					} else {
+						if (strlen($global_search) > 0) {
+							if (isset($temp_relation[$search_field])) {
+								if (is_array($temp_relation[$search_field])) {
+									foreach ($temp_relation[$search_field] as $search_field_el) {
+										$escaped_text = $this->basic_model->escape_str($global_search);
+										$temp_where_query_array[] = $search_field_el . ' LIKE \'%' . $escaped_text . '%\'';
+									}
+								} else {
+									$escaped_text = $this->basic_model->escape_str($global_search);
+									$temp_where_query_array[] = $temp_relation[$search_field] . ' LIKE \'%' . $escaped_text . '%\'';
+								}
+							} elseif (isset($this->relation_n_n[$search_field])) {
+								//@todo have a where for the relation_n_n statement
+							} elseif (
+								isset($field_types[$search_field]) &&
+								!in_array($field_types[$search_field]->type, array('date', 'datetime', 'timestamp'))
+							) {
+								$escaped_text = $this->basic_model->escape_str($global_search);
+								$temp_where_query_array[] =  '`' . $basic_table . '`.' . $search_field . ' LIKE \'%' . $escaped_text . '%\'';
+							}
+						}
+					}
+				}
+			}
+			if (!empty($temp_where_query_array)) {
+				$this->where('(' . implode(' OR ', $temp_where_query_array) . ')', null);
+			}
+		}
+		//return $field_types;
 	}
 
 	protected function table_exists($table_name = null)
@@ -1357,7 +1582,7 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 		if (isset($state_info->field_name) && isset($this->upload_fields[$state_info->field_name])) {
 			$upload_info = $this->upload_fields[$state_info->field_name];
 
-			if (file_exists("{$upload_info->upload_path}/{$state_info->file_name}") and substr($state_info->file_name,0,4) !== 'logo') {
+			if (file_exists("{$upload_info->upload_path}/{$state_info->file_name}") and substr($state_info->file_name, 0, 4) !== 'logo') {
 				if (unlink("{$upload_info->upload_path}/{$state_info->file_name}")) {
 					$this->basic_model->db_file_delete($state_info->field_name, $state_info->file_name);
 
@@ -1420,8 +1645,8 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 	private $echo_and_die				= false;
 	protected $theme 					= null;
 	protected $default_true_false_text 	= array(
-		'<b class="ci_btOff">0</b>',
-		'<b class="ci_btOn">1</b>'
+		'0',
+		'1'
 	);
 
 	protected $css_files				= array();
@@ -1479,6 +1704,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$data->unset_delete			= $this->unset_delete;
 		$data->unset_export			= $this->unset_export;
 		$data->unset_print			= $this->unset_print;
+		$data->unset_show_columns	= $this->unset_show_columns;
 		$data->use_modal			= $this->use_modal;
 		$data->action_button		= $this->action_button;
 
@@ -1522,7 +1748,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$data->types 		= $this->get_field_types();
 
 		$data->list = $this->get_list();
-		$data->list = $this->change_list($data->list, $data->types);
+		$data->list = $this->change_list_json($data->list, $data->types);
 		$data->list = $this->change_list_add_actions($data->list);
 
 		$data->total_results = $this->get_total_results();
@@ -1646,11 +1872,47 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 	protected function showListInfo()
 	{
+		$total_results = (int) $this->get_total_results();
+		$back = $this->set_datatable_list_queries($_REQUEST);
+		$filter_results = (int) $this->get_total_results();
+	
+		
+		$listin = $this->get_list();
+		$listin = $this->change_list_json($listin, $this->get_field_types());
+		$listin = $this->change_list_add_actions($listin);
+		
+		$primary_key 			= $this->get_primary_key();
+
+		if ($listin === false) {
+			throw new Exception('It is impossible to get data. Please check your model and try again.', 13);
+			$listin = array();
+		}
+
+		$list = array();
+	
+		$columns = array();
+		foreach ($this->get_columns() as $c){
+			$columns[] = $c->field_name;
+		}
+
+		foreach($listin as $l){
+			$arrin = array();
+			foreach($l as $k => $v){
+				if(in_array($k, $columns)) $arrin[$k] = $v;
+			}
+			$list[] = (object)$arrin;
+		}
+
+		foreach ($listin as $num_row => $row) {
+			$list[$num_row]->primary_key_value = $row->{$primary_key};
+		}
+		
 		$this->set_echo_and_die();
 
-		$total_results = (int) $this->get_total_results();
+
+		$draw = isset($_REQUEST['draw']) ? intval($_REQUEST['draw']) : 0;
 		@ob_end_clean();
-		echo json_encode(array('total_results' => $total_results));
+		echo json_encode(array('total_results' => $total_results, "draw" => $draw, 'recordsTotal' => $total_results, 'recordsFiltered' => $filter_results, 'data' => $list));
 		die();
 	}
 
@@ -1700,6 +1962,27 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		return $list;
 	}
 
+	protected function change_list_json($list, $types)
+	{
+		$primary_key = $this->get_primary_key();
+		$has_callbacks = !empty($this->callback_column) ? true : false;
+		$output_columns = $this->get_columns();
+		foreach ($list as $num_row => $row) {
+			foreach ($output_columns as $column) {
+				$field_name 	= $column->field_name;
+				$field_value 	= isset($row->{$column->field_name}) ? $row->{$column->field_name} : null;
+				if ($has_callbacks && isset($this->callback_column[$field_name]))
+					$list[$num_row]->$field_name = call_user_func($this->callback_column[$field_name], $field_value, $row);
+				elseif (isset($types[$field_name]))
+					$list[$num_row]->$field_name = $this->change_list_value_json($types[$field_name], $field_value);
+				else
+					$list[$num_row]->$field_name = $field_value;
+			}
+		}
+
+		return $list;
+	}
+
 	protected function showAddForm()
 	{
 		//$this->set_js_lib($this->default_javascript_path.'/'.grocery_CRUD::JQUERY);
@@ -1736,7 +2019,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$data->types 		= $this->get_field_types();
 
 		$data->field_values = $this->get_edit_values($state_info->primary_key);
-		if (empty($data->field_values)) die ('<h1>Forbidden</h1>');
+		if (empty($data->field_values)) die('<h1>Forbidden</h1>');
 		$data->add_url		= $this->getAddUrl();
 		$data->list_url 	= $this->getListUrl();
 		$data->update_url	= $this->getInsertUrl();
@@ -1772,7 +2055,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$data->types 		= $this->get_field_types();
 
 		$data->field_values = $this->get_edit_values($state_info->primary_key);
-		if (empty($data->field_values)) die ('<h1>Forbidden</h1>');
+		if (empty($data->field_values)) die('<h1>Forbidden</h1>');
 		$data->add_url		= $this->getAddUrl();
 		$data->list_url 	= $this->getListUrl();
 		$data->update_url	= $this->getUpdateUrl($state_info);
@@ -1806,7 +2089,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$data 				= $this->get_common_data();
 		$data->types 		= $this->get_field_types();
 		$data->field_values = $this->get_edit_values($state_info->primary_key);
-		if (empty($data->field_values)) die ('<h1>Forbidden</h1>');
+		if (empty($data->field_values)) die('<h1>Forbidden</h1>');
 		$data->add_url		= $this->getAddUrl();
 
 		$data->list_url 	= $this->getListUrl();
@@ -2413,7 +2696,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 		if ($is_image or $is_video or $is_audio) {
 			$value = '<a href="' . $file_url . '" class="open-file image-thumbnail"';
-			$value .= '><'.$type.' src="' . $file_url . '">';
+			$value .= '><' . $type . ' src="' . $file_url . '">';
 			$value .= '</a>';
 		} else {
 			$value = !empty($value) ? '<a class="btn btn-outline-secondary btn-flat" href="' . $file . '" target="_blank">' . $value . '</a>' : '';
@@ -2505,7 +2788,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 		$unique = mt_rand();
 
-		$allowed_files = (!empty($this->allowed_files_types))?$this->allowed_files_types:$this->config->file_upload_allow_file_types;
+		$allowed_files = (!empty($this->allowed_files_types)) ? $this->allowed_files_types : $this->config->file_upload_allow_file_types;
 		$allowed_files_ui = '.' . str_replace('|', ',.', $allowed_files);
 		$max_file_size_ui = $this->config->file_upload_max_file_size;
 		$max_file_size_bytes = $this->_convert_bytes_ui_to_bytes($max_file_size_ui);
@@ -2537,15 +2820,15 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$file_display_none  	= empty($value) ?  "display:none;" : "";
 
 		$is_image = $this->_is_image_file($value);
-		$is_video = (!$is_image)?$this->_is_video_file($value):false;
-		$is_audio = (!$is_image and !$is_video)?$this->_is_audio_file($value):false;
-					
+		$is_video = (!$is_image) ? $this->_is_video_file($value) : false;
+		$is_audio = (!$is_image and !$is_video) ? $this->_is_audio_file($value) : false;
+
 		$type = "img height='50px'";
-		if($is_video) $type = "video controls style='margin-bottom: -20px' height='200px'";
-		if($is_audio) $type = 'audio controls';
-					
+		if ($is_video) $type = "video controls style='margin-bottom: -20px' height='200px'";
+		if ($is_audio) $type = 'audio controls';
+
 		$image_class = ($is_image or $is_video or $is_audio) ? 'image-thumbnail' : 'btn btn-outline-secondary btn-flat';
-		
+
 		$input = '<span class="fileinput-button  btn btn-default" id="upload-button-' . $unique . '" style="' . $uploader_display_none . '">
 			<span>' . $this->l('form_upload_a_file') . '</span>
 			<input type="file" accept="' . $allowed_files_ui . '" name="' . $this->_unique_field_name($field_info->name) . '" class="gc-file-upload" rel="' . $this->getUploadUrl($field_info->name) . '" id="' . $unique . '">
@@ -2559,7 +2842,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$input .= "<div id='uploader_$unique' rel='$unique' class='grocery-crud-uploader' style='$uploader_display_none'></div>";
 		$input .= "<div id='success_$unique' class='upload-success-url' style='$file_display_none padding-top:7px;'>";
 		$input .= "<a href='" . $file_url . "' id='file_$unique' class='";
-		$input .= ($is_image or $is_video or $is_audio) ? " $image_class'><".$type." src='" . $file_url . "'>" : $image_class."' target='_blank'>$value";
+		$input .= ($is_image or $is_video or $is_audio) ? " $image_class'><" . $type . " src='" . $file_url . "'>" : $image_class . "' target='_blank'>$value";
 		$input .= "</a> ";
 		$input .= "<a href='javascript:void(0)' id='delete_$unique' class='btn btn-danger'>" . $this->l('form_upload_delete') . "</a> ";
 		$input .= "</div><div style='clear:both'></div>";
@@ -3309,9 +3592,9 @@ class Grocery_CRUD extends grocery_CRUD_States
 	 */
 	const	VERSION = "1.6.3";
 	const   RLIB = "?v=0.12";
-	const	JQUERY 			= "";//jquery-1.11.1.min.js
-	const	JQUERY_UI_JS 	= "";//jquery-ui-1.10.3.custom.min.js
-	const	JQUERY_UI_CSS 	= "jquery-ui-1.10.1.custom.min.css";//jquery-ui-1.10.1.custom.min.css
+	const	JQUERY 			= ""; //jquery-1.11.1.min.js
+	const	JQUERY_UI_JS 	= ""; //jquery-ui-1.10.3.custom.min.js
+	const	JQUERY_UI_CSS 	= "jquery-ui-1.10.1.custom.min.css"; //jquery-ui-1.10.1.custom.min.css
 
 	protected $state_code 			= null;
 	protected $state_info 			= null;
@@ -3378,6 +3661,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 	protected $unset_list			= false;
 	protected $unset_export			= false;
 	protected $unset_print			= false;
+	protected $unset_show_columns   = false;
 	protected $action_button		= true;
 	protected $use_modal			= false;
 	protected $columns_num			= 1;
@@ -3514,7 +3798,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 		$imageslists = array(".apng", ".bmp", ".gif", ".ico", ".cur", ".jpg", ".jpeg", ".jfif", ".pjpeg", ".pjp", ".png", ".svg", ".tif", ".tiff", ".webp");
 		$val = (!empty($value)) ? strtolower($value) : '';
 		foreach ($imageslists as $img) {
-			if (substr($val, 0-strlen($img)) == $img) return true;
+			if (substr($val, 0 - strlen($img)) == $img) return true;
 		}
 		return false;
 	}
@@ -3525,7 +3809,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 		$videolists = array(".ogv", ".mp4", ".webm");
 		$val = (!empty($value)) ? strtolower($value) : '';
 		foreach ($videolists as $vid) {
-			if (substr($val, 0-strlen($vid)) == $vid) return true;
+			if (substr($val, 0 - strlen($vid)) == $vid) return true;
 		}
 		return false;
 	}
@@ -3536,7 +3820,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 		$audiolists = array(".ogg", ".wav", ".mp3", ".flac", ".adts");
 		$val = (!empty($value)) ? strtolower($value) : '';
 		foreach ($audiolists as $aud) {
-			if (substr($val, 0-strlen($aud)) == $aud) return true;
+			if (substr($val, 0 - strlen($aud)) == $aud) return true;
 		}
 		return false;
 	}
@@ -3698,6 +3982,17 @@ class Grocery_CRUD extends grocery_CRUD_States
 	{
 		$this->unset_print = true;
 
+		return $this;
+	}
+
+	/**
+	 * Unsets the show colums button and functionality from the list
+	 *
+	 * @return	void
+	 */
+	public function unset_show_columns()
+	{
+		$this->unset_show_columns = true;
 		return $this;
 	}
 
@@ -4322,6 +4617,8 @@ class Grocery_CRUD extends grocery_CRUD_States
 		return $this;
 	}
 
+
+
 	public function limit($limit, $offset = '')
 	{
 		$this->limit = array($limit, $offset);
@@ -4426,8 +4723,8 @@ class Grocery_CRUD extends grocery_CRUD_States
 		}
 
 		switch ($this->state_code) {
-			case 15://success
-			case 1://list
+			case 15: //success
+			case 1: //list
 				if ($this->unset_list) {
 					throw new Exception('You don\'t have permissions for this operation', 14);
 					die();
@@ -4445,7 +4742,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 
 				break;
 
-			case 2://add
+			case 2: //add
 				if ($this->unset_add) {
 					throw new Exception('You don\'t have permissions for this operation', 14);
 					die();
@@ -4461,7 +4758,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 
 				break;
 
-			case 3://edit
+			case 3: //edit
 				if ($this->unset_edit) {
 					throw new Exception('You don\'t have permissions for this operation', 14);
 					die();
@@ -4479,7 +4776,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 
 				break;
 
-			case 4://delete
+			case 4: //delete
 				if ($this->unset_delete) {
 					throw new Exception('This user is not allowed to do this operation', 14);
 					die();
@@ -4491,7 +4788,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 				$this->delete_layout($delete_result);
 				break;
 
-			case 5://insert
+			case 5: //insert
 				if ($this->unset_add) {
 					throw new Exception('This user is not allowed to do this operation', 14);
 					die();
@@ -4503,7 +4800,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 				$this->insert_layout($insert_result);
 				break;
 
-			case 6://update
+			case 6: //update
 				if ($this->unset_edit) {
 					throw new Exception('This user is not allowed to do this operation', 14);
 					die();
@@ -4515,7 +4812,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 				$this->update_layout($update_result, $state_info);
 				break;
 
-			case 7://ajax_list
+			case 7: //ajax_list
 
 				if ($this->unset_list) {
 					throw new Exception('You don\'t have permissions for this operation', 14);
@@ -4535,7 +4832,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 
 				break;
 
-			case 8://ajax_list_info
+			case 8: //ajax_list_info
 
 				if ($this->theme === null)
 					$this->set_theme($this->default_theme);
@@ -4549,21 +4846,21 @@ class Grocery_CRUD extends grocery_CRUD_States
 				$this->showListInfo();
 				break;
 
-			case 9://insert_validation
+			case 9: //insert_validation
 
 				$validation_result = $this->db_insert_validation();
 
 				$this->validation_layout($validation_result);
 				break;
 
-			case 10://update_validation
+			case 10: //update_validation
 
 				$validation_result = $this->db_update_validation();
 
 				$this->validation_layout($validation_result);
 				break;
 
-			case 11://upload_file
+			case 11: //upload_file
 
 				$state_info = $this->getStateInfo();
 
@@ -4572,7 +4869,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 				$this->upload_layout($upload_result, $state_info->field_name);
 				break;
 
-			case 12://delete_file
+			case 12: //delete_file
 				$state_info = $this->getStateInfo();
 
 				$delete_file_result = $this->delete_file($state_info);
@@ -5214,7 +5511,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 					\"" . $field_name . "\" doesn't exists. Please create the folder and try again.");
 		}
 
-		if(strlen($allowed_file_types) > 0) $this->allowed_files_types = $allowed_file_types;
+		if (strlen($allowed_file_types) > 0) $this->allowed_files_types = $allowed_file_types;
 
 		$this->upload_fields[$field_name] = (object) array(
 			'field_name' => $field_name,

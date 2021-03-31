@@ -29,8 +29,8 @@
 	$config['grocery_crud_paging_options'] = array('10','25','50','100');
 
 	//Default theme for grocery CRUD
-	$config['grocery_crud_default_theme'] = 'datatables-bootstrap3';
-
+	$config['grocery_crud_default_theme'] = 'datatables4';
+    //$config['grocery_crud_default_theme'] = 'datatables-bootstrap3';
 	//The environment is important so we can have specific configurations for specific environments
 	$config['grocery_crud_environment'] = 'production';
 
