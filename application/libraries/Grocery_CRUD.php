@@ -821,15 +821,15 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 								case 16:
 									$basetime = str_replace('T', ' ', substr($search,0,-3));
 									$enddt = $basetime . ':59:59';
-									$startdt = $basetime . ':00:01';
+									$startdt = $basetime . ':00:00';
 									break;
 								case 10:
 									$enddt = $search . ' 23:59:59';
-									$startdt = $search . ' 00:00:01';
+									$startdt = $search . ' 00:00:00';
 									break;
 								case 7:
 									$enddt = date("Y-m-t", strtotime($search . '-01')) . ' 23:59:59';
-									$startdt = $search . '-01 00:00:01';
+									$startdt = $search . '-01 00:00:00';
 									break;
 							}
 							if ($enddt !== null && $startdt !== null) {
