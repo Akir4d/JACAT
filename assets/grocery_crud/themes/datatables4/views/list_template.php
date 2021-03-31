@@ -18,16 +18,13 @@
 
 </div>
 <?php
-//echo '<pre>', var_dump($types), '</pre>';
+//echo '<pre>', var_dump($list[0]), '</pre>';
 //super-lazy workaround for "ajax_list issue with this theme"
 function ar($arg)
 {
 	$let = explode('/', $arg);
 	$end = end($let);
 	return substr($arg, 0, -strlen($end));
-}
-if ($success_message !== null) {
-	echo  "<script> var loc = location.href + '/../..'; location.replace(loc.replace('/index', ''));</script>";
 }
 
 $this->set_css($this->default_theme_path . '/datatables4/css/datatables.css?v=0.31');
@@ -82,7 +79,7 @@ $this->set_js_lib($this->default_javascript_path . '/common/list.js');
 
 	var numTemp = 0;
 	var DTSearch = '&nbsp;&nbsp;<div class="dropdown d-inline" style="overflow: scroll">';
-	DTSearch += '<button class="btn btn-secondary dropdown-toggle" type="button" id="DTdropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+	DTSearch += '<button class="btn btn-primary dropdown-toggle" type="button" id="DTdropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
 	DTSearch += '<?php echo $this->l('show_columns'); ?></button><div class="dropdown-menu text-sm" aria-labelledby="DTdropdownMenuButton" style="">';
 	<?php if (!$unset_delete || !$unset_edit || !$unset_read || !empty($actions)) : ?>
 		DTSearch += '<div onclick="showColumns(0, \'action\', !$(\'[name=vscolunm0]\').prop(\'checked\'));" class="dropdown-item"><input type="checkbox"';
@@ -245,21 +242,21 @@ $this->set_js_lib($this->default_javascript_path . '/common/list.js');
 
 				function additional_action()
 				{
-					$ret = '<div class="dt-ci-input-add d-none">
-                    <button class="clear-filtering btn btn-outline-secondary float-right w-5">
-                        <i class="fas fa-times"></i> <i class="fas fa-long-arrow-alt-right"></i>
-                    </button>
-					<button class="btn btn-default margin-stop refresh-data w-5" role="button">
+					$ret = '<div class="dt-ci-input-add-block d-none btn-group" style="min-width: 90px" >
+					<a class="btn btn-default refresh-data">
                         <i class="fas fa-sync-alt"></i>
-                    </button>
-                    </div>';
+                    </a>
+                    <a class="clear-filtering btn btn-default">
+                        <i class="fas fa-times"></i> <i class="fas fa-long-arrow-alt-right"></i>
+                    </a>
+                    </duv>';
 					return str_replace('"', '\"', str_replace("\t", '', str_replace("\r", '', str_replace("\n", '', $ret))));
 				}
 
 				$a = 0;
 				if (!$unset_delete || !$unset_edit || !$unset_read || !empty($actions)) {
 
-					$arrlist .= '{ title: "' . $this->l('list_actions') . '<br class=\"dt-ci-input-add d-none\">' .additional_action() . '", name: "action", data: (e)=>format_fields(e, "action"), searchable: false, orderable: false },';
+					$arrlist .= '{ title: "' . $this->l('list_actions') . '<br class=\"dt-ci-input-add d-none\">' . additional_action() . '", name: "action", data: (e)=>format_fields(e, "action"), searchable: false, orderable: false },';
 				}
 				foreach ($columns as $column) {
 					if ($column->field_name !== 'jobStatus') {
@@ -275,7 +272,7 @@ $this->set_js_lib($this->default_javascript_path . '/common/list.js');
 								$additional = dateAdder($column->field_name);
 								break;
 						}
-						$arrlist .= PHP_EOL . '{ title: "'. $additional . '<span texthead=\"true\">' . $column->display_as . '</span>' .'<br class=\"dt-ci-input-add d-none\"><input class=\"form-control dt-ci-input d-none\" type=\"' . $type . '\" placeholder=\"' . $this->l('list_search') . '\" />", name: "' . $column->field_name . '", data: (e)=>format_fields(e, "' . $column->field_name . '")},';
+						$arrlist .= PHP_EOL . '{ title: "' . $additional . '<span texthead=\"true\">' . $column->display_as . '</span>' . '<br class=\"dt-ci-input-add d-none\"><input class=\"form-control dt-ci-input d-none\" type=\"' . $type . '\" placeholder=\"' . $this->l('list_search') . '\" />", name: "' . $column->field_name . '", data: (e)=>format_fields(e, "' . $column->field_name . '")},';
 					} else {
 						$arrlist .= PHP_EOL . '{ "searchable": false, "orderable": false, "searchable": false,  data: (e)=>color_field(e)},';
 					}
@@ -357,7 +354,7 @@ $this->set_js_lib($this->default_javascript_path . '/common/list.js');
 				settings.scrollX = true;
 				break;
 			default:
-				if (columnsCount < 10) {
+				if (columnsCount < 6) {
 					settings.responsive = true;
 				} else {
 					settings.scrollX = true;
@@ -379,36 +376,61 @@ $this->set_js_lib($this->default_javascript_path . '/common/list.js');
 		return result;
 	}
 
-	function actionButton(id) {
+
+	<?php
+	$elements = array();
+	$labels = array();
+	$row = $list[0];
+	if (!empty($row->action_urls)) {
+		foreach ($row->action_urls as $action_unique_id => $action_url) {
+			$action = $actions[$action_unique_id];
+			$elements[$action_unique_id] = $action->css_class;
+			$labels[$action_unique_id] = $action->label;
+		}
+	}
+	echo 'var actionsCss = ' . json_encode($elements, JSON_PRETTY_PRINT) . ';' . PHP_EOL;
+	echo 'var actionsLabel = ' . json_encode($labels, JSON_PRETTY_PRINT) . ';' . PHP_EOL;
+	?>
+
+	function actionsLink(actions, menu = false) {
+		ret = '';
+		if (actions !== null) {
+			for (const [key, value] of Object.entries(actions)) {
+				if (value !== undefined) {
+					if (menu) {
+						ret += ` <li> <a class="dropdown-item" onclick='dtOpen("` + value + `")'>
+                                            <i class="` + actionsCss[key] + `"></i> ` + actionsLabel[key] + `
+                                        </a></li>`;
+					} else {
+						ret += `<a onclick='dtOpen("` + value + `")' class="btn btn-default margin-stop">
+                                        <i class="` + actionsCss[key] + `"></i>
+                                    </a>`;
+					}
+				}
+			}
+		}
+		return ret;
+	}
+
+
+	function actionButton(id, actions = null) {
 		return `<div class="btn-group tid` + id + `">
-                            <?php
-							$row = $list[0];
-							if (!empty($row->action_urls)) {
-								foreach ($row->action_urls as $action_unique_id => $action_url) {
-									$action = $actions[$action_unique_id];
-							?>
-                                    <a onclick='dtOpen("<?php echo ar($action_url); ?>` + id + `")' class="btn btn-default margin-stop">
-                                        <i class="<?php echo $action->css_class; ?>"></i>
-                                    </a>
-                            <?php
-								}
-							}
-							?>
+						    ` + actionsLink(actions) + `
                             <?php if (!$unset_read) { ?>
                                 <a onclick='dtOpen("<?php echo ar($row->read_url) ?>` + id + `")' class="btn btn-default margin-stop">
-                                    <i class="fas fa-eye"></i>
+                                    <i class="fas fa-eye text-info"></i>
                                 </a>
                             <?php } ?>
 
                             <?php if (!$unset_clone) { ?>
                                 <a onclick='dtOpen("<?php echo ar($row->clone_url) ?>` + id + `")' class="btn btn-default margin-stop">
-                                    <i class="fas fa-copy"></i>
+                                    <i class="fas fa-copy text-primary"></i>
                                 </a>
                             <?php } ?>
 
                             <?php if (!$unset_edit) { ?>
                                 <a onclick='dtOpen("<?php echo ar($row->edit_url) ?>` + id + `")' class="btn btn-default margin-stop">
-                                    <i class="fas fa-pencil-alt"></i>
+                                    <i class="fas fa-pencil-alt text-success"></i>
                                 </a>
                             <?php } ?>
 
@@ -422,7 +444,7 @@ $this->set_js_lib($this->default_javascript_path . '/common/list.js');
 	}
 
 
-	function actionMenu(id, value) {
+	function actionMenu(id, value, actions = null) {
 		return `
 		<div class="dropdown">
                             <span texttogo="true" class="black-text" type="button" style="min-width: 50px; min-height: 20px" data-toggle="dropdown" aria-expanded="false">
@@ -430,36 +452,22 @@ $this->set_js_lib($this->default_javascript_path . '/common/list.js');
                             </span>
                             <ul class="dropdown-menu">
 
-                                <?php
-								$row = $list[0];
-								if (!empty($row->action_urls)) {
-									foreach ($row->action_urls as $action_unique_id => $action_url) {
-										$action = $actions[$action_unique_id];
-								?>
-
-                                        <li> <a class="dropdown-item" onclick='dtOpen("<?php echo ar($action_url); ?>` + id + `")'>
-                                                <i class="fa <?php echo $action->css_class; ?>"></i> <?php echo $action->label ?>
-                                            </a>
-                                        </li>
-                                <?php
-									}
-								}
-								?>
+							` + actionsLink(actions, true) + `
                                 <?php if (!$unset_read) { ?>
                                     <li> <a class="dropdown-item" onclick='dtOpen("<?php echo ar($row->read_url) ?>` + id + `")'>
-                                            <i class="fa fa-eye"></i> <?php echo $this->l('list_view'); ?>
+                                            <i class="fa fa-eye text-info"></i> <?php echo $this->l('list_view'); ?>
                                         </a></li>
                                 <?php } ?>
 
                                 <?php if (!$unset_clone) { ?>
                                     <li> <a class="dropdown-item" onclick='dtOpen("<?php echo ar($row->clone_url) ?>` + id + `")'>
-                                            <i class="fa fa-copy"></i> <?php echo $this->l('list_clone'); ?>
+                                            <i class="fa fa-copy text-primary"></i> <?php echo $this->l('list_clone'); ?>
                                         </a></li>
                                 <?php } ?>
 
                                 <?php if (!$unset_edit) { ?>
                                     <li> <a class="dropdown-item" onclick='dtOpen("<?php echo ar($row->edit_url) ?>` + id + `")'>
-                                            <i class="fas fa-pencil-alt"></i> <?php echo $this->l('list_edit'); ?>
+                                            <i class="fas fa-pencil-alt text-success"></i> <?php echo $this->l('list_edit'); ?>
                                         </a></li>
                                 <?php } ?>
 
@@ -678,6 +686,7 @@ $this->set_js_lib($this->default_javascript_path . '/common/list.js');
 		fix_table_size();
 		$('.dt-buttons').after(DTSearch);
 		showColumns(0, 'action', <?php echo ($action_button) ? 'true' : 'false'; ?>, false, 400);
+		$('.dt-buttons button').removeClass('btn-secondary').addClass('btn-primary');
 	});
 
 	function loadListenersForDatatables() {
@@ -692,8 +701,6 @@ $this->set_js_lib($this->default_javascript_path . '/common/list.js');
 			if (res === null) {
 				return input;
 			} else {
-				//console.log(input);
-				console.log(strip_tags(res[0]));
 				return strip_tags(res[0]);
 			}
 		} else {
@@ -719,8 +726,7 @@ $this->set_js_lib($this->default_javascript_path . '/common/list.js');
 
 
 	function format_fields(e, name) {
-		//console.log(e);
-		if (name == "action") return actionButton(e.primary_key_value);
+		if (name == "action") return actionButton(e.primary_key_value, e.action_urls);
 		let value = e[name];
 		if (typeof e[name] === 'object' && e[name] !== null) {
 			switch (e[name].t) {
@@ -728,9 +734,9 @@ $this->set_js_lib($this->default_javascript_path . '/common/list.js');
 					if (e[name].v !== null) {
 						let val = strip_tags(e[name].v);
 						if (val == 1) {
-							value = actionMenu(e.primary_key_value, '<i class="fas fa-check ci_btOn" style="color:#00a65a"><b class="invisible">1</b></i>');
+							value = actionMenu(e.primary_key_value, '<i class="fas fa-check ci_btOn" style="color:#00a65a"><b class="invisible">1</b></i>', e.action_urls);
 						} else if (val == 0) {
-							value = actionMenu(e.primary_key_value, '<i class="fas fa-times ci_btOff" style="color:#f56954"><b class="invisible">0</b></i>');
+							value = actionMenu(e.primary_key_value, '<i class="fas fa-times ci_btOff" style="color:#f56954"><b class="invisible">0</b></i>', e.action_urls);
 						} else {
 							value = '';
 						}
@@ -739,10 +745,10 @@ $this->set_js_lib($this->default_javascript_path . '/common/list.js');
 					}
 					break;
 				default:
-					value = actionMenu(e.primary_key_value, (e[name].v !== null) ? e[name].v : '');
+					value = actionMenu(e.primary_key_value, (e[name].v !== null) ? e[name].v : '', e.action_urls);
 			}
 		} else {
-			value = actionMenu(e.primary_key_value, value);
+			value = actionMenu(e.primary_key_value, (value !== null) ? value : '', e.action_urls);
 		}
 
 		return value;
@@ -861,11 +867,13 @@ $this->set_js_lib($this->default_javascript_path . '/common/list.js');
 					$('div.dt-ci-input-add').addClass('d-none').removeClass('d-inline');
 					$('br.dt-ci-input-add').addClass('d-none').removeClass('d-block');
 					$('hr.dt-ci-input-add').addClass('d-none').removeClass('d-block');
+					$('div.dt-ci-input-add-block').addClass('d-none');
 				} else {
 					$('.form-control.dt-ci-input').removeClass('d-none');
 					$('div.dt-ci-input-add').removeClass('d-none').addClass('d-inline');
 					$('br.dt-ci-input-add').removeClass('d-none').addClass('d-block');
 					$('hr.dt-ci-input-add').removeClass('d-none').addClass('d-block');
+					$('div.dt-ci-input-add-block').removeClass('d-none');
 				}
 				oTable._fnReDraw();
 			});

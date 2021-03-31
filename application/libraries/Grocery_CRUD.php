@@ -1905,6 +1905,8 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 		foreach ($listin as $num_row => $row) {
 			$list[$num_row]->primary_key_value = $row->{$primary_key};
+			$list[$num_row]->action_urls = @$row->action_urls;
+
 		}
 		
 		$this->set_echo_and_die();
