@@ -747,6 +747,11 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 	{
 
 		$field_types = $this->get_field_types();
+		$fields = array();
+		$table = $this->get_table();
+		foreach($field_types as $k => $f){
+			$fields[] = $k;
+		}
 		if (!empty($this->relation)) {
 			foreach ($this->relation as $relation_name => $relation_values) {
 				$temp_relation[$this->_unique_field_name($relation_name)] = $this->_get_field_names_to_search($relation_values);
@@ -784,6 +789,7 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 					$search_text = $c['search']['value'];
 					$search_field = $c['name'];
 					if (strlen($search_text) > 0) {
+						if(in_array($search_field, $fields)) $search_field = $table .'.'. $search_field;
 						if (substr($search_text, 1, 1) !== '^') {
 
 							if (isset($temp_relation[$search_field])) {
@@ -865,7 +871,7 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 				$this->where('(' . implode(' OR ', $temp_where_query_array) . ')', null);
 			}
 		}
-		//return $field_types;
+		//return $this->get_table();
 	}
 
 	protected function table_exists($table_name = null)
@@ -1914,7 +1920,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 		$draw = isset($_REQUEST['draw']) ? intval($_REQUEST['draw']) : 0;
 		@ob_end_clean();
-		echo json_encode(array('total_results' => $total_results, "draw" => $draw, 'recordsTotal' => $total_results, 'recordsFiltered' => $filter_results, 'data' => $list));
+		echo json_encode(array('back'=>$back, 'total_results' => $total_results, "draw" => $draw, 'recordsTotal' => $total_results, 'recordsFiltered' => $filter_results, 'data' => $list));
 		die();
 	}
 
