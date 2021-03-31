@@ -354,7 +354,7 @@ $this->set_js_lib($this->default_javascript_path . '/common/list.js');
 				settings.scrollX = true;
 				break;
 			default:
-				if (columnsCount < 6) {
+				if (columnsCount < 7) {
 					settings.responsive = true;
 				} else {
 					settings.scrollX = true;
