@@ -9,8 +9,8 @@
 	$lang['list_show_entries']		= 'Visualizza {paging} voci';
 	$lang['list_no_items']			= 'Nessun elemento da visualizzare';
 	$lang['list_zero_entries']		= 'Visualizza 0 di 0 elementi';
-	$lang['list_search'] 			= 'Cerca';
-	$lang['list_search_all'] 		= 'Cerca tutto';
+	$lang['list_search'] 			= 'Ricerca';
+	$lang['list_search_all'] 		= 'Ricerca tutto';
 	$lang['list_clear_filtering'] 		= 'Azzera filtri';
 	$lang['list_delete'] 			= 'Elimina';
 	$lang['list_edit'] 			= 'Modifica';
@@ -88,4 +88,11 @@
 
 	/* Added in Jacat */
 	$lang['show_columns'] = 'Mostra Colonne';
+
+
+
+	/* Added in Jacat */
+	$lang['list_multiple_export'] = 'Esporta/Stampa tutte le pagine';
+
+	$lang['list_single_export'] = 'Esporta/Stampa questa pagina';
 

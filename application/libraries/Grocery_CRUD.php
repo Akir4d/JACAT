@@ -347,7 +347,9 @@ class grocery_CRUD_Field_Types
 		switch ($result['t']) {
 			case 'hidden':
 			case 'invisible':
+				break;
 			case 'integer':
+				$result = $value;
 				break;
 			case 'true_false':
 				if (is_array($field_info->extras) && array_key_exists($value, $field_info->extras)) {
@@ -357,7 +359,7 @@ class grocery_CRUD_Field_Types
 				}
 				break;
 			case 'string':
-				$value = $this->character_limiter($value, $this->character_limiter, "...");
+				$result = $this->character_limiter($value, $this->character_limiter, "...");
 				break;
 			case 'text':
 				$result['v'] =  $this->character_limiter(strip_tags($value), $this->character_limiter, "...");
@@ -383,7 +385,7 @@ class grocery_CRUD_Field_Types
 				}
 				break;
 			case 'enum':
-				$result['v'] = $this->character_limiter($value, $this->character_limiter, "...");
+				$result = $value;
 				break;
 
 			case 'multiselect':
@@ -391,11 +393,11 @@ class grocery_CRUD_Field_Types
 				foreach (explode(",", $value) as $row_value) {
 					$value_as_array[] = array_key_exists($row_value, $field_info->extras) ? $field_info->extras[$row_value] : $row_value;
 				}
-				$result['v'] = implode(",", $value_as_array);
+				$result = implode(",", $value_as_array);
 				break;
 
 			case 'relation_n_n':
-				$result['v'] = $this->character_limiter(str_replace(',', ', ', $value), $this->character_limiter, "...");
+				$result = $this->character_limiter(str_replace(',', ', ', $value), $this->character_limiter, "...");
 				break;
 
 			case 'password':
@@ -403,12 +405,12 @@ class grocery_CRUD_Field_Types
 				break;
 
 			case 'dropdown':
-				$result['v'] = array_key_exists($value, $field_info->extras) ? $field_info->extras[$value] : $value;
+				$result = array_key_exists($value, $field_info->extras) ? $field_info->extras[$value] : $value;
 				break;
 
 			case 'upload_file':
 				if (empty($value)) {
-					$result['v'] = "";
+					$result = "";
 				} else {
 					$is_image = $this->_is_image_file($value);
 					$is_video = $this->_is_video_file($value);
@@ -428,12 +430,12 @@ class grocery_CRUD_Field_Types
 					}
 					$file_url_anchor .= '</a>';
 
-					$result['v'] = $file_url_anchor;
+					$result = $file_url_anchor;
 				}
 				break;
 
 			default:
-				$result['v'] = $this->character_limiter($value, $this->character_limiter, "...");
+				$result = $value;
 				break;
 		}
 
@@ -748,8 +750,7 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 
 		$field_types = $this->get_field_types();
 		$fields = array();
-		$table = $this->get_table();
-		foreach($field_types as $k => $f){
+		foreach ($field_types as $k => $f) {
 			$fields[] = $k;
 		}
 		if (!empty($this->relation)) {
@@ -763,11 +764,9 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 			$start = @$request['start'];
 			$length = @$request['length'];
 			$global_search = @$request['search']['value'];
-			$basic_table = null;
 			$temp_where_query_array = [];
-			if (strlen($global_search) > 0) {
-				$basic_table = $this->get_table();
-			}
+			$basic_table = $this->get_table();
+
 			if ($length != -1 or $length != "-1") {
 				if ($start == 0) {
 					$this->limit($length);
@@ -789,7 +788,7 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 					$search_text = $c['search']['value'];
 					$search_field = $c['name'];
 					if (strlen($search_text) > 0) {
-						if(in_array($search_field, $fields)) $search_field = $table .'.'. $search_field;
+
 						if (substr($search_text, 1, 1) !== '^') {
 
 							if (isset($temp_relation[$search_field])) {
@@ -810,7 +809,8 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 								$escaped_text = $this->basic_model->escape_str($search_text);
 								$this->having($search_field . " LIKE '%" . $escaped_text . "%'");
 							} else {
-								$this->like($search_field, $search_text);
+								if (in_array($search_field, $fields)) $search_field_full = $basic_table . '.' . $search_field;
+								$this->like($search_field_full, $search_text);
 							}
 						} else {
 							$sign = substr($search_text, 0, 1);
@@ -819,7 +819,7 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 							$startdt = null;
 							switch (strlen($search)) {
 								case 16:
-									$basetime = str_replace('T', ' ', substr($search,0,-3));
+									$basetime = str_replace('T', ' ', substr($search, 0, -3));
 									$enddt = $basetime . ':59:59';
 									$startdt = $basetime . ':00:00';
 									break;
@@ -833,16 +833,17 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 									break;
 							}
 							if ($enddt !== null && $startdt !== null) {
-								if(!in_array($field_types[$search_field]->type, array('datetime', 'timestamp'))) {
+								if (!in_array($field_types[$search_field]->type, array('datetime', 'timestamp'))) {
 									$enddt = explode(' ', $enddt)[0];
 									$startdt = explode(' ', $startdt)[0];
 								}
+								if (in_array($search_field, $fields)) $search_field_full = $basic_table . '.' . $search_field;
 								if ($sign == '=') {
-									$this->where($search_field . ' <= "' . $enddt . '" AND ' . $search_field . ' >= "' . $startdt .'"', null, null);
+									$this->where($search_field_full . ' <= "' . $enddt . '" AND ' . $search_field_full . ' >= "' . $startdt . '"', null, null);
 								} elseif ($sign == '<') {
-									$this->where($search_field . ' ' . $sign, $enddt, null);
+									$this->where($search_field_full . ' ' . $sign, $enddt, null);
 								} else {
-									$this->where($search_field . ' ' . $sign, $startdt, null);
+									$this->where($search_field_full . ' ' . $sign, $startdt, null);
 								}
 							}
 						}
@@ -859,7 +860,7 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 									$temp_where_query_array[] = $temp_relation[$search_field] . ' LIKE \'%' . $escaped_text . '%\'';
 								}
 							} elseif (isset($this->relation_n_n[$search_field])) {
-								//@todo have a where for the relation_n_n statement
+								// to do
 							} elseif (
 								isset($field_types[$search_field]) &&
 								!in_array($field_types[$search_field]->type, array('date', 'datetime', 'timestamp'))
@@ -875,7 +876,8 @@ class grocery_CRUD_Model_Driver extends grocery_CRUD_Field_Types
 				$this->where('(' . implode(' OR ', $temp_where_query_array) . ')', null);
 			}
 		}
-		return $field_types;
+		//return $fields;
+		return $temp_having_query_array;
 	}
 
 	protected function table_exists($table_name = null)
@@ -1885,12 +1887,12 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		$total_results = (int) $this->get_total_results();
 		$back = $this->set_datatable_list_queries($_REQUEST);
 		$filter_results = (int) $this->get_total_results();
-	
-		
+
+
 		$listin = $this->get_list();
 		$listin = $this->change_list_json($listin, $this->get_field_types());
 		$listin = $this->change_list_add_actions($listin);
-		
+
 		$primary_key 			= $this->get_primary_key();
 
 		if ($listin === false) {
@@ -1899,16 +1901,16 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		}
 
 		$list = array();
-	
+
 		$columns = array();
-		foreach ($this->get_columns() as $c){
+		foreach ($this->get_columns() as $c) {
 			$columns[] = $c->field_name;
 		}
 
-		foreach($listin as $l){
+		foreach ($listin as $l) {
 			$arrin = array();
-			foreach($l as $k => $v){
-				if(in_array($k, $columns)) $arrin[$k] = $v;
+			foreach ($l as $k => $v) {
+				if (in_array($k, $columns)) $arrin[$k] = $v;
 			}
 			$list[] = (object)$arrin;
 		}
@@ -1916,15 +1918,14 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 		foreach ($listin as $num_row => $row) {
 			$list[$num_row]->primary_key_value = $row->{$primary_key};
 			$list[$num_row]->action_urls = @$row->action_urls;
-
 		}
-		
+
 		$this->set_echo_and_die();
 
 
 		$draw = isset($_REQUEST['draw']) ? intval($_REQUEST['draw']) : 0;
 		@ob_end_clean();
-		echo json_encode(array('back'=>$back, 'total_results' => $total_results, "draw" => $draw, 'recordsTotal' => $total_results, 'recordsFiltered' => $filter_results, 'data' => $list));
+		echo json_encode(array('back' => $_REQUEST, 'total_results' => $total_results, "draw" => $draw, 'recordsTotal' => $total_results, 'recordsFiltered' => $filter_results, 'data' => $list));
 		die();
 	}
 
@@ -4854,7 +4855,7 @@ class Grocery_CRUD extends grocery_CRUD_States
 
 				$state_info = $this->getStateInfo();
 				$this->set_ajax_list_queries($state_info);
-
+				header('Content-Type: application/json');
 				$this->showListInfo();
 				break;
 

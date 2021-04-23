@@ -108,3 +108,10 @@
 	/* Added in Jacat */
 	$lang['show_columns'] = 'Show Columns';
 
+
+
+	/* Added in Jacat */
+	$lang['list_multiple_export'] = 'All Pages Export/Print';
+
+	$lang['list_single_export'] = 'Current Page Export/Print';
+

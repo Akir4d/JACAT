@@ -156,3 +156,30 @@ tr.tr-red:hover {
 tr.tr-red:hover a.black-text {
     color: #fff;
 }
+
+.dataTables_scrollBody::-webkit-scrollbar {
+    width: 1vw;
+    height: 25px;
+    border-radius: 5px;
+}
+
+
+/* Track */
+
+.dataTables_scrollBody::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.5);
+    height: 25px;
+    border-radius: 5px;
+}
+
+.dataTables_scrollBody::-webkit-scrollbar-thumb {
+    background-color: #DDD;
+    height: 25px;
+    border-radius: 5px;
+}
+
+.dataTables_scrollBody::-webkit-scrollbar-thumb:window-inactive {
+    background-color: #DDD;
+    height: 25px;
+    border-radius: 5px;
+}
