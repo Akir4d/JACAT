@@ -165,7 +165,10 @@ class Admin_Controller extends MY_Controller
 		}
 
 		// render CRUD
-
+		$this->mCrud->unset_back_to_list();
+        $back = '<script type="text/javascript">setTimeout(()=>{ bootbox.hideAll(); }, 100);</script>';
+        $this->mCrud->set_lang_string('insert_success_message', $back);
+        $this->mCrud->set_lang_string('update_success_message', $back);
 		$crud_data = $this->mCrud->render();
 		$css = is_array($crud_data->css_files) ? $crud_data->css_files : (array) $crud_data->css_files;
 		foreach ($css as $file) {
