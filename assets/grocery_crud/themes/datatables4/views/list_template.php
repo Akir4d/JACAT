@@ -508,10 +508,11 @@ $this->set_js($this->default_theme_path . '/datatables4/js/datatables.js?v=0.4.1
 
 
 	function actionMenu(id, value, actions = null) {
-		return `
+		value = value.replaceAll('&nbsp;', ' ').replaceAll('&thinsp;', '&nbsp;');
+		let result = `
 		<div class="dropdown">
                             <span texttogo="true" class="black-text" type="button" style="min-width: 50px; min-height: 20px" data-toggle="dropdown" aria-expanded="false">
-							` + value.replaceAll('&nbsp;', ' ').replaceAll('&thinsp;', '&nbsp;') + `
+							` + value + `
                             </span>
                             <ul class="dropdown-menu">
 
@@ -543,6 +544,12 @@ $this->set_js($this->default_theme_path . '/datatables4/js/datatables.js?v=0.4.1
                             </ul>
                         </div>
 		`
+		let noAction = <?php echo ($unset_read && $unset_clone && $unset_edit && $unset_delete) ? 'true' : 'false'; ?>;
+		if (!noAction && (actions != null || actions != '')) {
+			return result;
+		} else {
+			return value;
+		}
 	}
 
 

@@ -1925,7 +1925,7 @@ class grocery_CRUD_Layout extends grocery_CRUD_Model_Driver
 
 		$draw = isset($_REQUEST['draw']) ? intval($_REQUEST['draw']) : 0;
 		@ob_end_clean();
-		echo json_encode(array('back' => $_REQUEST, 'total_results' => $total_results, "draw" => $draw, 'recordsTotal' => $total_results, 'recordsFiltered' => $filter_results, 'data' => $list));
+		echo json_encode(array('back' => $back, 'total_results' => $total_results, "draw" => $draw, 'recordsTotal' => $total_results, 'recordsFiltered' => $filter_results, 'data' => $list));
 		die();
 	}
 

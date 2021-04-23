@@ -211,7 +211,11 @@ function format_fields(e, name) {
                 value = actionMenu(e.primary_key_value, (e[name].v !== null) ? e[name].v : '', e.action_urls);
         }
     } else {
-        value = actionMenu(e.primary_key_value, (value !== null) ? value : '', e.action_urls);
+        if (value != null && (value.startsWith('<button') || value.startsWith('<a'))) {
+            value = value.replaceAll('&nbsp;', ' ').replaceAll('&thinsp;', '&nbsp;');
+        } else {
+            value = actionMenu(e.primary_key_value, (value !== null) ? value : '', e.action_urls);
+        }
     }
 
     return value;
