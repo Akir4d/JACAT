@@ -8,14 +8,14 @@
 <a class="d-none refresh-data">
 	<i class="fas fa-sync-alt"></i>
 </a>
-<div class="grocerycrud-container-spinner d-none" style="min-height: 80vh">
+<div class="grocerycrud-container-spinner" style="min-height: 40vh">
 	<div class="text-center">
-		<div class="spinner-border" style="margin-top: 30vh; width: 10rem; height: 10rem;" role="status">
+		<div class="spinner-border" style="margin-top: 10vh; width: 5rem; height: 5rem;" role="status">
 			<span class="sr-only">Loading...</span>
 		</div>
 	</div>
 </div>
-<div class="grocerycrud-container card">
+<div class="grocerycrud-container card invisible">
 	<?php if (!$unset_add) : ?>
 		<div class="card-header">
 			<?php if (!$unset_add) : ?>
