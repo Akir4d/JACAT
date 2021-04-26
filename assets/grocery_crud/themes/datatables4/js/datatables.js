@@ -343,7 +343,7 @@ function after_draw_callback() {
         $('.dataTables_info').addClass('d-inline').append('&emsp;');
         $('.dataTables_length select').append('<option value="-1">∞</option>');
     }
-    $('.grocerycrud-container-spinner').addClass('d-none');
+    $('.grocerycrud-container-spinner .progress-bar').css('width', '100%').attr('aria-valuenow', 100);
     setTimeout(() => {
         $('[data-toggle="tooltip"]').tooltip();
         $('.clear-filtering').on('click', () => {
@@ -351,8 +351,9 @@ function after_draw_callback() {
             localStorage.removeItem('datatables_search_' + unique_hash);
             resetFilters(this);
         });
-        $('.grocerycrud-container').removeClass('invisible');
-    }, 200);
+        $('.grocerycrud-container-spinner').addClass('d-none');
+        $('.dataTablesContainer').removeClass('invisible');
+    }, 100);
 
 }
 

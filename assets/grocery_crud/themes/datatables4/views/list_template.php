@@ -8,14 +8,7 @@
 <a class="d-none refresh-data">
 	<i class="fas fa-sync-alt"></i>
 </a>
-<div class="grocerycrud-container-spinner" style="min-height: 40vh">
-	<div class="text-center">
-		<div class="spinner-border" style="margin-top: 10vh; width: 5rem; height: 5rem;" role="status">
-			<span class="sr-only">Loading...</span>
-		</div>
-	</div>
-</div>
-<div class="grocerycrud-container card invisible">
+<div class="grocerycrud-container card">
 	<?php if (!$unset_add) : ?>
 		<div class="card-header">
 			<?php if (!$unset_add) : ?>
@@ -26,7 +19,12 @@
 			<?php endif; ?>
 		</div>
 	<?php endif; ?>
-	<div class="dataTablesContainer dt-bootstrap4">
+	<div class="grocerycrud-container-spinner m-2">
+		<div class="progress">
+			<div class="progress-bar progress-bar-striped" role="progressbar" style="width: 1%" aria-valuenow="1" aria-valuemin="100" aria-valuemax="100"></div>
+		</div>
+	</div>
+	<div class="dataTablesContainer dt-bootstrap4 invisible">
 		<?php echo  $list_view ?>
 	</div>
 
@@ -41,7 +39,7 @@ function ar($arg)
 	return substr($arg, 0, -strlen($end));
 }
 
-$this->set_css($this->default_theme_path . '/datatables4/css/datatables.css?v=0.34');
+$this->set_css($this->default_theme_path . '/datatables4/css/datatables.css?v=0.35');
 
 
 
@@ -50,7 +48,7 @@ if ($dialog_forms) {
 
 $this->set_js_lib($this->default_javascript_path . '/common/list.js');
 
-$this->set_js($this->default_theme_path . '/datatables4/js/datatables.js?v=0.4.16');
+$this->set_js($this->default_theme_path . '/datatables4/js/datatables.js?v=0.4.18');
 //$this->set_js($this->default_theme_path.'/datatables4/js/dataTables.responsive.min.js');
 //$this->set_js($this->default_theme_path.'/datatables4/js/dataTables.searchPanes.min.js');
 
@@ -139,7 +137,23 @@ $this->set_js($this->default_theme_path . '/datatables4/js/datatables.js?v=0.4.1
 			"stateSave": true,
 			"ajax": {
 				type: 'POST',
-				url: "<?php echo $ajax_list_info_url; ?>" //,success: (r) => console.log(r)
+				url: "<?php echo $ajax_list_info_url; ?>", //,success: (r) => console.log(r)
+				xhr: function() {
+					let xhr = $.ajaxSettings.xhr();
+					let a = 0;
+					xhr.onprogress = function (e) {
+						// For downloads
+						if (e.lengthComputable) {
+							let per = (e.loaded / e.total * 100 | 0);
+							$('.grocerycrud-container-spinner .progress-bar').css('width', per + '%').attr('aria-valuenow', per);
+						}  else {
+							a += 40;
+							if (a > 99) a = 50;
+							$('.grocerycrud-container-spinner .progress-bar').css('width', a + '%').attr('aria-valuenow', a);
+						}
+					};
+					return xhr;
+				},
 			},
 			columnDefs: [
 				<?php
