@@ -456,6 +456,7 @@ class grocery_CRUD_Field_Types
 	 */
 	function character_limiter($str, $n = 500, $end_char = '&#8230;')
 	{
+		if($str == NULL) $str = '';
 		if (strlen($str) < $n) {
 			return $str;
 		}

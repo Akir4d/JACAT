@@ -48,7 +48,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Drivers
  * @category	Database
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/database/
+ * @link		https://codeigniter.com/userguide3/database/
  */
 class CI_DB_pdo_driver extends CI_DB {
 
@@ -129,6 +129,14 @@ class CI_DB_pdo_driver extends CI_DB {
 		if ($persistent === TRUE)
 		{
 			$this->options[PDO::ATTR_PERSISTENT] = TRUE;
+		}
+
+		// From PHP8.0, default PDO::ATTR_ERRMODE is changed
+		// from PDO::ERRMODE_SILENT to PDO::ERRMODE_EXCEPTION
+		// as https://wiki.php.net/rfc/pdo_default_errmode
+		if ( ! isset($this->options[PDO::ATTR_ERRMODE]))
+		{
+			$this->options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_SILENT;
 		}
 
 		try
@@ -302,7 +310,7 @@ class CI_DB_pdo_driver extends CI_DB {
 		$error['code'] = isset($pdo_error[1]) ? $pdo_error[0].'/'.$pdo_error[1] : $pdo_error[0];
 		if (isset($pdo_error[2]))
 		{
-			 $error['message'] = $pdo_error[2];
+			$error['message'] = $pdo_error[2];
 		}
 
 		return $error;
@@ -324,6 +332,19 @@ class CI_DB_pdo_driver extends CI_DB {
 	protected function _truncate($table)
 	{
 		return 'TRUNCATE TABLE '.$table;
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Close DB Connection
+	 *
+	 * @return	void
+	 */
+	protected function _close()
+	{
+		$this->result_id = FALSE;
+		$this->conn_id = FALSE;
 	}
 
 }

@@ -48,7 +48,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage  Drivers
  * @category	Database
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/database/
+ * @link		https://codeigniter.com/userguide3/database/
  */
 
 /**
@@ -682,6 +682,16 @@ class CI_DB_oci8_driver extends CI_DB {
 	 */
 	protected function _close()
 	{
+		if (is_resource($this->curs_id))
+		{
+			oci_free_statement($this->curs_id);
+		}
+
+		if (is_resource($this->stmt_id))
+		{
+			oci_free_statement($this->stmt_id);
+		}
+
 		oci_close($this->conn_id);
 	}
 

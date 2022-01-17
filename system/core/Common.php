@@ -46,7 +46,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	CodeIgniter
  * @category	Common Functions
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/
+ * @link		https://codeigniter.com/userguide3/
  */
 
 // ------------------------------------------------------------------------
@@ -565,7 +565,7 @@ if ( ! function_exists('set_status_header'))
 			return;
 		}
 
-		$server_protocol = (isset($_SERVER['SERVER_PROTOCOL']) && in_array($_SERVER['SERVER_PROTOCOL'], array('HTTP/1.0', 'HTTP/1.1', 'HTTP/2'), TRUE))
+		$server_protocol = (isset($_SERVER['SERVER_PROTOCOL']) && in_array($_SERVER['SERVER_PROTOCOL'], array('HTTP/1.0', 'HTTP/1.1', 'HTTP/2', 'HTTP/2.0'), TRUE))
 			? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
 		header($server_protocol.' '.$code.' '.$text, TRUE, $code);
 	}
@@ -778,11 +778,9 @@ if ( ! function_exists('_stringify_attributes'))
 	 */
 	function _stringify_attributes($attributes, $js = FALSE)
 	{
-		$atts = NULL;
-
 		if (empty($attributes))
 		{
-			return $atts;
+			return NULL;
 		}
 
 		if (is_string($attributes))
@@ -792,6 +790,7 @@ if ( ! function_exists('_stringify_attributes'))
 
 		$attributes = (array) $attributes;
 
+		$atts = '';
 		foreach ($attributes as $key => $val)
 		{
 			$atts .= ($js) ? $key.'='.$val.',' : ' '.$key.'="'.$val.'"';

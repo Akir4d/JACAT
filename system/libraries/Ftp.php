@@ -44,7 +44,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Libraries
  * @category	Libraries
  * @author		EllisLab Dev Team
- * @link		https://codeigniter.com/user_guide/libraries/ftp.html
+ * @link		https://codeigniter.com/userguide3/libraries/ftp.html
  */
 class CI_FTP {
 
@@ -202,7 +202,7 @@ class CI_FTP {
 	 */
 	protected function _is_conn()
 	{
-		if ( ! is_resource($this->conn_id))
+		if ($this->conn_id !== FALSE)
 		{
 			if ($this->debug === TRUE)
 			{
